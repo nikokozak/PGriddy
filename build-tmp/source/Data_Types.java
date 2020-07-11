@@ -21,27 +21,29 @@ public class Data_Types extends PApplet {
 
 
 
-// a TUPLE is a data structure
-// TUPLE2 ( a: ANY, b: ANY)
-// interpretation: a TUPLE2 is used to hold two values.
-// use when POINT is not strictly necessary.
 public class Tuple2<X, Y> { 
-  public final X a; 
-  public final Y b; 
+// a TUPLE2 is a data structure
+// TUPLE2 ( a: ANY, b: ANY)
+// interp: a TUPLE2 is used to hold two values.
+// use when POINT is not strictly necessary.
+
+  public X a; 
+  public Y b; 
   public Tuple2(X a, Y b) { 
     this.a = a; 
     this.b = b; 
   } 
 }
 
-// a TUPLE is a data structure
+public class Tuple3<X, Y, Z> { 
+// a TUPLE3 is a data structure
 // TUPLE3 ( a: ANY, b: ANY, c: ANY)
 // interpretation: a TUPLE3 is used to hold three values.
 // use when POINT is not strictly necessary.
-public class Tuple3<X, Y, Z> { 
-  public final X a; 
-  public final Y b; 
-  public final Z c;
+
+  public  X a; 
+  public  Y b; 
+  public  Z c;
   public Tuple3(X a, Y b, Z c) { 
     this.a = a; 
     this.b = b; 
@@ -49,14 +51,16 @@ public class Tuple3<X, Y, Z> {
   } 
 } 
 
+public class Point {
 // a POINT is a data structure
-// POINT ( x: INT, y: INT, gridIndexX: INT, gridIndexY: INT ) 
-// interpretation: a POINT represents a point in cartesian coords.
+// POINT ( x: FLOAT, y: FLOAT, gridIndexX: INT, gridIndexY: INT ) 
+// interp: a POINT represents a point in cartesian coords (as distinct from a GRID_POINT, which has a grid index position).
 // x -> window coordinate X of point.
 // y -> window coordinate Y of point.
-class Point {
-  float x, y;
-  double weight;
+// weight -> associated weight of point.
+
+  public float x, y;
+  public double weight;
   
   public Point (float _x, float _y) {
     x = _x; y = _y;
@@ -73,6 +77,7 @@ class Point {
   
 }
 
+public class Grid_Point extends Point {
 // a GRID_POINT is a data structure
 // GRID_POINT ( x: INT, y: INT, gridIndexX: INT, gridIndexY: INT )
 // interpretation: a GRID_POINT represents a POINT acquired from a (belonging to) a GRID
@@ -80,9 +85,10 @@ class Point {
 // y -> window coordinate Y of point.
 // gridIndexX -> if created as part of a POINT_GRID, COL index of said POINT_GRID
 // gridIndexY -> if created as part of a POINT_GRID, ROW index of said POINT_GRID
-class Grid_Point extends Point {
-  int gridIndexX, gridIndexY;
-  double weight;
+// weight -> associated weight of point.
+
+  public final int gridIndexX, gridIndexY;
+  public double weight;
   
   public Grid_Point (int _x, int _y, int _ix, int _iy) {
     super(_x, _y);
@@ -105,20 +111,20 @@ class Grid_Point extends Point {
   
 }
 
+public class Selection {
 // A SELECTION is a data structure
 // SELECTION ( col0: INT, row0: INT, col1: INT, row1: INT, pg: POINT_GRID)
 // interpretation: a SELECTION represents a portion of a POINT_GRID that can be passed into
 // certain functions to limit their effect to specific areas.
 // startCol, startRow -> top-left corner of selection rectangle
 // startRow, endRow -> bottom-right corner of selection rectangle
-class Selection {
   
-  int startCol, endCol;
-  int startRow, endRow;
+  public int startCol, endCol;
+  public int startRow, endRow;
   
   public Selection (int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
     
-    if (checkBounds(_col0, _row0, _col1, _row1, _pg) && _col0 <= _col1 && _row0 <= _row1) {
+    if ( checkBounds(_col0, _row0, _col1, _row1, _pg) && _col0 <= _col1 && _row0 <= _row1 ) {
       startCol = _col0;
       startRow = _row0;
       endCol = _col1;
@@ -131,20 +137,21 @@ class Selection {
   
 }
 
+public class Point_Grid {
 // a POINT_GRID is a data structure
-// a POINT_GRID contains a 2D vector of POINTs
+// a POINT_GRID contains a 2D collection of POINTs
 // NOTE: 2D ArrayList is used to store points as opposed to Processing Core's flat array preference: performance difference was negligible vs code clarity gained.
-// where:
+// Where:
 // x -> Number of POINTs in X axis (INT)
 // y -> Number of POINTs in Y axis (INT)
 // c -> Global center of GRID (POINT)
 // sX -> Spacing between POINTs in X axis (INT)
 // sY -> Spacing between POINTs in Y axis (INT)
-class Point_Grid {
-  int x, y, sX, sY;
-  int xOrigin, yOrigin; // Define the lowest X and Y coordinates for the grid system.
-  Point c;
-  ArrayList<ArrayList<Grid_Point>> points;
+
+  public final int x, y, sX, sY;
+  public int xOrigin, yOrigin; // Define the lowest X and Y coordinates for the grid system.
+  public final Point c;
+  public ArrayList<ArrayList<Grid_Point>> points;
   
   public Point_Grid(int _x, int _y, Point _c, int _sX, int _sY) { 
     x = _x;
@@ -158,7 +165,6 @@ class Point_Grid {
     
     points = new ArrayList<ArrayList<Grid_Point>>();
     
-    // Create Grid Vectors Here
     for (int i = 0; i < _x; i += 1) {
       int xPos = xOrigin + (i * _sX);
       points.add(new ArrayList<Grid_Point>());
@@ -210,12 +216,11 @@ class Point_Grid {
   }
 }
 
-// DOUBLE, POINT_GRID -> POINT_GRID
+public Point_Grid setWeights(double _weight, Point_Grid _pg) {
 // Sets all weights in a given Point_Grid
 // Where:
 // _weight -> new weight (value between 0 and 1)
 // _pg -> Point_Grid to affect
-public Point_Grid setWeights(double _weight, Point_Grid _pg) {
   
   _weight = clamp(_weight, 0, 1);
   Point_Grid result = new Point_Grid(_pg);
@@ -236,12 +241,11 @@ public Point_Grid setWeights(double _weight, Point_Grid _pg) {
   
 }
 
-// DOUBLE, POINT_GRID -> POINT_GRID
+public Point_Grid addToWeights(double _weight, Point_Grid _pg) {
 // Adds a given number to all weights in a given Point_Grid
 // Where:
 // _weight -> amount to add (value between 0 and 1)
 // _pg -> Point_Grid to affect
-public Point_Grid addToWeights(double _weight, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   
@@ -261,14 +265,13 @@ public Point_Grid addToWeights(double _weight, Point_Grid _pg) {
   
 }
 
-// FLOAT, FLOAT, POINT_GRID -> POINT_GRID
-// Moves points in a grid by adding the provided values to X and Y coordinates, scaled according to each point's weight.
-// Where:
-// _x -> amount to add to GRID_POINT.x
-// _y -> amount to add to GRID_POINT.y
-// _pg -> Point_Grid to affect
 public Point_Grid addToPositions(float _x, float _y, Point_Grid _pg) {
-  
+// Moves points in a grid by adding the provided values to X and Y coordinates, scaled according to each point's weight.
+// Where:
+// _x -> amount to add to GRID_POINT.x
+// _y -> amount to add to GRID_POINT.y
+// _pg -> Point_Grid to affect
+
   Point_Grid result = new Point_Grid(_pg);
   Grid_Point currpoint;
   
@@ -284,14 +287,13 @@ public Point_Grid addToPositions(float _x, float _y, Point_Grid _pg) {
   
 }
 
-// FLOAT, FLOAT, POINT_GRID -> POINT_GRID
+public Point_Grid addToPositions(float _x, float _y, Selection _s, Point_Grid _pg) {
 // Moves points in a grid by adding the provided values to X and Y coordinates, scaled according to each point's weight.
 // Incorporates a selection option.
 // Where:
 // _x -> amount to add to GRID_POINT.x
 // _y -> amount to add to GRID_POINT.y
 // _pg -> Point_Grid to affect
-public Point_Grid addToPositions(float _x, float _y, Selection _s, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   Grid_Point currpoint;
@@ -308,13 +310,12 @@ public Point_Grid addToPositions(float _x, float _y, Selection _s, Point_Grid _p
   
 }
 
-// FLOAT, FLOAT, POINT_GRID -> POINT_GRID
+public Point_Grid multPositions(float _x, float _y, Point_Grid _pg) {
 // Moves points in a grid by multiplying the provided values to X and Y coordinates, scaled according to each point's weight.
 // Where:
 // _x -> amount to add to GRID_POINT.x
 // _y -> amount to add to GRID_POINT.y
 // _pg -> Point_Grid to affect
-public Point_Grid multPositions(float _x, float _y, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   Grid_Point currpoint;
@@ -331,14 +332,13 @@ public Point_Grid multPositions(float _x, float _y, Point_Grid _pg) {
   
 }
 
-// FLOAT, FLOAT, POINT_GRID -> POINT_GRID
+public Point_Grid multPositions(float _x, float _y, Selection _s, Point_Grid _pg) {
 // Moves points in a grid by multiplying the provided values to X and Y coordinates, scaled according to each point's weight.
 // Incorporates a selection option.
 // Where:
 // _x -> amount to add to GRID_POINT.x
 // _y -> amount to add to GRID_POINT.y
 // _pg -> Point_Grid to affect
-public Point_Grid multPositions(float _x, float _y, Selection _s, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   Grid_Point currpoint;
@@ -355,7 +355,7 @@ public Point_Grid multPositions(float _x, float _y, Selection _s, Point_Grid _pg
   
 }
 
-// INT, INT, INT, DOUBLE, DOUBLE, DOUBLE, POINT_GRID -> POINT_GRID
+public Point_Grid applyLinRadGradient_Slow (int _col, int _row, int _r, double _init_decay, double _sample_rate, boolean _inverse, boolean _blend, Point_Grid _pg) {
 // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, returns a new Point_Grid
 // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
 // in the underlying circle-plotting algo. Avoid using if possible.
@@ -367,7 +367,6 @@ public Point_Grid multPositions(float _x, float _y, Selection _s, Point_Grid _pg
 // _inverse -> whether to invert the gradient
 // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
 // _pg -> Point_Grid to affect.
-public Point_Grid applyLinRadGradient_Slow(int _col, int _row, int _r, double _init_decay, double _sample_rate, boolean _inverse, boolean _blend, Point_Grid _pg) {
   
   Point_Grid result = _inverse ? new Point_Grid(_pg) : new Point_Grid(_pg, true);
   
@@ -409,7 +408,7 @@ public Point_Grid applyLinRadGradient_Slow(int _col, int _row, int _r, double _i
   
 }
 
-// INT, INT, INT, DOUBLE, BOOLEAN, POINT_GRID -> POINT_GRID
+public Point_Grid applyLinRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, Point_Grid _pg) {
 // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, returns a new Point_Grid
 // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
 // Where:
@@ -419,7 +418,6 @@ public Point_Grid applyLinRadGradient_Slow(int _col, int _row, int _r, double _i
 // _inverse -> whether to invert the gradient
 // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
 // _pg -> Point_Grid to affect
-public Point_Grid applyLinRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
   Point_Grid grid_result = _inverse ? new Point_Grid(_pg) : new Point_Grid(_pg, true);
   
@@ -473,7 +471,7 @@ public Point_Grid applyLinRadGradient(int _col, int _row, int _rad, double _init
   
 }
 
-// INT, INT, INT, DOUBLE, BOOLEAN, POINT_GRID -> POINT_GRID
+public Point_Grid applySmoothRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, Point_Grid _pg) {
 // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out-easing function. Returns a new Point_Grid
 // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
 // Where:
@@ -483,7 +481,6 @@ public Point_Grid applyLinRadGradient(int _col, int _row, int _rad, double _init
 // _inverse -> whether to invert the gradient
 // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
 // _pg -> Point_Grid to affect
-public Point_Grid applySmoothRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
   Point_Grid grid_result = _inverse ? new Point_Grid(_pg) : new Point_Grid(_pg, true);
   
@@ -537,13 +534,11 @@ public Point_Grid applySmoothRadGradient(int _col, int _row, int _rad, double _i
   
 }
 
-
-
-// INT, INT, INT, DOUBLE, DOUBLE, BOOLEAN, BOOLEAN, POINT_GRID -> POINT_GRID
+public Point_Grid applySmoothRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, boolean _inverse, boolean _blend, Point_Grid _pg) {
 // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out easing function, returns a new Point_Grid
 // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
 // in the underlying circle-plotting algo. Avoid using if possible.
-// Where:
+// Where
 // _col, _row -> origin of gradient
 // _r -> radius of gradient (i.e. extent of gradient effect)
 // _init_weight -> initial weight value of gradient
@@ -551,7 +546,6 @@ public Point_Grid applySmoothRadGradient(int _col, int _row, int _rad, double _i
 // _inverse -> whether to invert the gradient
 // _blend -> whether to allow blending with previous weights (otherwise gradient overrides previous weights)
 // _pg -> Point_Grid to affect.
-public Point_Grid applySmoothRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, boolean _inverse, boolean _blend, Point_Grid _pg) {
   
   //Point_Grid result = _inverse ? new Point_Grid(_pg) : new Point_Grid(_pg);
   Point_Grid result = new Point_Grid(_pg);
@@ -592,7 +586,7 @@ public Point_Grid applySmoothRadGradient_Slow(int _col, int _row, int _r, double
   
 }
 
-// INT, INT, INT, DOUBLE, BOOLEAN, POINT_GRID -> POINT_GRID
+public Point_Grid applySinRadGradient(int _col, int _row, int _rad, double _init_weight, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out-easing function. Returns a new Point_Grid
 // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
 // Where:
@@ -602,7 +596,6 @@ public Point_Grid applySmoothRadGradient_Slow(int _col, int _row, int _r, double
 // _inverse -> whether to invert the gradient
 // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
 // _pg -> Point_Grid to affect
-public Point_Grid applySinRadGradient(int _col, int _row, int _rad, double _init_weight, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
   Point_Grid grid_result = _inverse ? new Point_Grid(_pg) : new Point_Grid(_pg, true);
   
@@ -646,16 +639,13 @@ public Point_Grid applySinRadGradient(int _col, int _row, int _rad, double _init
     curr_rad += 1;
     curr_weight = sinMap((double)curr_rad, _freq, _shift);
     curr_weight = clamp(curr_weight, 0.0f, 1.0f);
-    
-    
   }
   
   if (_blend) grid_result = addGridWeights(_pg, grid_result);
   return grid_result;
-  
 }
 
-// INT, INT, INT, DOUBLE, DOUBLE, BOOLEAN, BOOLEAN, POINT_GRID -> POINT_GRID
+public Point_Grid applySinRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out easing function, returns a new Point_Grid
 // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
 // in the underlying circle-plotting algo. Avoid using if possible.
@@ -667,7 +657,6 @@ public Point_Grid applySinRadGradient(int _col, int _row, int _rad, double _init
 // _inverse -> whether to invert the gradient
 // _blend -> whether to allow blending with previous weights (otherwise gradient overrides previous weights)
 // _pg -> Point_Grid to affect.
-public Point_Grid applySinRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
   
   //Point_Grid result = _inverse ? new Point_Grid(_pg) : new Point_Grid(_pg);
   Point_Grid result = new Point_Grid(_pg);
@@ -708,7 +697,7 @@ public Point_Grid applySinRadGradient_Slow(int _col, int _row, int _r, double _i
   
 }
 
-// POINT_GRID, FLOAT, FLOAT -> POINT_GRID
+public Point_Grid applyPerlin(float _min, float _max, float _time, boolean _blend, Point_Grid _pg) {
 // Apply weights to point in Point_Grid based on Perlin Noise.
 // Perlin positions are taken from Grid_Points in Grid.
 // Where:
@@ -717,7 +706,6 @@ public Point_Grid applySinRadGradient_Slow(int _col, int _row, int _r, double _i
 // _time -> Time (Z-axis) factor for animating Perlin (takes values from 0.0 - 1.0);
 // _blend -> Whether to blend weight with any previous weight present in Point_Grid
 // _pg -> Point_Grid to sample from
-public Point_Grid applyPerlin(float _min, float _max, float _time, boolean _blend, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   
@@ -737,7 +725,7 @@ public Point_Grid applyPerlin(float _min, float _max, float _time, boolean _blen
   
 }
 
-// POINT_GRID, FLOAT, FLOAT -> POINT_GRID
+public Point_Grid applyRandom(boolean _blend, Point_Grid _pg) {
 // Apply weights to point in Point_Grid based on Perlin Noise.
 // Perlin positions are taken from Grid_Points in Grid.
 // Where:
@@ -745,7 +733,6 @@ public Point_Grid applyPerlin(float _min, float _max, float _time, boolean _blen
 // _min -> Min weight threshold
 // _max -> Max weight threshold
 // _time -> Time (Z-axis) factor for animating Perlin (takes values from 0.0 - 1.0);
-public Point_Grid applyRandom(boolean _blend, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   
@@ -765,7 +752,7 @@ public Point_Grid applyRandom(boolean _blend, Point_Grid _pg) {
   
 }
 
-// PIMAGE, BOOLEAN, STRING, POINT_GRID -> POINT_GRID
+public Point_Grid applyImage(PImage _img, String _mode, boolean _blend, Point_Grid _pg) {
 // Loads an image and applies weights to Grid_Points in Point_Grid
 // based on R, G, B, L (lightness) values or combinations thereof.
 // Where:
@@ -773,7 +760,6 @@ public Point_Grid applyRandom(boolean _blend, Point_Grid _pg) {
 // _scale -> scale the image to encompass full grid or load image at center of grid (no scale applied)
 // _mode -> any of the following: "r", "g", "b", "l" (luma)
 // _pg -> Point_Grid to apply to.
-public Point_Grid applyImage(PImage _img, String _mode, boolean _blend, Point_Grid _pg) {
   
   Point_Grid result = new Point_Grid(_pg);
   PImage new_img;
@@ -848,7 +834,7 @@ Point_Grid applyLinGradient(int _col0, int _row0, int _col1, int _row1, double _
   
   // y = m(slope)x + b(intercept)
   // y = -1/m(inverse_slope) + b(intercept)
-  
+
   double slope_guide =  (double)(_row1 - _row0) / (double)(_col1 - _col0);
   double inverse_slope = -1 / slope_guide;
   

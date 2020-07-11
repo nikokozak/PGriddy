@@ -1,27 +1,29 @@
 import java.util.Vector;
 import java.util.*;
 
-// a TUPLE is a data structure
-// TUPLE2 ( a: ANY, b: ANY)
-// interpretation: a TUPLE2 is used to hold two values.
-// use when POINT is not strictly necessary.
 public class Tuple2<X, Y> { 
-  public final X a; 
-  public final Y b; 
+// a TUPLE2 is a data structure
+// TUPLE2 ( a: ANY, b: ANY)
+// interp: a TUPLE2 is used to hold two values.
+// use when POINT is not strictly necessary.
+
+  public X a; 
+  public Y b; 
   public Tuple2(X a, Y b) { 
     this.a = a; 
     this.b = b; 
   } 
 }
 
-// a TUPLE is a data structure
+public class Tuple3<X, Y, Z> { 
+// a TUPLE3 is a data structure
 // TUPLE3 ( a: ANY, b: ANY, c: ANY)
 // interpretation: a TUPLE3 is used to hold three values.
 // use when POINT is not strictly necessary.
-public class Tuple3<X, Y, Z> { 
-  public final X a; 
-  public final Y b; 
-  public final Z c;
+
+  public  X a; 
+  public  Y b; 
+  public  Z c;
   public Tuple3(X a, Y b, Z c) { 
     this.a = a; 
     this.b = b; 
@@ -29,14 +31,16 @@ public class Tuple3<X, Y, Z> {
   } 
 } 
 
+public class Point {
 // a POINT is a data structure
-// POINT ( x: INT, y: INT, gridIndexX: INT, gridIndexY: INT ) 
-// interpretation: a POINT represents a point in cartesian coords.
+// POINT ( x: FLOAT, y: FLOAT, gridIndexX: INT, gridIndexY: INT ) 
+// interp: a POINT represents a point in cartesian coords (as distinct from a GRID_POINT, which has a grid index position).
 // x -> window coordinate X of point.
 // y -> window coordinate Y of point.
-class Point {
-  float x, y;
-  double weight;
+// weight -> associated weight of point.
+
+  public float x, y;
+  public double weight;
   
   public Point (float _x, float _y) {
     x = _x; y = _y;
@@ -53,6 +57,7 @@ class Point {
   
 }
 
+public class Grid_Point extends Point {
 // a GRID_POINT is a data structure
 // GRID_POINT ( x: INT, y: INT, gridIndexX: INT, gridIndexY: INT )
 // interpretation: a GRID_POINT represents a POINT acquired from a (belonging to) a GRID
@@ -60,9 +65,10 @@ class Point {
 // y -> window coordinate Y of point.
 // gridIndexX -> if created as part of a POINT_GRID, COL index of said POINT_GRID
 // gridIndexY -> if created as part of a POINT_GRID, ROW index of said POINT_GRID
-class Grid_Point extends Point {
-  int gridIndexX, gridIndexY;
-  double weight;
+// weight -> associated weight of point.
+
+  public final int gridIndexX, gridIndexY;
+  public double weight;
   
   public Grid_Point (int _x, int _y, int _ix, int _iy) {
     super(_x, _y);
@@ -85,20 +91,20 @@ class Grid_Point extends Point {
   
 }
 
+public class Selection {
 // A SELECTION is a data structure
 // SELECTION ( col0: INT, row0: INT, col1: INT, row1: INT, pg: POINT_GRID)
 // interpretation: a SELECTION represents a portion of a POINT_GRID that can be passed into
 // certain functions to limit their effect to specific areas.
 // startCol, startRow -> top-left corner of selection rectangle
 // startRow, endRow -> bottom-right corner of selection rectangle
-class Selection {
   
-  int startCol, endCol;
-  int startRow, endRow;
+  public int startCol, endCol;
+  public int startRow, endRow;
   
   public Selection (int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
     
-    if (checkBounds(_col0, _row0, _col1, _row1, _pg) && _col0 <= _col1 && _row0 <= _row1) {
+    if ( checkBounds(_col0, _row0, _col1, _row1, _pg) && _col0 <= _col1 && _row0 <= _row1 ) {
       startCol = _col0;
       startRow = _row0;
       endCol = _col1;
@@ -111,20 +117,21 @@ class Selection {
   
 }
 
+public class Point_Grid {
 // a POINT_GRID is a data structure
-// a POINT_GRID contains a 2D vector of POINTs
+// a POINT_GRID contains a 2D collection of POINTs
 // NOTE: 2D ArrayList is used to store points as opposed to Processing Core's flat array preference: performance difference was negligible vs code clarity gained.
-// where:
+// Where:
 // x -> Number of POINTs in X axis (INT)
 // y -> Number of POINTs in Y axis (INT)
 // c -> Global center of GRID (POINT)
 // sX -> Spacing between POINTs in X axis (INT)
 // sY -> Spacing between POINTs in Y axis (INT)
-class Point_Grid {
-  int x, y, sX, sY;
-  int xOrigin, yOrigin; // Define the lowest X and Y coordinates for the grid system.
-  Point c;
-  ArrayList<ArrayList<Grid_Point>> points;
+
+  public final int x, y, sX, sY;
+  public int xOrigin, yOrigin; // Define the lowest X and Y coordinates for the grid system.
+  public final Point c;
+  public ArrayList<ArrayList<Grid_Point>> points;
   
   public Point_Grid(int _x, int _y, Point _c, int _sX, int _sY) { 
     x = _x;
@@ -138,7 +145,6 @@ class Point_Grid {
     
     points = new ArrayList<ArrayList<Grid_Point>>();
     
-    // Create Grid Vectors Here
     for (int i = 0; i < _x; i += 1) {
       int xPos = xOrigin + (i * _sX);
       points.add(new ArrayList<Grid_Point>());

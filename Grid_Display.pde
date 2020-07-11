@@ -1,11 +1,9 @@
-
-// IMPURE
-// VECTOR[POINT] -> VOID
-// Draws all points in a POINT Vector onto the window
+void drawPointArray(ArrayList<Grid_Point> _pg, int _type, boolean _display_weight) {
+// Draws all points in a Grid_Poit ArrayList onto the window
 // Where:
-// _pv -> Vector to fetch points from
+// _pg -> ArrayList to draw
 // _type -> Type of Processing object to draw (INT) [1: POINT, 2: CIRCLE, 3: RECT]
-void drawPointArray(ArrayList<Grid_Point> _pg, int type, boolean _display_weight) {
+// _display_weight -> Whether or not to color the points accordint to their associated weights
   
   int col;
   
@@ -20,7 +18,7 @@ void drawPointArray(ArrayList<Grid_Point> _pg, int type, boolean _display_weight
       fill(255);
     }
     
-      switch(type) {
+      switch(_type) {
          case 1:
            point(_pg.get(i).x, _pg.get(i).y);
            break;
@@ -35,13 +33,12 @@ void drawPointArray(ArrayList<Grid_Point> _pg, int type, boolean _display_weight
     }
 }
 
-// IMPURE
-// POINT_GRID -> VOID
-// Draws all points of a POINT_GRID pg onto the window
-// Where:
-// pg -> Point_Grid to draw (POINT_GRID)
-// type -> Type of Processing object to draw (INT) [1: POINT, 2: CIRCLE, 3: RECT]
 void drawPointGrid(Point_Grid _pg, int _type, boolean _display_weight) {
+// Draws all points of a POINT_GRID onto the window
+// Where:
+// _pg -> Point_Grid to draw (POINT_GRID)
+// _type -> Type of Processing object to draw (INT) [1: POINT, 2: CIRCLE, 3: RECT]
+// _display_weight -> Whether or not to color the points accordint to their associated weights
   
   for (int i = 0; i < _pg.points.size(); i++) {
     
