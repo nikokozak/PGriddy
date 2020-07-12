@@ -2,8 +2,6 @@
 int grid_width = 200;
 int grid_height = 150;
 
-import de.looksgood.ani.*;
-
 Point_Grid grid;
 Point_Grid base_grid;
 ArrayList<Grid_Point> perlin_list;
@@ -12,8 +10,6 @@ ArrayList<Grid_Point> pattern_list_2;
 ArrayList<Grid_Point> pattern_list_3;
 ArrayList<Grid_Point> circle;
 Selection top, bottom;
-
-AniSequence seq;
 
 void settings() {
   size(1980, 1080);
