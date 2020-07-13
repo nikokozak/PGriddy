@@ -2,9 +2,7 @@ import java.util.Vector;
 import java.util.*;
 
 public class Tuple2<X, Y> { 
-// TUPLE2 ( a: ANY, b: ANY)
-// used to hold two values.
-// use when POINT is not strictly necessary.
+
 
   public X a; 
   public Y b; 
