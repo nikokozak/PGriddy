@@ -2,9 +2,8 @@ import java.util.Vector;
 import java.util.*;
 
 public class Tuple2<X, Y> { 
-// a TUPLE2 is a data structure
 // TUPLE2 ( a: ANY, b: ANY)
-// interp: a TUPLE2 is used to hold two values.
+// used to hold two values.
 // use when POINT is not strictly necessary.
 
   public X a; 
@@ -16,9 +15,8 @@ public class Tuple2<X, Y> {
 }
 
 public class Tuple3<X, Y, Z> { 
-// a TUPLE3 is a data structure
 // TUPLE3 ( a: ANY, b: ANY, c: ANY)
-// interpretation: a TUPLE3 is used to hold three values.
+// used to hold three values.
 // use when POINT is not strictly necessary.
 
   public  X a; 
@@ -32,27 +30,33 @@ public class Tuple3<X, Y, Z> {
 } 
 
 public class Point {
-// a POINT is a data structure
 // POINT ( x: FLOAT, y: FLOAT, gridIndexX: INT, gridIndexY: INT ) 
 // interp: a POINT represents a point in cartesian coords (as distinct from a GRID_POINT, which has a grid index position).
 // x -> window coordinate X of point.
 // y -> window coordinate Y of point.
 // weight -> associated weight of point.
 
-  public float x, y;
+  public float oX, oY, x, y;
+  public color col;
   public double weight;
   
   public Point (float _x, float _y) {
     x = _x; y = _y;
+    oX = _x; oY = _y;
     weight = 1;
+    col = color(255);
   }
   public Point (Point _p) {
     x = _p.x; y = _p.y;
+    oX = _p.oX; y = _p.oY;
     weight = _p.weight;
+    col = _p.col;
   }
   public Point (Grid_Point _p) {
     x = _p.x; y = _p.y;
+    oX = _p.oX; oY = _p.oY;
     weight = _p.weight;
+    col = _p.col;
   }
   
 }

@@ -50,7 +50,6 @@ void draw() {
   base_grid = addToPositions(0, 70, top, base_grid);
   base_grid = addToPositions(0, -70, bottom, base_grid);
   
-  
   //pattern_list = getPattern(0, time_y, Arrays.asList(2, 4, 4, 2), stepper, true, base_grid);  
   pattern_list_2 = getPattern(time_x, 0, Arrays.asList(4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 2), stepper, true, base_grid);
   //pattern_list_3 = getPattern(0, time_y, Arrays.asList(2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 6, 6, 6, 6, 6, 4, 4, 4), stepper, true, base_grid);  
