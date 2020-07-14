@@ -267,36 +267,43 @@ public class Point_Grid {
             else this.points.get(_col).get(_row).weight = curr_weight * _opacity;
         }
 
+        Grid_Point currPoint; // Included for readability's sake.
+
         while (curr_rad <= _rad) {
             int x = -curr_rad;
             int y = 0;
             int err = 2-2*curr_rad;
-            PApplet.print("Curr Rad: ", curr_rad, " Curr _rad: ", _rad);
 
             while (x < 0) {
                 if (Helpers.checkBounds(_col - x, _row + y, this)) {
+                    currPoint = this.points.get(_col - x).get(_row + y);
                     if (_blend) {
-                        this.points.get(_col - x).get(_row + y).weight = Helpers.clamp(this.points.get(_col - x).get(_row + y).weight + curr_weight*_opacity, 0.0, 1.0);
+                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
+                        Core.processing.print("Inner Weight: ", currPoint.weight, "\n");
                     }
-                    else this.points.get(_col - x).get(_row + y).weight = curr_weight*_opacity;
+                    else currPoint.weight = curr_weight*_opacity;
+                    Core.processing.print("Outer weight: ", currPoint.weight, "\n");
                 }
                 if (Helpers.checkBounds(_col - y, _row - x, this)) {
+                    currPoint = this.points.get(_col-y).get(_row-x);
                     if (_blend) {
-                        this.points.get(_col-y).get(_row-x).weight = Helpers.clamp(this.points.get(_col-y).get(_row-x).weight + curr_weight*_opacity, 0.0, 1.0);
+                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
                     }
-                    else this.points.get(_col-y).get(_row-x).weight = curr_weight*_opacity;
+                    else currPoint.weight = curr_weight*_opacity;
                 }
                 if (Helpers.checkBounds(_col + x, _row - y, this)) {
+                    currPoint = this.points.get(_col+x).get(_row-y);
                     if (_blend) {
-                        this.points.get(_col+x).get(_row-y).weight = Helpers.clamp(this.points.get(_col+x).get(_row-y).weight + curr_weight*_opacity, 0.0, 1.0);
+                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
                     }
-                    else this.points.get(_col+x).get(_row-y).weight = curr_weight*_opacity;
+                    else currPoint.weight = curr_weight*_opacity;
                 }
                 if (Helpers.checkBounds(_col + y, _row + x, this)) {
+                    currPoint = this.points.get(_col+y).get(_row+x);
                     if (_blend) {
-                        this.points.get(_col+y).get(_row+x).weight = Helpers.clamp(this.points.get(_col+y).get(_row+x).weight + curr_weight*_opacity, 0.0, 1.0);
+                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
                     }
-                    else this.points.get(_col+y).get(_row+x).weight = curr_weight*_opacity;
+                    else currPoint.weight = curr_weight*_opacity;
                 }
                 inner_rad = err;
                 if (inner_rad <= 0) {
