@@ -232,14 +232,14 @@ public class Getters {
             //print(_dlist.get(pointer));
 
             switch (_dlist.get(pointer)) {
-                case 0 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg) : getPointSafe(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg);
-                case 1 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg) : getPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg);
-                case 2 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg) : getPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg);
-                case 3 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg) : getPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg);
-                case 4 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg) : getPointSafe(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg);
-                case 5 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg) : getPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg);
-                case 6 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg) : getPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg);
-                case 7 -> currentPoint = _overflow ? getPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg) : getPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg);
+                case 0 -> currentPoint = _overflow ? getPoint(currentPoint.gX, currentPoint.gY - 1, _pg) : getPointSafe(currentPoint.gX, currentPoint.gY - 1, _pg);
+                case 1 -> currentPoint = _overflow ? getPoint(currentPoint.gX + 1, currentPoint.gY - 1, _pg) : getPointSafe(currentPoint.gX + 1, currentPoint.gY - 1, _pg);
+                case 2 -> currentPoint = _overflow ? getPoint(currentPoint.gX + 1, currentPoint.gY, _pg) : getPointSafe(currentPoint.gX + 1, currentPoint.gY, _pg);
+                case 3 -> currentPoint = _overflow ? getPoint(currentPoint.gX + 1, currentPoint.gY + 1, _pg) : getPointSafe(currentPoint.gX + 1, currentPoint.gY + 1, _pg);
+                case 4 -> currentPoint = _overflow ? getPoint(currentPoint.gX, currentPoint.gY + 1, _pg) : getPointSafe(currentPoint.gX, currentPoint.gY + 1, _pg);
+                case 5 -> currentPoint = _overflow ? getPoint(currentPoint.gX - 1, currentPoint.gY + 1, _pg) : getPointSafe(currentPoint.gX - 1, currentPoint.gY + 1, _pg);
+                case 6 -> currentPoint = _overflow ? getPoint(currentPoint.gX - 1, currentPoint.gY, _pg) : getPointSafe(currentPoint.gX - 1, currentPoint.gY, _pg);
+                case 7 -> currentPoint = _overflow ? getPoint(currentPoint.gX - 1, currentPoint.gY - 1, _pg) : getPointSafe(currentPoint.gX - 1, currentPoint.gY - 1, _pg);
             }
 
             step += 1;

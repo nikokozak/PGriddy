@@ -504,7 +504,7 @@ public class Applicators {
 
         for (ArrayList<Grid_Point> columns : result.points) {
             for (Grid_Point currPoint : columns) {
-                result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = PApplet.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max); // Call Perlin Here
+                result.points.get(currPoint.gX).get(currPoint.gY).weight = PApplet.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max); // Call Perlin Here
             }
         }
 
@@ -527,7 +527,7 @@ public class Applicators {
 
         for (ArrayList<Grid_Point> columns : result.points) {
             for (Grid_Point currPoint : columns) {
-                result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = Core.processing.random(0, 1);
+                result.points.get(currPoint.gX).get(currPoint.gY).weight = Core.processing.random(0, 1);
             }
         }
 
