@@ -10,10 +10,10 @@ public class Grid_Point extends Point {
 
     public final int gX, gY;
 
-    public Grid_Point (int _x, int _y, int _ix, int _iy) {
+    public Grid_Point (int _x, int _y, int _gx, int _gy) {
         super(_x, _y);
-        this.gX = _ix;
-        this.gY = _iy;
+        this.gX = _gx;
+        this.gY = _gy;
         this.weight = 1;
     }
 
@@ -22,6 +22,14 @@ public class Grid_Point extends Point {
         this.gX = _gx;
         this.gY = _gy;
         this.weight = _weight;
+    }
+
+    public Grid_Point (int _x, int _y, int _gx, int _gy, int _color, double _weight) {
+        super(_x, _y);
+        this.gX = _gx;
+        this.gY = _gy;
+        this.weight = _weight;
+        this.col = _color;
     }
 
     public Grid_Point (Grid_Point _p) {

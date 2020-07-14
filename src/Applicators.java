@@ -381,7 +381,7 @@ public class Applicators {
         return result;
 
     }
-
+    // TODO: APPLY INVERSE HERE, CHECK BLEND
     public static Point_Grid applySinRadGradient(int _col, int _row, int _rad, double _init_weight, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
         // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out-easing function. Returns a new Point_Grid
@@ -436,7 +436,7 @@ public class Applicators {
         if (_blend) grid_result = Helpers.addGridWeights(_pg, grid_result);
         return grid_result;
     }
-
+    // TODO: APPLY INVERSE HERE, CHECK BLEND
     public static Point_Grid applySinRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
         // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out easing function, returns a new Point_Grid

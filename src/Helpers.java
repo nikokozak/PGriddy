@@ -155,6 +155,20 @@ public class Helpers {
 
     }
 
+    public static ArrayList<Grid_Point> clonePoints(ArrayList<Grid_Point> _list) {
+
+        // Deep clones Grid_Points from one ArrayList to another.
+        // Used to get around some issues regarding unwanted object references.
+        // Where:
+        // _list -> ArrayList<Grid_Point> to copy
+
+        ArrayList<Grid_Point> result = new ArrayList<Grid_Point>(_list.size());
+        for (Grid_Point currPoint : _list) {
+            result.add(new Grid_Point(currPoint));
+        }
+        return result;
+    }
+
     public static Point_Grid addGridWeights(Point_Grid _pg1, Point_Grid _pg2) {
 
         // Adds point weights, returns a new Point_Grid
