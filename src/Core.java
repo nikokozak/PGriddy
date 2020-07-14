@@ -13,8 +13,8 @@ public class Core extends PApplet {
 
         pg1 = new Point_Grid(30, 30, new Point(width/2, height/2), 10, 10);
         pg1.color(color(255, 0, 0));
-        pg1.weight(0.0);
-        pg1.applyLinRadGradient(15, 15, 15, 1.0, false, true, 1.0);
+        pg1.weight(1.0);
+        pg1.applyLinRadGradient_Slow(15, 15, 15, 1.0, 0.3, true, true, 1.0);
     };
 
     @Override

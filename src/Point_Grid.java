@@ -1,6 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Point_Grid {
@@ -247,7 +248,7 @@ public class Point_Grid {
     // * =========== GRADIENT APPLICATORS ============== * //
 
     public void applyLinRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO : TEST
+        // TODO : RESOLVE ISSUES AROUND FP PRECISION WHEN BLENDING
 
         // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, returns a new Point_Grid
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -279,10 +280,8 @@ public class Point_Grid {
                     currPoint = this.points.get(_col - x).get(_row + y);
                     if (_blend) {
                         currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                        Core.processing.print("Inner Weight: ", currPoint.weight, "\n");
                     }
                     else currPoint.weight = curr_weight*_opacity;
-                    Core.processing.print("Outer weight: ", currPoint.weight, "\n");
                 }
                 if (Helpers.checkBounds(_col - y, _row - x, this)) {
                     currPoint = this.points.get(_col-y).get(_row-x);
@@ -322,8 +321,7 @@ public class Point_Grid {
         }
     }
 
-    public void applyLinRadGradient_Slow (int _col, int _row, int _r, double _init_decay, double _sample_rate, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO: TEST
+    public void applyLinRadGradient_Slow (int _col, int _row, int _r, double _init_weight, double _sample_rate, boolean _inverse, boolean _blend, double _opacity) {
 
         // Modifies weights of Grid_Points in Point_Grid according to a radial gradient, returns a new Point_Grid
         // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
@@ -341,10 +339,13 @@ public class Point_Grid {
         int init_x = _col - _r;
         int fin_x = _col + _r;
         int curr_x = init_x;
-        double curr_weight = _init_decay;
         double decay_factor = _r / _sample_rate;
-        double decay = _init_decay / decay_factor;
+        double decay = _init_weight / decay_factor;
+        double curr_weight = _inverse ? Helpers.clamp(1 - _init_weight, 0.0, 1.0) : _init_weight;
         Tuple2<Integer, Integer> yVal;
+
+
+        Grid_Point currPoint; // Added for readability's sake. Consider removing if calls are too inefficient.
 
         while (curr_rad <= _r) {
 
@@ -353,12 +354,18 @@ public class Point_Grid {
                 yVal = Helpers.plotCircle(curr_x, _col, _row, curr_rad);
 
                 if (Helpers.checkBounds(curr_x, yVal.a, this)) {
-                    if (_blend) this.points.get(curr_x).get(yVal.a).weight = Helpers.clamp(this.points.get(curr_x).get(yVal.a).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(curr_x).get(yVal.a).weight = curr_weight * _opacity;
+                    currPoint = this.points.get(curr_x).get(yVal.a);
+                    if (_blend) {
+                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
+                    }
+                    else currPoint.weight = curr_weight*_opacity;
                 }
                 if (Helpers.checkBounds(curr_x, yVal.b, this)) {
-                    if (_blend) this.points.get(curr_x).get(yVal.b).weight = Helpers.clamp(this.points.get(curr_x).get(yVal.b).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(curr_x).get(yVal.b).weight = curr_weight * _opacity;
+                    currPoint = this.points.get(curr_x).get(yVal.b);
+                    if (_blend) {
+                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
+                    }
+                    else currPoint.weight = curr_weight*_opacity;
                 }
 
                 curr_x++;
