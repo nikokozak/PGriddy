@@ -67,17 +67,31 @@ public class Helpers {
     public static boolean checkBounds(int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
 
         // Checks whether the given row and column values exceed the number of columns and rows in a POINT_GRID
+        // Returns True if it does not
         // Where:
-        // _col0, _row0 -> initial col and row values
-        // _col1, _row1 -> final col and row values
+        // _col0, _row0 -> col and row values
+        // _col1, _row1 -> second col and row values
         // _pg -> Point_Grid against which to check
 
         return checkRowBounds(_row0, _pg) && checkRowBounds(_row1, _pg) && checkColBounds(_col0, _pg) && checkColBounds(_col1, _pg);
     }
 
+    public static boolean checkBounds(int _col, int _row, Point_Grid _pg) {
+
+        // Checks whether the given row and column values exceed the number of columns and rows in a POINT_GRID
+        // Returns True if it does not
+        // Where:
+        // _col0, _row0 -> col and row values
+        // _pg -> Point_Grid against which to check
+
+        return checkColBounds(_col, _pg) && checkRowBounds(_row, _pg);
+
+    }
+
     public static boolean checkRowBounds(int _row, Point_Grid _pg) {
 
         // Checks whether the given row exceeds the bounds of the given POINT_GRID
+        // Returns True if it does not
         // Where:
         // _row -> row value to check
         // _pg -> Point_Grid against which to check
@@ -89,6 +103,7 @@ public class Helpers {
     public static boolean checkColBounds(int _col, Point_Grid _pg) {
 
         // Checks whether the given column exceeds the bounds of the given POINT_GRID
+        // Returns True if it does not
         // Where:
         // _col -> col value to check
         // _pg -> Point_Grid against which to check
@@ -97,6 +112,7 @@ public class Helpers {
     }
 
     public static double clamp(double val, double min, double max) {
+
 
         // Returns a value clamped to a given range.
         // Where:

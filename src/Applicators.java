@@ -182,10 +182,10 @@ public class Applicators {
 
                 yVal = Helpers.plotCircle(curr_x, _col, _row, curr_rad);
 
-                if (curr_x < _pg.x && curr_x > -1 && yVal.a < _pg.y && yVal.a > -1) {
+                if (Helpers.checkBounds(curr_x, yVal.a, _pg)) {
                     result.points.get(curr_x).get(yVal.a).weight = curr_weight;
                 }
-                if (curr_x < _pg.x && curr_x > -1 && yVal.b < _pg.y && yVal.b > -1) {
+                if (Helpers.checkBounds(curr_x, yVal.b, _pg)) {
                     result.points.get(curr_x).get(yVal.b).weight = curr_weight;
                 }
 
@@ -195,8 +195,7 @@ public class Applicators {
 
             curr_rad += _sample_rate;
             curr_x = init_x;
-            curr_weight = _inverse ? curr_weight + decay : curr_weight - decay;
-            curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
+            curr_weight = Helpers.clamp(_inverse ? curr_weight + decay : curr_weight - decay, 0.0, 1.0);
 
         }
 
@@ -234,16 +233,16 @@ public class Applicators {
             PApplet.print("Curr Rad: ", curr_rad, " Curr _rad: ", _rad);
 
             while (x < 0) {
-                if (_col-x < _pg.x && _col-x > -1 && _row+y < _pg.y && _row+y > -1) {
+                if (Helpers.checkBounds(_col - x, _row + y, _pg)) {
                     grid_result.points.get(_col-x).get(_row+y).weight = curr_weight;
                 }
-                if (_col-y > -1 && _col-y < _pg.x && _row-x < _pg.y && _row-x > -1) {
+                if (Helpers.checkBounds(_col - y, _row - x, _pg)) {
                     grid_result.points.get(_col-y).get(_row-x).weight = curr_weight;
                 }
-                if (_col+x > -1 && _col+x < _pg.x && _row-y > -1 && _row-y < _pg.y) {
+                if (Helpers.checkBounds(_col + x, _row - y, _pg)) {
                     grid_result.points.get(_col+x).get(_row-y).weight = curr_weight;
                 }
-                if (_col+y < _pg.x && _col+y > -1 && _row+x > -1 && _row+x < _pg.y) {
+                if (Helpers.checkBounds(_col + y, _row + x, _pg)) {
                     grid_result.points.get(_col+y).get(_row+x).weight = curr_weight;
                 }
                 inner_rad = err;
@@ -258,8 +257,7 @@ public class Applicators {
             }
 
             curr_rad += 1;
-            curr_weight = _inverse ? curr_weight + decay : curr_weight - decay;
-            curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
+            curr_weight = Helpers.clamp(_inverse ? curr_weight + decay : curr_weight - decay, 0.0, 1.0);
 
         }
 
@@ -285,7 +283,7 @@ public class Applicators {
         int curr_rad = 0; int inner_rad = 0;
         double curr_weight = _init_weight;
 
-        if (_col > -1 && _col < _pg.x && _row > -1 && _row < _pg.y) { // Avoid drawing when out of bounds
+        if (Helpers.checkBounds(_col, _row, _pg)) {
             grid_result.points.get(_col).get(_row).weight = curr_weight;  // Set first point (algo skips it)
         }
 
@@ -295,16 +293,16 @@ public class Applicators {
             int err = 2-2*curr_rad;
 
             while (x < 0) {
-                if (_col-x < _pg.x && _col-x > -1 && _row+y < _pg.y && _row+y > -1) {
+                if (Helpers.checkBounds(_col - x, _row + y, _pg)) {
                     grid_result.points.get(_col-x).get(_row+y).weight = curr_weight;
                 }
-                if (_col-y > -1 && _col-y < _pg.x && _row-x < _pg.y && _row-x > -1) {
+                if (Helpers.checkBounds(_col - y, _row - x, _pg)) {
                     grid_result.points.get(_col-y).get(_row-x).weight = curr_weight;
                 }
-                if (_col+x > -1 && _col+x < _pg.x && _row-y > -1 && _row-y < _pg.y) {
+                if (Helpers.checkBounds(_col + x, _row - y, _pg)) {
                     grid_result.points.get(_col+x).get(_row-y).weight = curr_weight;
                 }
-                if (_col+y < _pg.x && _col+y > -1 && _row+x > -1 && _row+x < _pg.y) {
+                if (Helpers.checkBounds(_col + y, _row + x, _pg)) {
                     grid_result.points.get(_col+y).get(_row+x).weight = curr_weight;
                 }
                 inner_rad = err;
@@ -319,7 +317,6 @@ public class Applicators {
             }
 
             curr_rad += 1;
-
             curr_weight = _inverse ? Helpers.easeInOutCubic((float)curr_rad, 0, (float)_init_weight, (float)_rad) : Helpers.easeInOutCubic((float)curr_rad, (float)_init_weight, -(float)_init_weight, (float)_rad);
             curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
 
@@ -359,10 +356,10 @@ public class Applicators {
 
                 yVal = Helpers.plotCircle(curr_x, _col, _row, curr_rad);
 
-                if (curr_x < _pg.x && curr_x > -1 && yVal.a < _pg.y && yVal.a > -1) {
+                if (Helpers.checkBounds(curr_x, yVal.a, _pg)) {
                     result.points.get(curr_x).get(yVal.a).weight = curr_weight;
                 }
-                if (curr_x < _pg.x && curr_x > -1 && yVal.b < _pg.y && yVal.b > -1) {
+                if (Helpers.checkBounds(curr_x, yVal.b, _pg)) {
                     result.points.get(curr_x).get(yVal.b).weight = curr_weight;
                 }
 
@@ -381,7 +378,7 @@ public class Applicators {
         return result;
 
     }
-    // TODO: APPLY INVERSE HERE, CHECK BLEND
+
     public static Point_Grid applySinRadGradient(int _col, int _row, int _rad, double _init_weight, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
         // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out-easing function. Returns a new Point_Grid
@@ -405,16 +402,16 @@ public class Applicators {
             int err = 2-2*curr_rad;
 
             while (x < 0) {
-                if (_col-x < _pg.x && _col-x > -1 && _row+y < _pg.y && _row+y > -1) {
+                if (Helpers.checkBounds(_col - x, _row + y, _pg)) {
                     grid_result.points.get(_col-x).get(_row+y).weight = curr_weight;
                 }
-                if (_col-y > -1 && _col-y < _pg.x && _row-x < _pg.y && _row-x > -1) {
+                if (Helpers.checkBounds(_col - y, _row - x, _pg)) {
                     grid_result.points.get(_col-y).get(_row-x).weight = curr_weight;
                 }
-                if (_col+x > -1 && _col+x < _pg.x && _row-y > -1 && _row-y < _pg.y) {
+                if (Helpers.checkBounds(_col + x, _row - y, _pg)) {
                     grid_result.points.get(_col+x).get(_row-y).weight = curr_weight;
                 }
-                if (_col+y < _pg.x && _col+y > -1 && _row+x > -1 && _row+x < _pg.y) {
+                if (Helpers.checkBounds(_col + y, _row + x, _pg)) {
                     grid_result.points.get(_col+y).get(_row+x).weight = curr_weight;
                 }
                 inner_rad = err;
@@ -429,6 +426,7 @@ public class Applicators {
             }
 
             curr_rad += 1;
+            _shift = _inverse ? _shift + (Math.PI) : _shift;
             curr_weight = Helpers.sinMap((double)curr_rad, _freq, _shift);
             curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
         }
@@ -436,7 +434,7 @@ public class Applicators {
         if (_blend) grid_result = Helpers.addGridWeights(_pg, grid_result);
         return grid_result;
     }
-    // TODO: APPLY INVERSE HERE, CHECK BLEND
+
     public static Point_Grid applySinRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, double _freq, double _shift, boolean _inverse, boolean _blend, Point_Grid _pg) {
 
         // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out easing function, returns a new Point_Grid
@@ -479,6 +477,7 @@ public class Applicators {
 
             curr_rad += _sample_rate;
             curr_x = init_x;
+            _shift = _inverse ? _shift + Math.PI : _shift;
             curr_weight = Helpers.sinMap((double)curr_rad, _freq, _shift);
             curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
 

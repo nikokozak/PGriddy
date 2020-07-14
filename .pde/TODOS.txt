@@ -1,6 +1,7 @@
 TODOS:
 
-- Build in inverse modes into newer applicators.
+- Applicators Testing
+- Update Applicators Documentation
 - Refactor Data-Types into more OOP-like paradigm.
 - Create new Data-Type for ArrayList<Grid_Point> (Point_Array)
 - Set up documentation system.
