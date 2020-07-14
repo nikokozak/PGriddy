@@ -19,70 +19,70 @@ public class Point_Grid {
 
     public final int x, y, sX, sY;
     public int xOrigin, yOrigin; // Define the lowest X and Y coordinates for the grid system.
-    public final Point c;
+    public Point c;
     public ArrayList<ArrayList<Grid_Point>> points;
 
 
     // * =========== CONSTRUCTORS ============== * //
 
     public Point_Grid(int _x, int _y, Point _c, int _sX, int _sY) {
-        x = _x;
-        y = _y;
-        c = _c;
-        sX = _sX;
-        sY = _sY;
+        this.x = _x;
+        this.y = _y;
+        this.c = _c;
+        this.sX = _sX;
+        this.sY = _sY;
 
-        xOrigin = (int)_c.x - ((_x/2)*_sX);
-        yOrigin = (int)_c.y - ((_y/2)*_sY);
+        this.xOrigin = (int)_c.x - ((_x/2)*_sX);
+        this.yOrigin = (int)_c.y - ((_y/2)*_sY);
 
-        points = new ArrayList<ArrayList<Grid_Point>>();
+        this.points = new ArrayList<ArrayList<Grid_Point>>();
 
         for (int i = 0; i < _x; i += 1) {
-            int xPos = xOrigin + (i * _sX);
-            points.add(new ArrayList<Grid_Point>());
+            int xPos = this.xOrigin + (i * _sX);
+            this.points.add(new ArrayList<Grid_Point>());
             for (int j = 0; j < _y; j += 1) {
-                int yPos = yOrigin + (j * _sY);
-                points.get(i).add(new Grid_Point(xPos, yPos, i, j));
+                int yPos = this.yOrigin + (j * _sY);
+                this.points.get(i).add(new Grid_Point(xPos, yPos, i, j));
             }
         }
     }
 
     public Point_Grid (Point_Grid _pg) {
-        x = _pg.x; y = _pg.y;
-        c = new Point(_pg.c);
-        sX = _pg.sX; sY = _pg.sY;
+        this.x = _pg.x; this.y = _pg.y;
+        this.c = new Point(_pg.c);
+        this.sX = _pg.sX; this.sY = _pg.sY;
 
-        xOrigin = _pg.xOrigin;
-        yOrigin = _pg.yOrigin;
+        this.xOrigin = _pg.xOrigin;
+        this.yOrigin = _pg.yOrigin;
 
-        points = Helpers.clonePoints(_pg);
+        this.points = Helpers.clonePoints(_pg);
     }
 
     public Point_Grid (Point_Grid _pg, ArrayList<ArrayList<Grid_Point>> _al) {
-        c = new Point(_pg.c);
-        sX = _pg.sX; sY = _pg.sY;
+        this.c = new Point(_pg.c);
+        this.sX = _pg.sX; this.sY = _pg.sY;
 
-        xOrigin = _pg.xOrigin;
-        yOrigin = _pg.yOrigin;
+        this.xOrigin = _pg.xOrigin;
+        this.yOrigin = _pg.yOrigin;
 
-        points = new ArrayList<ArrayList<Grid_Point>>(_al);
+        this.points = new ArrayList<ArrayList<Grid_Point>>(_al);
 
-        x = points.size(); y = points.get(0).size();
+        this.x = points.size(); this.y = points.get(0).size();
     }
 
     public Point_Grid (Point_Grid _pg, boolean _zeroWeight) { // Token override to create grid with zero weights.
-        x = _pg.x; y = _pg.y;
-        c = new Point(_pg.c);
-        sX = _pg.sX; sY = _pg.sY;
+        this.x = _pg.x; this.y = _pg.y;
+        this.c = new Point(_pg.c);
+        this.sX = _pg.sX; this.sY = _pg.sY;
 
-        xOrigin = _pg.xOrigin;
-        yOrigin = _pg.yOrigin;
+        this.xOrigin = _pg.xOrigin;
+        this.yOrigin = _pg.yOrigin;
 
-        points = Helpers.clonePoints(_pg);
+        this.points = Helpers.clonePoints(_pg);
 
         for (int i = 0; i < x; i += 1) {
             for (int j = 0; j < y; j += 1) {
-                points.get(i).get(j).weight = 0;
+                this.points.get(i).get(j).weight = 0;
             }
         }
     }
@@ -105,6 +105,9 @@ public class Point_Grid {
         // No fill, or weight set.
         // Where:
         // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
+
+        if (type > 2 || type < 0) type = 0;
+
         Core.processing.rectMode(3); // Set rectMode to CENTER;
 
         for (ArrayList<Grid_Point> column : this.points) {
@@ -174,12 +177,20 @@ public class Point_Grid {
     }
 
     public void move_to(int _x, int _y) {
-        // Moves Points to x, y.
+        // Moves the entire Grid to a new x, y center.
+        // RESETS ALL PAREMETERS PERTAINING TO ORIGIN, ETC.
+        Point newCenter = new Point(_x, _y);
+        this.c = newCenter;
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.y = _y;
-                currPoint.x = _x;
+        this.xOrigin = (int)newCenter.x - ((this.x/2)*this.sX);
+        this.yOrigin = (int)newCenter.y - ((this.y/2)*this.sY);
+
+        for (int i = 0; i < this.x; i += 1) {
+            int xPos = this.xOrigin + (i * this.sX);
+            for (int j = 0; j < this.y; j += 1) {
+                int yPos = this.yOrigin + (j * this.sY);
+                this.points.get(i).get(j).x = xPos;
+                this.points.get(i).get(j).y = yPos;
             }
         }
     }
@@ -248,11 +259,12 @@ public class Point_Grid {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
 
         int curr_rad = 0; int inner_rad = 0;
-        double curr_weight = _init_weight;
         double decay = _init_weight / _rad;
+        double curr_weight = _inverse ? Helpers.clamp(1 - _init_weight, 0.0, 1.0) : _init_weight;
 
         if (Helpers.checkBounds(_col, _row, this)) {
-            this.points.get(_col).get(_row).weight = curr_weight;  // Set first point (algo skips it)
+            if (_blend) this.points.get(_col).get(_row).weight = Helpers.clamp(this.points.get(_col).get(_row).weight + curr_weight * _opacity, 0.0, 1.0);  // Set first point (algo skips it)
+            else this.points.get(_col).get(_row).weight = curr_weight * _opacity;
         }
 
         while (curr_rad <= _rad) {

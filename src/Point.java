@@ -1,6 +1,5 @@
 import processing.core.PApplet;
 
-
 public class Point {
 
     // POINT ( x: FLOAT, y: FLOAT, gridIndexX: INT, gridIndexY: INT )
