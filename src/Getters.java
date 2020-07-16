@@ -262,7 +262,7 @@ public class Getters {
 // _low: bottom cutoff for weight
 // _high: top cutoff for weight
 // _pg: Point_Grid to sample from
-    public static ArrayList<Grid_Point> getPerlin(double _low, double _high, Point_Grid _pg) {
+  /*  public static ArrayList<Grid_Point> getPerlin(double _low, double _high, Point_Grid _pg) {
 
         ArrayList<Grid_Point> result = new ArrayList<Grid_Point>();
         Point_Grid mod_grid = new Point_Grid(_pg);
@@ -284,14 +284,14 @@ public class Getters {
         return result;
 
     }
-
+*/
     // Returns a selection of points based on a random application of
 // weights onto Grid_Points in a given Point_Grid, and a threshold to select from
 // Where:
 // _low: bottom cutoff for weight
 // _high: top cutoff for weight
 // _pg: Point_Grid to sample from
-    public static ArrayList<Grid_Point> getRandom(double _low, double _high, Point_Grid _pg) {
+  /*  public static ArrayList<Grid_Point> getRandom(double _low, double _high, Point_Grid _pg) {
 
         ArrayList<Grid_Point> result = new ArrayList<Grid_Point>();
         Point_Grid mod_grid = new Point_Grid(_pg);
@@ -313,7 +313,7 @@ public class Getters {
         return result;
 
     }
-
+*/
     // Returns a selection of points based on a threshold filter applied to weights
 // of Grid_Points in a given Point_Grid
 // Where:

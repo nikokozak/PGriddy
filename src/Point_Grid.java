@@ -211,6 +211,7 @@ public class Point_Grid {
     // * =========== UNIVERSAL APPLICATORS ============== * //
 
     public void color(int _col) {
+
         // Sets all Points in the Grid to _col.
         // Where:
         // _col -> Processing color()
@@ -223,14 +224,44 @@ public class Point_Grid {
     }
 
     public void weight(double _weight) {
+
         // Sets all Points to a given weight.
         // Where:
         // _weight -> weight to set. DOUBLE[0.0-1.0]
+
         _weight = Helpers.clamp(_weight, 0.0, 1.0);
 
         for (ArrayList<Grid_Point> column : this.points) {
             for (Grid_Point currPoint : column) {
                 currPoint.weight = _weight;
+            }
+        }
+    }
+
+    public void weight_add(double _to_add) {
+
+       // Adds a given weight to all points equally.
+       // Where:
+       // _to_add -> weight to add. DOUBLE[0.0-1.0]
+
+       _to_add = Helpers.clamp(_to_add, 0.0, 1.0);
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                currPoint.weight = Helpers.clamp(currPoint.weight + _to_add, 0, 1);
+            }
+        }
+    }
+
+    public void weight_multiply(double _factor) {
+
+       // Multiplies the weights of all points by a given number.
+       // Where:
+       // _factor -> factor by which to multiply
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
             }
         }
     }
@@ -504,7 +535,7 @@ public class Point_Grid {
         for (ArrayList<Grid_Point> column : this.points) {
             for (Grid_Point currPoint : column) {
                 if (_blend) currPoint.weight = Helpers.clamp(
-                        currPoint.weight + Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max), 0.0, 1.0) * _opacity;
+                        currPoint.weight + Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
                 else currPoint.weight = Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity; // Call Perlin ~
             }
         }
@@ -522,7 +553,7 @@ public class Point_Grid {
 
         for (ArrayList<Grid_Point> column : this.points) {
             for (Grid_Point currPoint : column) {
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, _min, _max), 0, 1) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, _min, _max) * _opacity, 0, 1);
                 else currPoint.weight = Helpers.map(Core.processing.random(0, 1), 0, 1, _min, _max) * _opacity;
             }
         }
@@ -591,6 +622,137 @@ public class Point_Grid {
 
     }
 
+    public void clover_2D(double _min, double _max, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on 2D clover noise implementation.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
+
+        CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(noise2D.noise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+                else currPoint.weight = Helpers.map(noise2D.noise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            }
+        }
+
+    }
+
+    public void clover_fractal(double _min, double _max, int _iterations, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on 2D fractal clover noise implementation.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
+
+        CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(noise2D.fractalNoise(currPoint.x, currPoint.y, _iterations), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+                else currPoint.weight = Helpers.map(noise2D.fractalNoise(currPoint.x, currPoint.y, _iterations), 0, 1, _min, _max) * _opacity;
+            }
+        }
+    }
+
+    public void clover_frost(double _min, double _max, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on 2D frost clover noise implementation.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
+
+        CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(noise2D.frostNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+                else currPoint.weight = Helpers.map(noise2D.frostNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            }
+        }
+    }
+
+    public void clover_marble(double _min, double _max, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on 2D marble clover noise implementation.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
+
+        CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+                else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            }
+        }
+    }
+
+    public void clover_curl(double _min, double _max, double _mix, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on 2D curl clover noise implementation.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
+        // _mix -> Curl is a Vector2, _mix determines bias when reducing to one double for weight.
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
+
+        CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+        double xVal, yVal, weight;
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                CloverNoise.Vector2 curl = noise2D.curlNoise(currPoint.x, currPoint.y);
+                xVal = curl.getX(); yVal = curl.getY();
+                weight = mix(xVal, yVal, _mix);
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+                else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            }
+        }
+    }
+
+    public void clover_curlFractal(double _min, double _max, int _iterations, double _mix, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on 2D curl fractal clover noise implementation.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
+        // _iterations -> How many iterations the noise generator goes through.
+        // _mix -> Curl is a Vector2, _mix determines bias when reducing to one double for weight.
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
+
+        CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+        double xVal, yVal, weight;
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                CloverNoise.Vector2 curl = noise2D.fractalCurlNoise(currPoint.x, currPoint.y, _iterations);
+                xVal = curl.getX(); yVal = curl.getY();
+                weight = mix(xVal, yVal, _mix);
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+                else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            }
+        }
+    }
 
     // * =========== PRIVATE HELPERS ============== * //
 
@@ -642,6 +804,19 @@ public class Point_Grid {
         // Returns a unique value for any two integers a, b >= 0
 
         return a >= b ? a * a + a + b : a + b * b;
+
+    }
+
+    private double mix(double a, double b, double bias) {
+
+        // Mixes two values according to a bias.
+        // Where:
+        // a, b -> Numbers to mix
+        // bias -> 1: a bias, 0: b bias
+
+        bias = Helpers.clamp(bias, 0, 1);
+
+        return (a * bias) + (b * (1 - bias));
 
     }
 

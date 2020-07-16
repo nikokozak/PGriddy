@@ -13,12 +13,16 @@ public class Core extends PApplet {
     public void setup() {
         processing = this; /* <-- Necessary to pass PApplet reference to other classes. -- */
         image = loadImage("C:\\Users\\Nikolai\\Documents\\Processing\\projects\\PGriddy\\.pde\\data\\Processing_Test_Image.png");
-        pg1 = new Point_Grid(30, 30, new Point(width/4, height/2), 10, 10);
-        pg2 = new Point_Grid(30, 30, new Point((width/4) * 3, height/2), 10, 10);
-        pg1.color(color(255, 0, 0));
-        pg2.color(color(255, 0, 0));
-        pg1.image(image, "r", 0, 0, false, false, 1);
-        pg2.image(image, "r", 0, 200, true, true, 1);
+        pg1 = new Point_Grid(60, 60, new Point(width/4, height/2), 5, 5);
+        pg2 = new Point_Grid(60, 60, new Point((width/4) * 3, height/2), 5, 5);
+        pg1.color(color(255));
+        pg2.color(color(255));
+        //pg1.image(image, "r", 0, 0, false, false, 1);
+        //pg2.image(image, "r", 0, 200, true, true, 1);
+
+        pg1.clover_curl(0, 0.8, 0.2, false, 1);
+        pg1.weight_multiply(2);
+        pg2.clover_curlFractal(0, 1, 1, 0.5, false, 1);
 
     };
 
@@ -31,8 +35,8 @@ public class Core extends PApplet {
     @Override
     public void draw() {
         background(0);
-        pg1.draw(1, 5, true);
-        pg2.draw(1, 5, true);
+        pg1.draw(1, 3, true);
+        pg2.draw(1, 3, true);
 
     };
 
