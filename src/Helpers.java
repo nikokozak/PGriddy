@@ -8,16 +8,20 @@ import static java.lang.Math.sin;
 
 public class Helpers {
 
+    public static double map(double value, double value_min, double value_max, double target_min, double target_max) {
+
+       // Maps a value from one range to another using a linear transform.
+
+        return (value - value_min) / (value_max - value_min) * (target_max - target_min) + target_min;
+    }
+
     public static int weightToRGB(double _in) {
 
         // Maps alpha values (1.00 - 0.00) to std RGB vals (255-0)
         // Where:
         // _in -> alpha value to map
         // _out -> resulting RGB scale value
-
-        float f_in = (float)_in;
-        return (int) PApplet.map(f_in, 0, 1, 0, 255);
-
+        return (int)(_in * 255.0d);
     }
 
     public static Tuple2<Integer, Integer> plotCircle(int _x, int _centerX, int _centerY, float _r) {
@@ -149,6 +153,22 @@ public class Helpers {
 
     }
 
+    public static double easeInOutCubic (double _x, double _begin, double _change, double _duration) {
+
+        // Maps an x value to a y value using an in-out-cubic easing function
+        // Adapted from Robert Penner's Easing Functions
+        // Where:
+        // _x -> x value to map
+        // _begin -> beginning value
+        // _change -> change in value
+        // _duration -> duration or extent of function
+
+        if ((_x/=_duration/2) < 1) return _change/2*_x*_x*_x + _begin;
+
+        return _change/2*((_x-=2)*_x*_x + 2) + _begin;
+
+    }
+
     public static ArrayList<ArrayList<Grid_Point>> clonePoints(Point_Grid _pg) {
 
         // Deep clones points from a given Point_Grid into a new ArrayList.
@@ -254,16 +274,16 @@ public class Helpers {
 
     }
 
-    public static double sinMap(double _x, double _freq, double _shift) {
+    public static double sinMap(double _x, double _freq, double _shift, double _amplitude) {
 
         // A sin function, returns a value between 1 and -1.
         // Where:
         // _x -> input value to map
-        // _amp -> amplitude of function
         // _freq -> frequency of function
         // _shift -> x-axis shift of function
+        // _amplitude -> amplitude of function
 
-        return sin((float)(_freq*_x - _freq*_shift));
+        return sin((float)(_freq*_x - _freq*_shift)) * _amplitude;
 
     }
 }

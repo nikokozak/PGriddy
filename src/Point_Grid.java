@@ -3,6 +3,7 @@ import processing.core.PImage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Point_Grid {
 
@@ -247,395 +248,282 @@ public class Point_Grid {
 
     // * =========== GRADIENT APPLICATORS ============== * //
 
-    public void applyLinRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO : RESOLVE ISSUES AROUND FP PRECISION WHEN BLENDING
 
-        // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, returns a new Point_Grid
-        // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
+    public void radGradient(int _col, int _row, double _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
+
+        // Modifies weights of Grid_Points, adding to a cubic radial gradient
+        // Distances from user-define centerpoint are calculated using an approximation (non-sqrt)
         // Where:
-        // _col, _row -> origin of gradient
+        // _col, _row -> centerpoint of gradient
         // _rad -> radius of gradient (i.e. extent of gradient effect)
         // _init_weight -> initial weight value for gradient
         // _inverse -> whether to invert the gradient
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
+        // _opacity -> opacity of gradient
 
-        int curr_rad = 0; int inner_rad = 0;
-        double decay = _init_weight / _rad;
-        double curr_weight = _inverse ? Helpers.clamp(1 - _init_weight, 0.0, 1.0) : _init_weight;
+        double MAX = 1, MIN = 0;
+        double dist;
+        double rad = Math.pow(_rad, 2);
 
-        if (Helpers.checkBounds(_col, _row, this)) {
-            if (_blend) this.points.get(_col).get(_row).weight = Helpers.clamp(this.points.get(_col).get(_row).weight + curr_weight * _opacity, 0.0, 1.0);  // Set first point (algo skips it)
-            else this.points.get(_col).get(_row).weight = curr_weight * _opacity;
+        Grid_Point center_point = Getters.getPoint(_col, _row, this);
+        switch(check_quad(center_point)) {
+            case 1 -> MAX = grid_approx_dist(center_point, Getters.getPoint(0, this.y - 1, this));
+            case 2 -> MAX = grid_approx_dist(center_point, Getters.getPoint(this.x - 1, this.y - 1, this));
+            case 3 -> MAX = grid_approx_dist(center_point, Getters.getPoint(this.x - 1, 0, this));
+            case 4 -> MAX = grid_approx_dist(center_point, Getters.getPoint(0, 0, this));
         }
 
-        Grid_Point currPoint; // Included for readability's sake.
+        rad = rad - MAX;
+        double currWeight;
 
-        while (curr_rad <= _rad) {
-            int x = -curr_rad;
-            int y = 0;
-            int err = 2-2*curr_rad;
-
-            while (x < 0) {
-                if (Helpers.checkBounds(_col - x, _row + y, this)) {
-                    currPoint = this.points.get(_col - x).get(_row + y);
-                    if (_blend) {
-                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                    }
-                    else currPoint.weight = curr_weight*_opacity;
-                }
-                if (Helpers.checkBounds(_col - y, _row - x, this)) {
-                    currPoint = this.points.get(_col-y).get(_row-x);
-                    if (_blend) {
-                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                    }
-                    else currPoint.weight = curr_weight*_opacity;
-                }
-                if (Helpers.checkBounds(_col + x, _row - y, this)) {
-                    currPoint = this.points.get(_col+x).get(_row-y);
-                    if (_blend) {
-                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                    }
-                    else currPoint.weight = curr_weight*_opacity;
-                }
-                if (Helpers.checkBounds(_col + y, _row + x, this)) {
-                    currPoint = this.points.get(_col+y).get(_row+x);
-                    if (_blend) {
-                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                    }
-                    else currPoint.weight = curr_weight*_opacity;
-                }
-                inner_rad = err;
-                if (inner_rad <= 0) {
-                    y += 1;
-                    err += 2*y + 1;
-                }
-                if (inner_rad > 0) {
-                    x += 1;
-                    err += 2*x + 1;
-                }
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                dist = grid_approx_dist(currPoint, center_point);
+                if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + rad, 0, _init_weight) * _opacity;
+                else currWeight = Helpers.map(dist, MAX + rad, MIN, 0, _init_weight) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+                else currPoint.weight = currWeight;
             }
-
-            curr_rad += 1;
-            curr_weight = Helpers.clamp(_inverse ? curr_weight + decay : curr_weight - decay, 0.0, 1.0);
-
-        }
-    }
-
-    public void applyLinRadGradient_Slow (int _col, int _row, int _r, double _init_weight, double _sample_rate, boolean _inverse, boolean _blend, double _opacity) {
-
-        // Modifies weights of Grid_Points in Point_Grid according to a radial gradient, returns a new Point_Grid
-        // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
-        // in the underlying circle-plotting algo. Avoid using if possible.
-        // Where:
-        // _col, _row -> origin of gradient
-        // _r -> radius of gradient (i.e. extent of gradient effect)
-        // _init_decay -> initial weight value of gradient
-        // _sample_rate -> radius increment per cycle (think of this as sampling density, if there are empty points in gradient then reduce this number, NOT TOO FAR THOUGH).
-        // _inverse -> whether to invert the gradient
-        // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
-        // _opacity -> opacity of gradient applied to Grid.
-
-        float curr_rad = 0;
-        int init_x = _col - _r;
-        int fin_x = _col + _r;
-        int curr_x = init_x;
-        double decay_factor = _r / _sample_rate;
-        double decay = _init_weight / decay_factor;
-        double curr_weight = _inverse ? Helpers.clamp(1 - _init_weight, 0.0, 1.0) : _init_weight;
-        Tuple2<Integer, Integer> yVal;
-
-
-        Grid_Point currPoint; // Added for readability's sake. Consider removing if calls are too inefficient.
-
-        while (curr_rad <= _r) {
-
-            while (curr_x <= fin_x) {
-
-                yVal = Helpers.plotCircle(curr_x, _col, _row, curr_rad);
-
-                if (Helpers.checkBounds(curr_x, yVal.a, this)) {
-                    currPoint = this.points.get(curr_x).get(yVal.a);
-                    if (_blend) {
-                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                    }
-                    else currPoint.weight = curr_weight*_opacity;
-                }
-                if (Helpers.checkBounds(curr_x, yVal.b, this)) {
-                    currPoint = this.points.get(curr_x).get(yVal.b);
-                    if (_blend) {
-                        currPoint.weight = Helpers.clamp(_inverse ? currPoint.weight - (1.0 - curr_weight)*_opacity : currPoint.weight + curr_weight*_opacity, 0.0, 1.0);
-                    }
-                    else currPoint.weight = curr_weight*_opacity;
-                }
-
-                curr_x++;
-
-            }
-
-            curr_rad += _sample_rate;
-            curr_x = init_x;
-            curr_weight = Helpers.clamp(_inverse ? curr_weight + decay : curr_weight - decay, 0.0, 1.0);
-
         }
 
     }
 
-    public void applySmoothRadGradient(int _col, int _row, int _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO: TEST
+    public void radGradient_slow(int _col, int _row, double _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
 
-        // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out-easing function. Returns a new Point_Grid
-        // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
+        // Modifies weights of Grid_Points, adding to a linear radial gradient
+        // Distances from user-define centerpoint are calculated using a^2 + b^2 = c^2
+        // Therefore, sqrt() is used extensively - this function should be avoided at all costs if possible.
+        // This version is approx. 4x slower than radGradient();
         // Where:
-        // _col, _row -> origin of gradient
+        // _col, _row -> centerpoint of gradient
         // _rad -> radius of gradient (i.e. extent of gradient effect)
         // _init_weight -> initial weight value for gradient
         // _inverse -> whether to invert the gradient
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
-        // _pg -> Point_Grid to affect
+        // _opacity -> opacity of gradient
 
-        int curr_rad = 0; int inner_rad = 0;
-        double curr_weight = _init_weight;
+        double MAX = 1, MIN = 0;
+        double dist;
 
-        if (Helpers.checkBounds(_col, _row, this)) {
-            this.points.get(_col).get(_row).weight = curr_weight * _opacity;  // Set first point (algo skips it)
+        Grid_Point center_point = Getters.getPoint(_col, _row, this);
+        switch(check_quad(center_point)) {
+            case 1 -> MAX = grid_exact_dist(center_point, Getters.getPoint(0, this.y - 1, this));
+            case 2 -> MAX = grid_exact_dist(center_point, Getters.getPoint(this.x - 1, this.y - 1, this));
+            case 3 -> MAX = grid_exact_dist(center_point, Getters.getPoint(this.x - 1, 0, this));
+            case 4 -> MAX = grid_exact_dist(center_point, Getters.getPoint(0, 0, this));
         }
 
-        while (curr_rad <= _rad) {
-            int x = -curr_rad;
-            int y = 0;
-            int err = 2-2*curr_rad;
+        _rad = _rad - MAX;
+        double currWeight;
 
-            while (x < 0) {
-                if (Helpers.checkBounds(_col - x, _row + y, this)) {
-                    if (_blend) this.points.get(_col-x).get(_row+y).weight = Helpers.clamp(this.points.get(_col-x).get(_row+y).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col-x).get(_row+y).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(_col - y, _row - x, this)) {
-                    if (_blend) this.points.get(_col-y).get(_row-x).weight = Helpers.clamp(this.points.get(_col-y).get(_row-x).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col-y).get(_row-x).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(_col + x, _row - y, this)) {
-                    if (_blend) this.points.get(_col+x).get(_row-y).weight = Helpers.clamp(this.points.get(_col+x).get(_row-y).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col+x).get(_row-y).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(_col + y, _row + x, this)) {
-                    if (_blend) this.points.get(_col+y).get(_row+x).weight = Helpers.clamp(this.points.get(_col+y).get(_row+x).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col+y).get(_row+x).weight = curr_weight * _opacity;
-                }
-                inner_rad = err;
-                if (inner_rad <= 0) {
-                    y += 1;
-                    err += 2*y + 1;
-                }
-                if (inner_rad > 0) {
-                    x += 1;
-                    err += 2*x + 1;
-                }
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                dist = grid_exact_dist(currPoint, center_point);
+                if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight) * _opacity;
+                else currWeight = Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+                else currPoint.weight = currWeight;
             }
-
-            curr_rad += 1;
-            curr_weight = _inverse ? Helpers.easeInOutCubic((float)curr_rad, 0, (float)_init_weight, (float)_rad) : Helpers.easeInOutCubic((float)curr_rad, (float)_init_weight, -(float)_init_weight, (float)_rad);
-            curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
-
         }
 
     }
 
-    public void applySmoothRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO: TEST
+    public void radGradient_ease(int _col, int _row, double _rad, double _init_weight, double _feather, boolean _inverse, boolean _blend, double _opacity) {
 
-        // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out easing function, returns a new Point_Grid
-        // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
-        // in the underlying circle-plotting algo. Avoid using if possible.
-        // Where
-        // _col, _row -> origin of gradient
-        // _r -> radius of gradient (i.e. extent of gradient effect)
-        // _init_weight -> initial weight value of gradient
-        // _sample_rate -> radius increment per cycle (think of this as sampling density, if there are empty points in gradient then reduce this number, NOT TOO FAR THOUGH).
-        // _inverse -> whether to invert the gradient
-        // _blend -> whether to allow blending with previous weights (otherwise gradient overrides previous weights)
-        // _pg -> Point_Grid to affect.
-
-        float curr_rad = 0;
-        int init_x = _col - _r;
-        int fin_x = _col + _r;
-        int curr_x = init_x;
-        double curr_weight = _init_weight;
-        Tuple2<Integer, Integer> yVal;
-
-        while (curr_rad <= _r) {
-
-            while (curr_x <= fin_x) {
-
-                yVal = Helpers.plotCircle(curr_x, _col, _row, curr_rad);
-
-                if (Helpers.checkBounds(curr_x, yVal.a, this)) {
-                    if (_blend) this.points.get(curr_x).get(yVal.a).weight = Helpers.clamp(this.points.get(curr_x).get(yVal.a).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(curr_x).get(yVal.a).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(curr_x, yVal.b, this)) {
-                    if (_blend) this.points.get(curr_x).get(yVal.b).weight = Helpers.clamp(this.points.get(curr_x).get(yVal.b).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(curr_x).get(yVal.b).weight = curr_weight * _opacity;
-                }
-
-                curr_x++;
-
-            }
-
-            curr_rad += _sample_rate;
-            curr_x = init_x;
-            curr_weight = _inverse ? Helpers.easeInOutCubic((float)curr_rad, 0, (float)_init_weight, (float)_r) : Helpers.easeInOutCubic((float)curr_rad, (float)_init_weight, -(float)_init_weight, (float)_r);
-            curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
-
-        }
-
-    }
-
-    public void applySinRadGradient(int _col, int _row, int _rad, double _init_weight, double _freq, double _shift, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO : TEST
-
-        // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out-easing function. Returns a new Point_Grid
-        // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
+        // Modifies weights of Grid_Points according to a in-out easing function.
+        // Distances from user-define centerpoint are calculated using an approximation (non-sqrt)
         // Where:
-        // _col, _row -> origin of gradient
+        // _col, _row -> centerpoint of gradient
         // _rad -> radius of gradient (i.e. extent of gradient effect)
         // _init_weight -> initial weight value for gradient
+        // _feather -> how "hard" the gradient edge is (period of easing func)
         // _inverse -> whether to invert the gradient
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
-        // _pg -> Point_Grid to affect
+        // _opacity -> opacity of gradient
 
-        int curr_rad = 0; int inner_rad = 0;
-        double curr_weight = _init_weight;
+        double MAX = 1, MIN = 0;
+        double dist;
+        double rad = Math.pow(_rad, 2);
 
-        while (curr_rad <= _rad) {
-            int x = -curr_rad;
-            int y = 0;
-            int err = 2-2*curr_rad;
+        Grid_Point center_point = Getters.getPoint(_col, _row, this);
+        switch(check_quad(center_point)) {
+            case 1 -> MAX = grid_approx_dist(center_point, Getters.getPoint(0, this.y - 1, this));
+            case 2 -> MAX = grid_approx_dist(center_point, Getters.getPoint(this.x - 1, this.y - 1, this));
+            case 3 -> MAX = grid_approx_dist(center_point, Getters.getPoint(this.x - 1, 0, this));
+            case 4 -> MAX = grid_approx_dist(center_point, Getters.getPoint(0, 0, this));
+        }
 
-            while (x < 0) {
-                if (Helpers.checkBounds(_col - x, _row + y, this)) {
-                    if (_blend) this.points.get(_col-x).get(_row+y).weight = Helpers.clamp(this.points.get(_col-x).get(_row+y).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col-x).get(_row+y).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(_col - y, _row - x, this)) {
-                    if (_blend) this.points.get(_col-y).get(_row-x).weight = Helpers.clamp(this.points.get(_col-y).get(_row-x).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col-y).get(_row-x).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(_col + x, _row - y, this)) {
-                    if (_blend) this.points.get(_col+x).get(_row-y).weight = Helpers.clamp(this.points.get(_col+x).get(_row-y).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col+x).get(_row-y).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkBounds(_col + y, _row + x, this)) {
-                    if (_blend) this.points.get(_col+y).get(_row+x).weight = Helpers.clamp(this.points.get(_col+y).get(_row+x).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(_col+y).get(_row+x).weight = curr_weight * _opacity;
-                }
-                inner_rad = err;
-                if (inner_rad <= 0) {
-                    y += 1;
-                    err += 2*y + 1;
-                }
-                if (inner_rad > 0) {
-                    x += 1;
-                    err += 2*x + 1;
-                }
+        rad = rad - MAX;
+        double currWeight;
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                dist = grid_approx_dist(currPoint, center_point);
+                if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
+                else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+                else currPoint.weight = currWeight;
             }
-
-            curr_rad += 1;
-            _shift = _inverse ? _shift + (Math.PI) : _shift;
-            curr_weight = Helpers.sinMap((double)curr_rad, _freq, _shift);
-            curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
         }
 
     }
 
-    public void applySinRadGradient_Slow(int _col, int _row, int _r, double _init_weight, double _sample_rate, double _freq, double _shift, boolean _inverse, boolean _blend, double _opacity) {
-        // TODO : TEST
+    public void radGradient_slow_ease(int _col, int _row, double _rad, double _init_weight, double _feather, boolean _inverse, boolean _blend, double _opacity) {
 
-        // Modifies weights of Grid_Points in a given Point_Grid according to a radial gradient, using an in-out easing function, returns a new Point_Grid
-        // NOTE: This looks nicer, but is far more computationally expensive than applyRadialGradient given that it uses sqrt()
-        // in the underlying circle-plotting algo. Avoid using if possible.
+        // Modifies weights of Grid_Points according to a in-out easing function.
+        // Distances from user-define centerpoint are calculated using a^2 + b^2 = c^2
+        // Therefore, sqrt() is used extensively - this function should be avoided at all costs if possible.
+        // This version is approx. 4x slower than radGradient();
         // Where:
-        // _col, _row -> origin of gradient
-        // _r -> radius of gradient (i.e. extent of gradient effect)
-        // _init_weight -> initial weight value of gradient
-        // _sample_rate -> radius increment per cycle (think of this as sampling density, if there are empty points in gradient then reduce this number, NOT TOO FAR THOUGH).
+        // _col, _row -> centerpoint of gradient
+        // _rad -> radius of gradient (i.e. extent of gradient effect)
+        // _init_weight -> initial weight value for gradient
+        // _feather -> how "hard" the gradient edge is (period of easing func)
         // _inverse -> whether to invert the gradient
-        // _blend -> whether to allow blending with previous weights (otherwise gradient overrides previous weights)
-        // _pg -> Point_Grid to affect.
+        // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
+        // _opacity -> opacity of gradient
 
-        float curr_rad = 0;
-        int init_x = _col - _r;
-        int fin_x = _col + _r;
-        int curr_x = init_x;
-        double curr_weight = _init_weight;
-        Tuple2<Integer, Integer> yVal;
+        double MAX = 1, MIN = 0;
+        double dist;
 
-        while (curr_rad <= _r) {
+        Grid_Point center_point = Getters.getPoint(_col, _row, this);
+        switch(check_quad(center_point)) {
+            case 1 -> MAX = grid_exact_dist(center_point, Getters.getPoint(0, this.y - 1, this));
+            case 2 -> MAX = grid_exact_dist(center_point, Getters.getPoint(this.x - 1, this.y - 1, this));
+            case 3 -> MAX = grid_exact_dist(center_point, Getters.getPoint(this.x - 1, 0, this));
+            case 4 -> MAX = grid_exact_dist(center_point, Getters.getPoint(0, 0, this));
+        }
 
-            while (curr_x <= fin_x) {
+        _rad = _rad - MAX;
+        double currWeight;
 
-                yVal = Helpers.plotCircle(curr_x, _col, _row, curr_rad);
-
-                if (Helpers.checkColBounds(curr_x, this) && Helpers.checkRowBounds(yVal.a, this)) {
-                    if (_blend) this.points.get(curr_x).get(yVal.a).weight = Helpers.clamp(this.points.get(curr_x).get(yVal.a).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(curr_x).get(yVal.a).weight = curr_weight * _opacity;
-                }
-                if (Helpers.checkColBounds(curr_x, this) && Helpers.checkRowBounds(yVal.b, this)) {
-                    if (_blend) this.points.get(curr_x).get(yVal.b).weight = Helpers.clamp(this.points.get(curr_x).get(yVal.b).weight + curr_weight * _opacity, 0.0, 1.0);
-                    else this.points.get(curr_x).get(yVal.b).weight = curr_weight * _opacity;
-                }
-
-                curr_x++;
-
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                dist = grid_exact_dist(currPoint, center_point);
+                if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
+                else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+                else currPoint.weight = currWeight;
             }
-
-            curr_rad += _sample_rate;
-            curr_x = init_x;
-            _shift = _inverse ? _shift + Math.PI : _shift;
-            curr_weight = Helpers.sinMap((double)curr_rad, _freq, _shift);
-            curr_weight = Helpers.clamp(curr_weight, 0.0, 1.0);
-
         }
 
     }
 
-    public void applyPerlin(float _min, float _max, float _time, boolean _blend, double _opacity) {
-        // TODO : TEST
+    public void sinGradient(int _col, int _row, double _rad, double _min_weight, double _max_weight, double _frequency, double _shift, boolean _inverse, boolean _blend, double _opacity) {
 
-        // Apply weights to point in Point_Grid based on Perlin Noise.
-        // Perlin positions are taken from Grid_Points in Grid.
+        // Modifies weights of Grid_Points according to a sin function.
+        // Distances from user-define centerpoint are calculated using an approximation (non-sqrt)
         // Where:
-        // _min -> Min weight threshold
-        // _max -> Max weight threshold
+        // _col, _row -> centerpoint of gradient
+        // _rad -> radius of gradient (i.e. extent of gradient effect)
+        // _min_weight -> lower bound for applied weight
+        // _max_weight -> upper bound for applied weight
+        // _frequency -> frequency of sin function
+        // _shift -> shift of sin function
+        // _inverse -> whether to invert the gradient
+        // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
+        // _opacity -> opacity of gradient
+
+        double MAX = 1, MIN = 0;
+        double dist;
+        double rad = Math.pow(_rad, 2);
+
+        Grid_Point center_point = Getters.getPoint(_col, _row, this);
+        switch(check_quad(center_point)) {
+            case 1 -> MAX = grid_approx_dist(center_point, Getters.getPoint(0, this.y - 1, this));
+            case 2 -> MAX = grid_approx_dist(center_point, Getters.getPoint(this.x - 1, this.y - 1, this));
+            case 3 -> MAX = grid_approx_dist(center_point, Getters.getPoint(this.x - 1, 0, this));
+            case 4 -> MAX = grid_approx_dist(center_point, Getters.getPoint(0, 0, this));
+        }
+
+        rad = rad - MAX;
+        double currWeight;
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                dist = grid_approx_dist(currPoint, center_point);
+                if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
+                else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+                else currPoint.weight = currWeight;
+            }
+        }
+    }
+
+    public void sinGradient_slow(int _col, int _row, double _rad, double _min_weight, double _max_weight, double _frequency, double _shift, boolean _inverse, boolean _blend, double _opacity) {
+
+        // Modifies weights of Grid_Points according to a sin function.
+        // Distances from user-define centerpoint are calculated using pythagorean distance formula. Thus sqrt() is employed.
+        // Avoid this function when possible - it is approx. 4 x slower than sinGradient()
+        // Where:
+        // _col, _row -> centerpoint of gradient
+        // _rad -> radius of gradient (i.e. extent of gradient effect)
+        // _min_weight -> lower bound for applied weight
+        // _max_weight -> upper bound for applied weight
+        // _frequency -> frequency of sin function
+        // _shift -> shift of sin function
+        // _inverse -> whether to invert the gradient
+        // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
+        // _opacity -> opacity of gradient
+
+        double MAX = 1, MIN = 0;
+        double dist;
+
+        Grid_Point center_point = Getters.getPoint(_col, _row, this);
+        switch(check_quad(center_point)) {
+            case 1 -> MAX = grid_exact_dist(center_point, Getters.getPoint(0, this.y - 1, this));
+            case 2 -> MAX = grid_exact_dist(center_point, Getters.getPoint(this.x - 1, this.y - 1, this));
+            case 3 -> MAX = grid_exact_dist(center_point, Getters.getPoint(this.x - 1, 0, this));
+            case 4 -> MAX = grid_exact_dist(center_point, Getters.getPoint(0, 0, this));
+        }
+
+        _rad = _rad - MAX;
+        double currWeight;
+
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                dist = grid_exact_dist(currPoint, center_point);
+                if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + _rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
+                else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+                else currPoint.weight = currWeight;
+            }
+        }
+    }
+
+    public void perlin(double _min, double _max, float _time, boolean _blend, double _opacity) {
+
+        // Apply weights to points based on Perlin Noise.
+        // Where:
+        // _min -> Min weight
+        // _max -> Max weight
         // _time -> Time (Z-axis) factor for animating Perlin (takes values from 0.0 - 1.0);
         // _blend -> Whether to blend weight with any previous weight present in Point_Grid
-        // _pg -> Point_Grid to sample from
+        // _opacity -> Opacity of applied weights
 
-        for (ArrayList<Grid_Point> columns : this.points) {
-            for (Grid_Point currPoint : columns) {
-                if (_blend) this.points.get(currPoint.gX).get(currPoint.gY).weight = Helpers.clamp(
-                        this.points.get(currPoint.gX).get(currPoint.gY).weight + PApplet.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity, 0.0, 1.0); // Call Perlin ~
-                else this.points.get(currPoint.gX).get(currPoint.gY).weight = PApplet.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity; // Call Perlin ~
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                if (_blend) currPoint.weight = Helpers.clamp(
+                        currPoint.weight + Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max), 0.0, 1.0) * _opacity;
+                else currPoint.weight = Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity; // Call Perlin ~
             }
         }
 
     }
 
-    public void applyRandom(boolean _blend, double _opacity) {
-        // TODO : TEST
+    public void random(double _min, double _max, boolean _blend, double _opacity) {
 
-        // Apply weights to point in Point_Grid based on Perlin Noise.
-        // Perlin positions are taken from Grid_Points in Grid.
+        // Apply weights to points randomly.
         // Where:
-        // _pg -> Point_Grid to sample from
         // _min -> Min weight threshold
         // _max -> Max weight threshold
-        // _time -> Time (Z-axis) factor for animating Perlin (takes values from 0.0 - 1.0);
+        // _blend -> Whether to blend weight with any previous weight present in Point_Grid
+        // _opacity -> Opacity of applied weights
 
-        for (ArrayList<Grid_Point> columns : this.points) {
-            for (Grid_Point currPoint : columns) {
-                if (_blend) this.points.get(currPoint.gX).get(currPoint.gY).weight = Helpers.clamp(this.points.get(currPoint.gX).get(currPoint.gY).weight + Core.processing.random(0, 1) * _opacity, 0.0, 1.0);
-                else this.points.get(currPoint.gX).get(currPoint.gY).weight = Core.processing.random(0, 1) * _opacity;
+        for (ArrayList<Grid_Point> column : this.points) {
+            for (Grid_Point currPoint : column) {
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, _min, _max), 0, 1) * _opacity;
+                else currPoint.weight = Helpers.map(Core.processing.random(0, 1), 0, 1, _min, _max) * _opacity;
             }
         }
 
@@ -674,6 +562,7 @@ public class Point_Grid {
         Grid_Point currPoint;
         int x, y, r, g, b;
         int currPixel;
+        double weight = 0;
 
         for (int x_g = 0; x_g < this.x; x_g++) {
             x = sample_padding_X + (x_g * this.sX);
@@ -686,26 +575,87 @@ public class Point_Grid {
                 b = currPixel & 0xFF;
                 switch (_mode) {
                     case ("r") -> {
+                        weight = PApplet.map((float) r, 0, 255, 0, 1);
                         if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map((float) r, 0, 255, 0, 1) * _opacity, 0.0, 1.0);
                         else currPoint.weight = PApplet.map((float) r, 0, 255, 0, 1) * _opacity;
                     }
                     case ("g") -> {
+                        weight = PApplet.map((float) g, 0, 255, 0, 1);
                         if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map((float) g, 0, 255, 0, 1) * _opacity, 0.0, 1.0);
                         else currPoint.weight = PApplet.map((float) g, 0, 255, 0, 1) * _opacity;
                     }
                     case ("b") -> {
+                        weight = PApplet.map((float) b, 0, 255, 0, 1);
                         if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map((float) b, 0, 255, 0, 1) * _opacity, 0.0, 1.0);
                         else currPoint.weight = PApplet.map((float) b, 0, 255, 0, 1) * _opacity;
                     }
                     case ("l") -> {
+                        weight = PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1);
                         if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1) * _opacity, 0.0, 1.0);
                         currPoint.weight = PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1) * _opacity;
                     }
-
                 }
+
+                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + weight * _opacity, 0.0, 1.0);
+                else currPoint.weight = weight * _opacity;
+
             }
         }
 
     }
+
+
+    // * =========== PRIVATE HELPERS ============== * //
+
+    private int check_quad(Grid_Point _pg) {
+
+        // Returns the number corresponding to the quadrant a given Grid_Point is in.
+        // 1 -> TR, 2 -> TL, 3 -> BL, 4 -> BR
+        // Where:
+        // _gp -> Grid_Point to test
+        int x_mid = this.x / 2;
+        int y_mid = this.y / 2;
+
+        if (_pg.gX > x_mid && _pg.gX < y_mid) return 1;
+        else if (_pg.gX < x_mid && _pg.gY < y_mid) return 2;
+        else if (_pg.gX < x_mid && _pg.gY > y_mid) return 3;
+        else return 4;
+
+    }
+
+    private double grid_approx_dist(Grid_Point _pg1, Grid_Point _pg2) {
+
+        // Returns a non-sqrt based distance between two points in Grid.
+        // Use when a precise distance is not necessary.
+        // Distance is calculated using grid indices and not actual x y values.
+        // Where:
+        // _pg1 -> First point
+        // _pg2 -> Second point
+
+        return Math.pow(_pg1.gX - _pg2.gX, 2) + Math.pow(_pg1.gY - _pg2.gY, 2);
+
+    }
+
+    private double grid_exact_dist(Grid_Point _pg1, Grid_Point _pg2) {
+
+        // Returns the sqrt based distance between two points in Grid.
+        // Avoid using if possible.
+        // Distance is calculated using grid indices and not actual x y values.
+        // Where:
+        // _pg1 -> First point
+        // _pg2 -> Second point
+
+        return Math.sqrt(Math.pow(_pg1.gX - _pg2.gX, 2) + Math.pow(_pg1.gY - _pg2.gY, 2));
+
+    }
+
+    private int szdudzik_hash(int a, int b) {
+
+        // Returns a unique value for any two integers a, b >= 0
+
+        return a >= b ? a * a + a + b : a + b * b;
+
+    }
+
 
 }
