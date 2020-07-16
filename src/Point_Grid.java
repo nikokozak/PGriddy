@@ -529,17 +529,19 @@ public class Point_Grid {
 
     }
 
-    public void applyImage(PImage _img, String _mode, boolean _blend, double _opacity) {
-        // TODO: TEST
-        // TODO: ADD OFFSETS (TO MOVE IMAGE)
+    public void image(PImage _img, String _mode, int _shift_x, int _shift_y, boolean _subtract, boolean _blend, double _opacity) {
+        // TODO: Add Scaling
 
         // Loads an image and applies weights to Grid_Points in Point_Grid
         // based on R, G, B, L (lightness) values or combinations thereof.
         // Where:
-        // _file -> filename of image to load
-        // _scale -> scale the image to encompass full grid or load image at center of grid (no scale applied)
+        // _img -> PImage to sample from
         // _mode -> any of the following: "r", "g", "b", "l" (luma)
-        // _pg -> Point_Grid to apply to.
+        // _shift_x -> shift the image left (-) or right (+)
+        // _shift_y -> shift the image top (+) or bottom (-)
+        // _blend -> whether to blend the new weights onto previous weights
+        // _subtract -> whether to subtract the new weights from previous weights (only works in blend mode)
+        // _opacity -> opacity of new weights
 
         PImage new_img;
 
@@ -565,37 +567,22 @@ public class Point_Grid {
         double weight = 0;
 
         for (int x_g = 0; x_g < this.x; x_g++) {
-            x = sample_padding_X + (x_g * this.sX);
+            x = (sample_padding_X + _shift_x) + (x_g * this.sX);
             for (int y_g = 0; y_g < this.y; y_g++) {
-                y = sample_padding_Y + (y_g * this.sY);
-                currPixel = new_img.pixels[y*new_img.width+x];
+                y = (sample_padding_Y + _shift_y) + (y_g * this.sY);
+                if (y*new_img.width+x > new_img.pixels.length - 1 || y*new_img.width+x < 0) currPixel = Core.processing.color(0);
+                else currPixel = new_img.pixels[y*new_img.width+x];
                 currPoint = this.points.get(x_g).get(y_g);
                 r = (currPixel >> 16) & 0xFF;
                 g = (currPixel >> 8) & 0xFF;
                 b = currPixel & 0xFF;
                 switch (_mode) {
-                    case ("r") -> {
-                        weight = PApplet.map((float) r, 0, 255, 0, 1);
-                        if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map((float) r, 0, 255, 0, 1) * _opacity, 0.0, 1.0);
-                        else currPoint.weight = PApplet.map((float) r, 0, 255, 0, 1) * _opacity;
-                    }
-                    case ("g") -> {
-                        weight = PApplet.map((float) g, 0, 255, 0, 1);
-                        if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map((float) g, 0, 255, 0, 1) * _opacity, 0.0, 1.0);
-                        else currPoint.weight = PApplet.map((float) g, 0, 255, 0, 1) * _opacity;
-                    }
-                    case ("b") -> {
-                        weight = PApplet.map((float) b, 0, 255, 0, 1);
-                        if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map((float) b, 0, 255, 0, 1) * _opacity, 0.0, 1.0);
-                        else currPoint.weight = PApplet.map((float) b, 0, 255, 0, 1) * _opacity;
-                    }
-                    case ("l") -> {
-                        weight = PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1);
-                        if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1) * _opacity, 0.0, 1.0);
-                        currPoint.weight = PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1) * _opacity;
-                    }
+                    case ("r") -> weight = PApplet.map((float) r, 0, 255, 0, 1);
+                    case ("g") -> weight = PApplet.map((float) g, 0, 255, 0, 1);
+                    case ("b") -> weight = PApplet.map((float) b, 0, 255, 0, 1);
+                    case ("l") -> weight = PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1);
                 }
-
+                if (_subtract && _blend) weight *= -1;
                 if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + weight * _opacity, 0.0, 1.0);
                 else currPoint.weight = weight * _opacity;
 
@@ -613,6 +600,7 @@ public class Point_Grid {
         // 1 -> TR, 2 -> TL, 3 -> BL, 4 -> BR
         // Where:
         // _gp -> Grid_Point to test
+
         int x_mid = this.x / 2;
         int y_mid = this.y / 2;
 

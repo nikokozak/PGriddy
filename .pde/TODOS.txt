@@ -1,19 +1,27 @@
 TODOS:
 
-- Applicators Testing
-- Move relevant Helpers into private methods in Grid_Point
-- Refac Radial Applicators (Lin and Sin) to use dist calc instead of Algo
-- Update Applicators Documentation
-- Refactor Data-Types into more OOP-like paradigm.
 - Create new Data-Type for ArrayList<Grid_Point> (Point_Array)
+- Implement Pattern getter
+- Implement Selections for applicators
+- Move relevant Helpers into private methods in Grid_Point
+- Refactor Data-Types into more OOP-like paradigm.
 - Set up documentation system.
 - Set up JUnit
 
 Features:
 
+- Implement more noise / wave types
+- Implement meta-grids -> for sampling flocking behavior, etc, and apply back to static grid.
+- Implement naive-graphs -> dirjkstra, pathfinding
+- Circular Grids
+- Intersection filters w/processing shapes and 3d shapes.
+- Game of Life.
 - Add in text support.
-- Image applicator should have position parameter (or move parameter somehow).
-- Re-do gradient algos (distance based).
 - Attractor system.
+- Gravity / Flock system.
 - Add in 3D support.
 - Add in gravity / perlin oscilation.
+
+Wishlist:
+
+- Add independent scaling for apply_image
