@@ -3,7 +3,6 @@ TODOS:
 - Create new Data-Type for ArrayList<Grid_Point> (Point_Array)
 - Implement Pattern getter
 - Implement Selections for applicators
-- Move relevant Helpers into private methods in Grid_Point
 - Refactor Data-Types into more OOP-like paradigm.
 - Set up documentation system.
 - Set up JUnit
@@ -25,3 +24,7 @@ Features:
 Wishlist:
 
 - Add independent scaling for apply_image
+
+Noise:
+- https://github.com/damdoy/noise_functions/blob/master/noise_functions.js
+- worth looking at thebookofshaders.com

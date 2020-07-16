@@ -267,6 +267,7 @@ public class Point_Grid {
     }
 
     public void weight_reset() {
+
         // Sets all Points to weight 1.0.
 
         for (ArrayList<Grid_Point> column : this.points) {
@@ -276,6 +277,21 @@ public class Point_Grid {
         }
     }
 
+    public void filter(double _low, double _high) {
+
+        // Sets all weights outside the threshold to zero.
+        // Where:
+        // _low -> floor of threshold
+        // _high -> ceiling of threshold
+
+        for (ArrayList<Grid_Point> column : this.points)  {
+            for (Grid_Point currPoint : column) {
+                if (currPoint.weight < _low || currPoint.weight > _high) {
+                   currPoint.weight = 0;
+                }
+            }
+        }
+    }
 
     // * =========== GRADIENT APPLICATORS ============== * //
 

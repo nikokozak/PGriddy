@@ -1,8 +1,7 @@
 
 public class Selection {
-// A SELECTION is a data structure
-// SELECTION ( col0: INT, row0: INT, col1: INT, row1: INT, pg: POINT_GRID)
-// interpretation: a SELECTION represents a portion of a POINT_GRID that can be passed into
+
+// a SELECTION represents a portion of a POINT_GRID that can be passed into
 // certain functions to limit their effect to specific areas.
 // startCol, startRow -> top-left corner of selection rectangle
 // startRow, endRow -> bottom-right corner of selection rectangle
