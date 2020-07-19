@@ -16,6 +16,21 @@ public class Move {
 
     }
 
+    public static Point_Grid grid_mult(int _x, int _y, Point_Grid _pg) {
+
+        // Multiplies Point positions by _x, _y.
+
+        for (ArrayList<Grid_Point> column : _pg.points) {
+            for (Grid_Point currPoint : column) {
+                currPoint.y *= _y;
+                currPoint.x *= _x;
+            }
+        }
+
+        return _pg;
+
+    }
+
     public static Point_Grid grid_to(int _x, int _y, Point_Grid _pg) {
 
         // Moves the entire Grid to a new x, y center.

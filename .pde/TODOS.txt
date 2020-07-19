@@ -1,10 +1,7 @@
 TODOS:
 
-- Separate concerns.
-- Create new Data-Type for ArrayList<Grid_Point> (Point_Array)
-- Implement Pattern getter
 - Implement Selections for applicators
-- Refactor Data-Types into more OOP-like paradigm.
+- Figure out how to handle orphan points (or whether we need Points at all)
 - Set up documentation system.
 - Set up JUnit
 

@@ -169,7 +169,7 @@ public class Helpers {
 
     }
 
-    public static ArrayList<ArrayList<Grid_Point>> clonePoints(Point_Grid _pg) {
+    public static ArrayList<ArrayList<Grid_Point>> cloneGridPoints(Point_Grid _pg) {
 
         // Deep clones points from a given Point_Grid into a new ArrayList.
         // Used to avoid shallow copies.
@@ -191,7 +191,7 @@ public class Helpers {
 
     }
 
-    public static ArrayList<Grid_Point> clonePoints(ArrayList<Grid_Point> _list) {
+    public static ArrayList<Grid_Point> cloneGridPoints(ArrayList<Grid_Point> _list) {
 
         // Deep clones Grid_Points from one ArrayList to another.
         // Used to get around some issues regarding unwanted object references.
@@ -201,6 +201,21 @@ public class Helpers {
         ArrayList<Grid_Point> result = new ArrayList<Grid_Point>(_list.size());
         for (Grid_Point currPoint : _list) {
             result.add(new Grid_Point(currPoint));
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Point> clonePoints(ArrayList<Point> _list) {
+
+        // Deep clones Grid_Points from one ArrayList to another.
+        // Used to get around some issues regarding unwanted object references.
+        // Where:
+        // _list -> ArrayList<Grid_Point> to copy
+
+        ArrayList<Point> result = new ArrayList<Point>(_list.size());
+        for (Point currPoint : _list) {
+            result.add(new Point(currPoint));
         }
         return result;
     }
@@ -300,4 +315,5 @@ public class Helpers {
         return (a * bias) + (b * (1 - bias));
 
     }
+
 }

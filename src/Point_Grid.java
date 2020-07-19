@@ -2,6 +2,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Point_Grid {
 
@@ -55,7 +56,7 @@ public class Point_Grid {
         this.xOrigin = _pg.xOrigin;
         this.yOrigin = _pg.yOrigin;
 
-        this.points = Helpers.clonePoints(_pg);
+        this.points = Helpers.cloneGridPoints(_pg);
     }
 
     public Point_Grid (Point_Grid _pg, ArrayList<ArrayList<Grid_Point>> _al) {
@@ -78,7 +79,7 @@ public class Point_Grid {
         this.xOrigin = _pg.xOrigin;
         this.yOrigin = _pg.yOrigin;
 
-        this.points = Helpers.clonePoints(_pg);
+        this.points = Helpers.cloneGridPoints(_pg);
 
         for (int i = 0; i < x; i += 1) {
             for (int j = 0; j < y; j += 1) {
@@ -122,6 +123,12 @@ public class Point_Grid {
 
     }
 
+    public Point_Grid move_mult(int _x, int _y) {
+
+       return Move.grid_mult(_x, _y, this);
+
+    }
+
     public Point_Grid move_to(int _x, int _y) {
 
         return Move.grid_to(_x, _y, this);
@@ -133,6 +140,102 @@ public class Point_Grid {
        return Move.grid_reset(this);
 
     }
+
+    // * =========== GETTERS ============== * //
+
+    public Grid_Point get_point(int _col, int _row) {
+
+        return Getters.get_grid_point(_col, _row, this);
+
+    }
+
+    public Grid_Point get_point_safe(int _col, int _row) {
+
+        return Getters.get_grid_point_safe(_col, _row, this);
+
+    }
+
+    public Grid_Point get_point_mirror(int _col, int _row) {
+
+        return Getters.get_grid_point_mirror(_col, _row, this);
+
+    }
+
+    public Grid_Point get_point_mirror_x(int _col, int _row) {
+
+        return Getters.get_grid_point_mirror_x(_col, _row, this);
+
+    }
+
+    public Grid_Point get_point_mirror_y(int _col, int _row) {
+
+        return Getters.get_grid_point_mirror_y(_col, _row, this);
+
+    }
+
+    public Point_List get_points_by_weight(int _floor, int _ceil) {
+
+       return Getters.get_grid_points_by_weight(_floor, _ceil, this);
+
+    }
+
+    public Point_List get_column(int _x) {
+
+        return Getters.get_grid_column(_x, this);
+
+    }
+
+    public Point_List get_row(int _y) {
+
+        return Getters.get_grid_row(_y, this);
+
+    }
+
+    public Point_List get_line(int _col0, int _row0, int _col1, int _row1) {
+
+        return Getters.get_line(_col0, _row0, _col1, _row1, this);
+
+    }
+
+    public Point_List get_circle(int _col0, int _row0, int _rad) {
+
+        return Getters.get_circle(_col0, _row0, _rad, this);
+
+    }
+
+    public Point_List getLine_No_Op(int _col0, int _row0, int _col1, int _row1) {
+
+        return Getters.get_line_no_op(_col0, _row0, _col1, _row1, this);
+
+    }
+
+    public Point_List get_circle(int _col, int _row, int _rad, Point_Grid _pg) {
+
+        return Getters.get_circle(_col, _row, _rad, this);
+
+    }
+
+    public Point_List get_polyline(Point_List _pl, boolean _closed) {
+
+        return Getters.get_polyline(_pl, _closed, this);
+
+    }
+
+    public Point_List get_pattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow) {
+
+        return Getters.get_pattern(_col, _row, _dlist, _reps, _overflow, this);
+
+    }
+
+
+
+    // TODO: Implement get-circles (w/fill)
+    // TODO: Implement get-polygon (w/fill)
+    // TODO: Implement "apply" lines (w/fill)
+    // TODO: Implement "apply" circles (w/fill)
+    // TODO: Implement "apply" polygon (w/fill)
+
+    // TODO: Implement selections for applicators and getters
 
     // * =========== UNIVERSAL APPLICATORS ============== * //
 

@@ -18,12 +18,12 @@ public class Gradients {
         double dist;
         double rad = Math.pow(_rad, 2);
 
-        Grid_Point center_point = Getters.getPoint(_col, _row, _pg);
+        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
         switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(0, 0, _pg));
+            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, 0, _pg));
         }
 
         rad = rad - MAX;
@@ -60,12 +60,12 @@ public class Gradients {
         double MAX = 1, MIN = 0;
         double dist;
 
-        Grid_Point center_point = Getters.getPoint(_col, _row, _pg);
+        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
         switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(0, 0, _pg));
+            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, 0, _pg));
         }
 
         _rad = _rad - MAX;
@@ -102,12 +102,12 @@ public class Gradients {
         double dist;
         double rad = Math.pow(_rad, 2);
 
-        Grid_Point center_point = Getters.getPoint(_col, _row, _pg);
+        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
         switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(0, 0, _pg));
+            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, 0, _pg));
         }
 
         rad = rad - MAX;
@@ -145,12 +145,12 @@ public class Gradients {
         double MAX = 1, MIN = 0;
         double dist;
 
-        Grid_Point center_point = Getters.getPoint(_col, _row, _pg);
+        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
         switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(0, 0, _pg));
+            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, 0, _pg));
         }
 
         _rad = _rad - MAX;
@@ -189,12 +189,12 @@ public class Gradients {
         double dist;
         double rad = Math.pow(_rad, 2);
 
-        Grid_Point center_point = Getters.getPoint(_col, _row, _pg);
+        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
         switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.getPoint(0, 0, _pg));
+            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, 0, _pg));
         }
 
         rad = rad - MAX;
@@ -233,12 +233,12 @@ public class Gradients {
         double MAX = 1, MIN = 0;
         double dist;
 
-        Grid_Point center_point = Getters.getPoint(_col, _row, _pg);
+        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
         switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.getPoint(0, 0, _pg));
+            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, 0, _pg));
         }
 
         _rad = _rad - MAX;
