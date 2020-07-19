@@ -1,5 +1,6 @@
 TODOS:
 
+- Separate concerns.
 - Create new Data-Type for ArrayList<Grid_Point> (Point_Array)
 - Implement Pattern getter
 - Implement Selections for applicators

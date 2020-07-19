@@ -286,4 +286,18 @@ public class Helpers {
         return sin((float)(_freq*_x - _freq*_shift)) * _amplitude;
 
     }
+
+
+    public static double mix(double a, double b, double bias) {
+
+        // Mixes two values according to a bias.
+        // Where:
+        // a, b -> Numbers to mix
+        // bias -> 1: a bias, 0: b bias
+
+        bias = Helpers.clamp(bias, 0, 1);
+
+        return (a * bias) + (b * (1 - bias));
+
+    }
 }
