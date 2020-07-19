@@ -1,9 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Point_Grid {
 
@@ -93,119 +91,47 @@ public class Point_Grid {
     // * =========== DRAWING TOOLS ============== * //
 
     public void draw() {
-        // Draws points to screen as a simple Processing point (no fill, weight).
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                Core.processing.point(currPoint.x, currPoint.y);
-            }
-        }
+        Draw.grid(this);
+
     }
 
-    public void draw(int type) {
-        // Draws points to screen as either a Processing point, circle, or rect (size 3 for circle and rect).
-        // No fill, or weight set.
-        // Where:
-        // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
+    public void draw(int _type) {
 
-        if (type > 2 || type < 0) type = 0;
+        Draw.grid(_type, this);
 
-        Core.processing.rectMode(3); // Set rectMode to CENTER;
-
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                switch (type) {
-                    case 0 -> Core.processing.point(currPoint.x, currPoint.y);
-                    case 1 -> Core.processing.circle(currPoint.x, currPoint.y, 3);
-                    case 2 -> Core.processing.rect(currPoint.x, currPoint.y, 3, 3);
-                }
-            }
-        }
     }
 
-    public void draw(int type, boolean weight) {
-        // Draws points to screen as either a Processing point, circle, or rect (size 3 for circle and rect).
-        // Where:
-        // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
-        // weight -> whether to set alpha as weight.
-        Core.processing.rectMode(3); // Set rectMode to CENTER;
+    public void draw(int _type, boolean _weight) {
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                if (weight) Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
-                else Core.processing.fill(currPoint.col);
-                switch (type) {
-                    case 0 -> Core.processing.point(currPoint.x, currPoint.y);
-                    case 1 -> Core.processing.circle(currPoint.x, currPoint.y, 3);
-                    case 2 -> Core.processing.rect(currPoint.x, currPoint.y, 3, 3);
-                }
-            }
-        }
+        Draw.grid(_type, _weight, this);
+
     }
 
-    public void draw(int type, float size, boolean weight) {
-        // Draws points to screen as either a Processing point, circle, or rect.
-        // Where:
-        // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
-        // size -> size of rect or circle.
-        // weight -> whether to set alpha as weight.
-        Core.processing.rectMode(3);
+    public void draw(int _type, float _size, boolean _weight) {
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                if (weight) Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
-                else Core.processing.fill(currPoint.col);
-                switch (type) {
-                    case 0 -> Core.processing.point(currPoint.x, currPoint.y);
-                    case 1 -> Core.processing.circle(currPoint.x, currPoint.y, size);
-                    case 2 -> Core.processing.rect(currPoint.x, currPoint.y, size, size);
-                }
-            }
-        }
+        Draw.grid(_type, _size, _weight, this);
+
     }
 
     // * =========== TRANSLATION TOOLS ============== * //
 
-    public void move(int _x, int _y) {
-        // Adds x and y quantities to Point positions.
+    public Point_Grid move(int _x, int _y) {
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.y += _y;
-                currPoint.x += _x;
-            }
-        }
+        return Move.grid(_x, _y, this);
+
     }
 
-    public void move_to(int _x, int _y) {
-        // Moves the entire Grid to a new x, y center.
-        // RESETS ALL PAREMETERS PERTAINING TO ORIGIN, ETC.
+    public Point_Grid move_to(int _x, int _y) {
 
-        Point newCenter = new Point(_x, _y);
-        this.c = newCenter;
+        return Move.grid_to(_x, _y, this);
 
-        this.xOrigin = (int)newCenter.x - ((this.x/2)*this.sX);
-        this.yOrigin = (int)newCenter.y - ((this.y/2)*this.sY);
-
-        for (int i = 0; i < this.x; i += 1) {
-            int xPos = this.xOrigin + (i * this.sX);
-            for (int j = 0; j < this.y; j += 1) {
-                int yPos = this.yOrigin + (j * this.sY);
-                this.points.get(i).get(j).x = xPos;
-                this.points.get(i).get(j).y = yPos;
-            }
-        }
     }
 
-    public void move_reset() {
-        // Resets all Points to their original positions.
+    public Point_Grid move_reset() {
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.x = currPoint.oX;
-                currPoint.y = currPoint.oY;
-            }
-        }
+       return Move.grid_reset(this);
+
     }
 
     // * =========== UNIVERSAL APPLICATORS ============== * //
