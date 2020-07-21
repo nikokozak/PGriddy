@@ -8,6 +8,7 @@ public class Selection {
 
     public int startCol, endCol;
     public int startRow, endRow;
+    private int center_x, center_y;
 
     public Selection (int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
 
@@ -16,10 +17,20 @@ public class Selection {
             startRow = _row0;
             endCol = _col1;
             endRow = _row1;
+            center_x = (_col1 + _col0)/2;
+            center_y = (_row1 + _row0)/2;
         } else {
             throw new java.lang.RuntimeException("Selection exceeds given Point_Grid bounds, or col/row inputs are wrong.");
         }
 
+    }
+
+    public int center_x(){
+        return center_x;
+    }
+
+    public int center_y(){
+        return center_y;
     }
 
 }

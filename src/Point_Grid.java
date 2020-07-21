@@ -2,9 +2,10 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Point_Grid {
+public class Point_Grid implements Iterable<Grid_Point>{
 
     // a POINT_GRID is a data structure
     // a POINT_GRID contains a 2D collection of POINTs
@@ -88,6 +89,12 @@ public class Point_Grid {
         }
     }
 
+    // * =========== ITERATOR ============== * //
+
+    @Override
+    public Iterator<Grid_Point> iterator() {
+        return new Grid_Iterator(this.points);
+    }
 
     // * =========== DRAWING TOOLS ============== * //
 
@@ -123,9 +130,21 @@ public class Point_Grid {
 
     }
 
+    public Point_Grid move(int _x, int _y, Selection _s) {
+
+        return Move.grid(_x, _y, _s, this);
+
+    }
+
     public Point_Grid move_mult(int _x, int _y) {
 
        return Move.grid_mult(_x, _y, this);
+
+    }
+
+    public Point_Grid move_mult(int _x, int _y, Selection _s) {
+
+        return Move.grid_mult(_x, _y, _s, this);
 
     }
 
@@ -135,9 +154,21 @@ public class Point_Grid {
 
     }
 
+    public Point_Grid move_to(int _x, int _y, Selection _s) {
+
+        return Move.grid_to(_x, _y, _s, this);
+
+    }
+
     public Point_Grid move_reset() {
 
        return Move.grid_reset(this);
+
+    }
+
+    public Point_Grid move_reset(Selection _s) {
+
+        return Move.grid_reset(_s, this);
 
     }
 
@@ -193,133 +224,131 @@ public class Point_Grid {
 
     public Point_List get_line(int _col0, int _row0, int _col1, int _row1) {
 
-        return Getters.get_line(_col0, _row0, _col1, _row1, this);
+        return Getters.get_grid_line(_col0, _row0, _col1, _row1, this);
 
     }
 
     public Point_List get_circle(int _col0, int _row0, int _rad) {
 
-        return Getters.get_circle(_col0, _row0, _rad, this);
+        return Getters.get_grid_circle(_col0, _row0, _rad, this);
+
+    }
+
+    public Point_List get_circle_fill(int _col, int _row, int _rad) {
+
+        return Getters.get_grid_circle_fill(_col, _row, _rad, this);
 
     }
 
     public Point_List getLine_No_Op(int _col0, int _row0, int _col1, int _row1) {
 
-        return Getters.get_line_no_op(_col0, _row0, _col1, _row1, this);
-
-    }
-
-    public Point_List get_circle(int _col, int _row, int _rad, Point_Grid _pg) {
-
-        return Getters.get_circle(_col, _row, _rad, this);
+        return Getters.get_grid_line_no_op(_col0, _row0, _col1, _row1, this);
 
     }
 
     public Point_List get_polyline(Point_List _pl, boolean _closed) {
 
-        return Getters.get_polyline(_pl, _closed, this);
+        return Getters.get_grid_polyline(_pl, _closed, this);
+
+    }
+
+    public Point_List get_polyline_fill(Point_List _pl) {
+
+        return Getters.get_grid_polyline_fill(_pl, this);
 
     }
 
     public Point_List get_pattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow) {
 
-        return Getters.get_pattern(_col, _row, _dlist, _reps, _overflow, this);
+        return Getters.get_grid_pattern(_col, _row, _dlist, _reps, _overflow, this);
 
     }
 
+    public Point_List get_every(int _x, int _y) {
 
+        return Getters.get_grid_every(_x, _y, this);
 
-    // TODO: Implement get-circles (w/fill)
-    // TODO: Implement get-polygon (w/fill)
-    // TODO: Implement "apply" lines (w/fill)
-    // TODO: Implement "apply" circles (w/fill)
-    // TODO: Implement "apply" polygon (w/fill)
+    }
 
-    // TODO: Implement selections for applicators and getters
+    public Point_List get_region(int _x1, int _y1, int _x2, int _y2) {
+
+        return Getters.get_grid_region(_x1, _y1, _x2, _y2, this);
+
+    }
 
     // * =========== UNIVERSAL APPLICATORS ============== * //
 
     public void color(int _col) {
 
-        // Sets all Points in the Grid to _col.
-        // Where:
-        // _col -> Processing color()
+        Applicators.grid_color(_col, this);
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.col = _col;
-            }
-        }
+    }
+
+    public void color(int _col, Selection _s) {
+
+        Applicators.grid_color(_col, _s, this);
+
     }
 
     public void weight(double _weight) {
 
-        // Sets all Points to a given weight.
-        // Where:
-        // _weight -> weight to set. DOUBLE[0.0-1.0]
+        Applicators.grid_weight(_weight, this);
 
-        _weight = Helpers.clamp(_weight, 0.0, 1.0);
+    }
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = _weight;
-            }
-        }
+    public void weight(double _weight, Selection _s) {
+
+        Applicators.grid_weight(_weight, _s, this);
+
     }
 
     public void weight_add(double _to_add) {
 
-       // Adds a given weight to all points equally.
-       // Where:
-       // _to_add -> weight to add. DOUBLE[0.0-1.0]
+        Applicators.grid_weight_add(_to_add, this);
 
-       _to_add = Helpers.clamp(_to_add, 0.0, 1.0);
+    }
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = Helpers.clamp(currPoint.weight + _to_add, 0, 1);
-            }
-        }
+    public void weight_add(double _to_add, Selection _s) {
+
+        Applicators.grid_weight_add(_to_add, _s, this);
+
     }
 
     public void weight_multiply(double _factor) {
 
-       // Multiplies the weights of all points by a given number.
-       // Where:
-       // _factor -> factor by which to multiply
+        Applicators.grid_weight_multiply(_factor, this);
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
-            }
-        }
+    }
+
+
+    public void weight_multiply(double _factor, Selection _s) {
+
+        Applicators.grid_weight_multiply(_factor, _s, this);
+
     }
 
     public void weight_reset() {
 
-        // Sets all Points to weight 1.0.
+        Applicators.grid_weight_reset(this);
 
-        for (ArrayList<Grid_Point> column : this.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = 1.0;
-            }
-        }
+    }
+
+    public void weight_reset(Selection _s) {
+
+        Applicators.grid_weight_reset(_s, this);
+
     }
 
     public void filter(double _low, double _high) {
 
-        // Sets all weights outside the threshold to zero.
-        // Where:
-        // _low -> floor of threshold
-        // _high -> ceiling of threshold
+        Applicators.grid_weight_filter(_low, _high, this);
 
-        for (ArrayList<Grid_Point> column : this.points)  {
-            for (Grid_Point currPoint : column) {
-                if (currPoint.weight < _low || currPoint.weight > _high) {
-                   currPoint.weight = 0;
-                }
-            }
-        }
+    }
+
+    public void filter(double _low, double _high, Selection _s) {
+
+        Applicators.grid_weight_filter(_low, _high, _s, this);
+
     }
 
     // * =========== GRADIENT APPLICATORS ============== * //

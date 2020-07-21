@@ -19,7 +19,7 @@ public class Gradients {
         double rad = Math.pow(_rad, 2);
 
         Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) {
+        switch(_pg.check_quad(center_point)) { // Checks quadrant of center_point to determine where in grid to sample farthest point.
             case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
             case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
             case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));

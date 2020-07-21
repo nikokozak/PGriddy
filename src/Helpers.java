@@ -83,7 +83,7 @@ public class Helpers {
     public static boolean checkBounds(int _col, int _row, Point_Grid _pg) {
 
         // Checks whether the given row and column values exceed the number of columns and rows in a POINT_GRID
-        // Returns True if it does not
+        // Returns True if they do not (i.e. bounds are correct)
         // Where:
         // _col0, _row0 -> col and row values
         // _pg -> Point_Grid against which to check
@@ -95,7 +95,7 @@ public class Helpers {
     public static boolean checkRowBounds(int _row, Point_Grid _pg) {
 
         // Checks whether the given row exceeds the bounds of the given POINT_GRID
-        // Returns True if it does not
+        // Returns True if it does not (i.e. bounds are correct)
         // Where:
         // _row -> row value to check
         // _pg -> Point_Grid against which to check

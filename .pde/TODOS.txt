@@ -1,9 +1,8 @@
 TODOS:
 
+- Refactor methods to incorporate Lists and Grids in same method (using new iterator)
 - Implement Selections for applicators
 - Figure out how to handle orphan points (or whether we need Points at all)
-- Set up documentation system.
-- Set up JUnit
 
 Features:
 
@@ -26,3 +25,7 @@ Wishlist:
 Noise:
 - https://github.com/damdoy/noise_functions/blob/master/noise_functions.js
 - worth looking at thebookofshaders.com
+
+pg1.get_circle().perlin();
+
+pg1.apply_circle();

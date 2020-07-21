@@ -13,6 +13,7 @@ public class Getters {
         _row = Math.floorMod(_row, _pg.y);
 
         return _pg.points.get(_col).get(_row);
+
     }
 
     public static Grid_Point get_grid_point_safe(int _col, int _row, Point_Grid _pg) {
@@ -86,9 +87,7 @@ public class Getters {
         // _pg -> POINT_GRID to fetch from (POINT_GRID)
         // _index -> column to grab
 
-        Point_List result = new Point_List(_pg.points.get(_index));
-
-        return result;
+        return new Point_List(_pg.points.get(_index));
 
     }
 
@@ -155,7 +154,7 @@ public class Getters {
 
     }
 
-    public static Point_List get_line(int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
+    public static Point_List get_grid_line(int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
 
         // fetches points on grid according to line given by (_col0, _row0), (_col1, _row1)
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -190,7 +189,7 @@ public class Getters {
 
     }
 
-    public static Point_List get_line_no_op(int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
+    public static Point_List get_grid_line_no_op(int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
 
         // fetches points on grid according to line given by (_col0, _row0), (_col1, _row1)
         // instead of an optimized algorithm, uses a non-optimized slope-intercept based method.
@@ -219,7 +218,7 @@ public class Getters {
 
     }
 
-    public static Point_List get_circle(int _col, int _row, int _rad, Point_Grid _pg) {
+    public static Point_List get_grid_circle(int _col, int _row, int _rad, Point_Grid _pg) {
 
         // fetches points on grid according to circle with center (_col, _row) and radius (_rad)
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -262,7 +261,25 @@ public class Getters {
 
     }
 
-    public static Point_List get_polyline(Point_List _pl, boolean _closed, Point_Grid _pg) {
+    public static Point_List get_grid_circle_fill(int _col, int _row, int _rad, Point_Grid _pg) {
+
+        // fetches points on grid according to circle with center (_col, _row) and radius (_rad).
+        // fetches all points inside said circle as well.
+        // uses modified rasterizing algorithm for outline, by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
+        // Where:
+        // _col, _row -> center of circle
+        // _rad -> radius of circle
+        // _pg -> POINT_GRID to sample from
+
+        Point_List result = get_grid_circle(_col, _row, _rad, _pg);
+
+        result.add_all(grid_fill_bounds(_col, _row, result, _pg));
+
+        return result;
+
+    }
+
+    public static Point_List get_grid_polyline(Point_List _pl, boolean _closed, Point_Grid _pg) {
 
         // fetches points on grid according to coordinates of polygon passed in as Point List _pl
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -280,17 +297,34 @@ public class Getters {
 
         while(iter.hasNext()) {
             nextPoint = iter.next();
-            result.add_all(get_line(currPoint.gX, currPoint.gY, nextPoint.gX, nextPoint.gY, _pg));
+            result.add_all(get_grid_line(currPoint.gX, currPoint.gY, nextPoint.gX, nextPoint.gY, _pg));
             currPoint = nextPoint;
         }
 
-        if (_closed) result.add_all(get_line(currPoint.gX, currPoint.gY, firstPoint.gX, firstPoint.gY, _pg));
+        if (_closed) result.add_all(get_grid_line(currPoint.gX, currPoint.gY, firstPoint.gX, firstPoint.gY, _pg));
 
         return result;
 
     }
 
-    public static Point_List get_pattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow, Point_Grid _pg) {
+    public static Point_List get_grid_polyline_fill(Point_List _pl, Point_Grid _pg) {
+
+        // fetches all points within and including polyline _pl in a given grid.
+        // if open, the polyline is closed before processing it.
+        // Where:
+        // _pl -> polyline to sample
+        // _pg -> point grid to sample
+
+       Point_List result = get_grid_polyline(_pl, true, _pg);
+       Tuple2<Integer, Integer> centroid = polygon_centroid(_pl);
+       assert result != null;
+       result.add_all(grid_fill_bounds(centroid.a, centroid.b, result, _pg));
+
+       return result;
+
+    }
+
+    public static Point_List get_grid_pattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow, Point_Grid _pg) {
 
         // fetches points according to a list of directions (explained below) for a certain number of iterations
         // Where:
@@ -328,6 +362,183 @@ public class Getters {
             step += 1;
 
         }
+
+        return result;
+
+    }
+
+    public static Point_List get_grid_every(int _x, int _y, Point_Grid _pg) {
+
+        // fetches points in a grid, by sampling every _x column and _y row.
+        // Where:
+        // _x -> how many columns to skip
+        // _y -> how many rows to skip
+        // _pg -> point grid to sample
+
+        Point_List result = new Point_List();
+
+        for (int x = 0; x < _pg.x; x += _x) {
+            for (int y = 0; y < _pg.y; y += _y) {
+                result.add(_pg.points.get(x).get(y));
+            }
+        }
+
+        return result;
+
+    }
+
+    public static Point_List get_list_every_other(int _x, Point_List _pl) {
+
+        // fetches points in a point_list, skipping _x points per sample.
+        // Where:
+        // _x -> how many points to skip per sample.
+        // _pl -> point list to sample
+
+        Point_List result = new Point_List();
+
+        for (int x = 0; x < _pl.size(); x += _x) {
+            result.add(_pl.get(x));
+        }
+
+        return result;
+
+    }
+
+    public static Point_List get_grid_region(int _x0, int _y0, int _x1, int _y1, Point_Grid _pg) {
+
+        // fetches points within a given Point_Grid region
+        // Where:
+        // _x0, _y0 -> top left corner of region (inclusive)
+        // _x1, _y1 -> bottom right corner of region (inclusive)
+
+        Point_List result = new Point_List();
+
+        for (int x = _x0; x <= _x1; x++) {
+            for (int y = _y0; y <= _y1; y++) {
+                result.add(_pg.get_point(x, y));
+            }
+        }
+
+        return result;
+
+    }
+
+    //** ==================== PRIVATE HELPERS ====================== **//
+
+    private static Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> get_list_min_max_coords(Point_List _pl) {
+
+        // finds the min/max gX and min/max gY coordinates in a Point_List.
+        // returns ((x-min, x-max), (y-min, y-max))
+        // Where:
+        // _pl -> point list to sample
+
+       Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> result =
+               new Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>>
+                       (new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0), new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0));
+
+       for (Grid_Point currPoint : _pl.points) {
+           if (currPoint.gX < result.a.a) result.a.a = currPoint.gX;
+           if (currPoint.gX > result.a.b) result.a.b = currPoint.gX;
+           if (currPoint.gY < result.b.a) result.b.a = currPoint.gY;
+           if (currPoint.gY > result.b.b) result.b.b = currPoint.gX;
+       }
+
+       return result;
+    }
+
+    private static boolean point_in_list(int _col, int _row, Point_List _pl) {
+
+        // checks whether a certain point exists in a list based on given x, y grid coordinates.
+        // Where:
+        // _col -> col index of desired point
+        // _row -> row index of desired point
+        // _pl -> point list to sample
+        // TODO: implement sortx, sorty, sortglobal for Point_List (this is too naive for large lists)
+
+        boolean found = false;
+
+        for (Grid_Point currPoint : _pl.points) {
+            if (currPoint.gX == _col && currPoint.gY == _row) {
+                found = true;
+                break;
+            }
+        }
+
+        return found;
+
+    }
+
+    private static void fill_util(int _col, int _row, Point_List _outline, Point_Grid _pg, Point_List _result) {
+
+        // Recurs over points within _pl (must be closed) and adds them to _result
+        // Where:
+        // _col -> centerpoint x of fill operation
+        // _row -> centerpoint y of fill operation
+        // _outline -> Point_List representing closed bounds - points are added to this Point_List
+        // _pg -> Point_Grid to draw points from
+        // _result -> Point_List to add points to
+
+        if (!Helpers.checkBounds(_col, _row, _pg)) return;
+        if (point_in_list(_col, _row, _outline)) return;
+        if (point_in_list(_col, _row, _result)) return;
+
+        _result.add(get_grid_point(_col, _row, _pg));
+
+        fill_util(_col + 1, _row, _outline, _pg, _result);
+        fill_util(_col - 1, _row, _outline, _pg, _result);
+        fill_util(_col, _row + 1, _outline, _pg, _result);
+        fill_util(_col, _row - 1, _outline, _pg, _result);
+
+    }
+
+    private static Point_List grid_fill_bounds(int _col, int _row, Point_List _outline, Point_Grid _pg) {
+
+        // Returns points within the bounds of a Point_List (i.e. circle) (must be closed bounds)
+        // Where:
+        // _col -> centerpoint x of fill operation
+        // _row -> centerpoint y of fill operation
+        // _outline -> Point_List representing closed bounds - points are added to this Point_List
+        // _pg -> Point_Grid to draw points from
+
+        Point_List result = new Point_List();
+        fill_util(_col, _row, _outline, _pg, result);
+        return result;
+
+    }
+
+    private static Tuple2<Integer, Integer> polygon_centroid(Point_List _pl) {
+
+       // Returns the centroid of a non-self intersecting Polygon (VERTICES MUST BE IN ORDER)
+       // Where:
+       // _pl -> polyline to sample
+
+        Tuple2<Integer, Integer> result = new Tuple2<Integer, Integer>(0, 0);
+
+        int n = _pl.size();
+        double signedArea = 0;
+
+        // For all vertices
+        for (int i = 0; i < n; i++)
+        {
+            int x0 = _pl.get(i).gX, y0 = _pl.get(i).gY;
+            int x1 = _pl.get((i + 1) % n).gX, y1 = _pl.get((i + 1) % n).gY;
+
+            // Calculate value of A
+            // using shoelace formula
+            int A = (x0 * y1) - (x1 * y0);
+            signedArea += A;
+
+            // Calculating coordinates of
+            // centroid of polygon
+            result.a += (x0 + x1) * A;
+            result.b += (y0 + y1) * A;
+        }
+
+        signedArea *= 0.5;
+        result.a = (int)((result.a) / (6 * signedArea));
+        result.b = (int)((result.b) / (6 * signedArea));
+
+        Core.processing.print(result.b, " ", result.a, "\n");
 
         return result;
 

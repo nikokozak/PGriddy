@@ -1,6 +1,7 @@
 import processing.core.*;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class Core extends PApplet {
@@ -12,6 +13,7 @@ public class Core extends PApplet {
     Point_Grid pg2;
     Point_List pl1;
     Point_List pl2;
+    Grid_Point p1;
     List<Integer> directions;
     PImage image;
     int counter = 0;
@@ -26,15 +28,21 @@ public class Core extends PApplet {
         pg2.color(color(255));
         //pg1.image(image, "r", 0, 0, false, false, 1);
         //pg2.image(image, "r", 0, 200, true, true, 1);
+        pl2 = new Point_List();
+        pl2.add(pg1.get_point(0, 15), pg1.get_point(20, 25), pg1.get_point(15, 45), pg1.get_point(4, 50));
 
-        pg1.clover_curl(0, 0.8, 0.2, false, 1);
-        pg1.weight_multiply(2);
-        pg1.image(image, "r", 0, 0, true, true, 1.0);
-        pg2.clover_curlFractal(0, 1, 1, 0.5, false, 1);
+        //pl1 = pg1.get_polyline_fill(pl2);
+        pl1 = pg1.get_polyline_fill(pl2);
+        p1 = pg1.get_point(11, 28);
+        print(pl1.size());
 
-        directions = Arrays.asList(4, 4, 3, 3, 0, 2, 2, 2, 2, 4, 4, 4, 4, 5, 5, 5);
+        pg1.get_circle(15, 15, 4).color(color(255, 0, 0));
+        pg1.get_circle_fill(40, 40, 25).color(color(0, 255, 0));
 
-        pl2 = new Point_List(pg1.get_point(5, 10), pg1.get_point(8, 15), pg1.get_point(12, 7));
+        pg2 = new Point_Grid(pg1);
+        pg2.move_to((width/4) * 3, height/2);
+
+
 
     };
 
@@ -48,13 +56,12 @@ public class Core extends PApplet {
     public void draw() {
         background(0);
         //pg1.draw(1, 3, true);
-
-        if (counter < 300) counter++;
-
-        pl1 = pg1.get_pattern(0, 0, directions, counter, true);
-
+        for (Grid_Point grid_point : pg1) {
+            fill(grid_point.col);
+            circle(grid_point.x, grid_point.y, 3);
+        }
+        //pg1.draw(1, 3, false);
         pg2.draw(1, 3, true);
-        pl1.draw(1, 3, true);
 
     };
 
