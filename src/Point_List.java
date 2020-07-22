@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Point_List {
+public class Point_List implements Iterable<Grid_Point>{
 
     // Point_List is used to contain lists of Grid_Points, mainly used
     // when dealing with pattern extraction from Grids.
@@ -31,6 +31,13 @@ public class Point_List {
 
     public Point_List(Collection<Grid_Point> _list) {
         this.points = new ArrayList<Grid_Point>(_list);
+    }
+
+    //** ============= ITERATOR ================= **//
+
+    @Override
+    public Iterator<Grid_Point> iterator() {
+        return this.points.iterator();
     }
 
     //** ============= UTILS ================= **//
@@ -121,14 +128,6 @@ public class Point_List {
 
     }
 
-    public Iterator<Grid_Point> iterator() {
-
-        // Returns iterator for list of points.
-
-        return this.points.iterator();
-
-    }
-
     public Point_List remove_duplicates() {
 
         // Removes duplicate points from Point_List
@@ -192,13 +191,13 @@ public class Point_List {
 
     public Point_List move(int _x, int _y) {
 
-        return Move.list(_x, _y, this);
+        return Move.move(_x, _y, this);
 
     }
 
     public Point_List move_mult(int _x, int _y) {
 
-        return Move.list_mult(_x, _y, this);
+        return Move.mult(_x, _y, this);
 
     }
 
@@ -210,7 +209,7 @@ public class Point_List {
 
     public Point_List move_reset() {
 
-        return Move.list_reset(this);
+        return Move.reset(this);
 
     }
 
@@ -218,77 +217,88 @@ public class Point_List {
 
     public void color(int _col) {
 
-        // Sets all points in the Point_List to _col.
-        // Where:
-        // _col -> Processing color()
-
-        for (Grid_Point currPoint : this.points) {
-            currPoint.col = _col;
-        }
+        Applicators.color(_col, this);
 
     }
 
     public void weight(double _weight) {
 
-        // Sets the weight of all points in the Point_List to _weight.
-        // Where:
-        // _weight -> weight to set. DOUBLE[0.0-1.0]
-
-        _weight = Helpers.clamp(_weight, 0.0, 1.0);
-
-        for (Grid_Point currPoint : this.points) {
-            currPoint.weight = _weight;
-        }
+        Applicators.weight(_weight, this);
 
     }
 
     public void weight_add(double _to_add) {
 
-        // Adds a given weight to all points in the list.
-        // Where:
-        // _to_add -> weight to add. DOUBLE[0.0-1.0]
-
-        _to_add = Helpers.clamp(_to_add, 0.0, 1.0);
-
-        for (Grid_Point currPoint : this.points) {
-            currPoint.weight += _to_add;
-        }
+        Applicators.weight_add(_to_add, this);
 
     }
 
     public void weight_multiply(double _factor) {
 
-        // Multiplies the weights of all points by a given number.
-        // Where:
-        // _factor -> factor by which to multiply
-
-        for (Grid_Point currPoint: this.points) {
-            currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1.0);
-        }
+        Applicators.weight_multiply(_factor, this);
 
     }
 
     public void weight_reset() {
 
-        // Sets all points in Point_List to weight 1.0
-
-        for (Grid_Point currPoint : this.points) {
-            currPoint.weight = 1.0;
-        }
+        Applicators.weight_reset(this);
 
     }
 
     public void filter(double _low, double _high) {
 
-        // Sets all weights outside the threshold to zero.
-
-        for (Grid_Point currPoint : this.points) {
-           if (currPoint.weight < _low || currPoint.weight > _high) {
-               currPoint.weight = 0;
-           }
-        }
+        Applicators.weight_filter(_low, _high, this);
 
     }
 
+    // * ================ NOISE APPLICATORS =================== * //
+
+    public Point_List perlin(double _min, double _max, float _time, boolean _blend, double _opacity) {
+
+        return Noise.apply_perlin(_min, _max, _time, _blend, _opacity, this);
+
+    }
+
+    public Point_List random(double _min, double _max, boolean _blend, double _opacity) {
+
+        return Noise.apply_random(_min, _max, _blend, _opacity, this);
+
+    }
+
+    public Point_List clover_2D(double _min, double _max, boolean _blend, double _opacity) {
+
+       return Noise.apply_clover_2D(_min, _max, _blend, _opacity, this);
+
+    }
+
+    public Point_List fractal(double _min, double _max, int _iterations, boolean _blend, double _opacity) {
+
+        return Noise.apply_clover_fractal(_min, _max, _iterations, _blend, _opacity, this);
+
+    }
+
+    public Point_List frost(double _min, double _max, boolean _blend, double _opacity) {
+
+        return Noise.apply_clover_frost(_min, _max, _blend, _opacity, this);
+
+    }
+
+    public Point_List marble(double _min, double _max, boolean _blend, double _opacity) {
+
+        return Noise.apply_clover_marble(_min, _max, _blend, _opacity, this);
+
+    }
+
+    public Point_List curl(double _min, double _max, double _mix, boolean _blend, double _opacity) {
+
+        return Noise.apply_clover_curl(_min, _max, _mix, _blend, _opacity, this);
+
+    }
+
+    public Point_List curl_fractal(double _min, double _max, int _iterations, double _mix, boolean _blend, double _opacity) {
+
+        return Noise.apply_clover_curlFractal(_min, _max, _iterations, _mix, _blend, _opacity, this);
+
+    }
 
 }

@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class Grid_Iterator implements Iterator<Grid_Point> {
 
-    private ArrayList<ArrayList<Grid_Point>> points;
+    private final ArrayList<ArrayList<Grid_Point>> points;
     private int currentPosition;
 
     public Grid_Iterator(ArrayList<ArrayList<Grid_Point>> _points) {
@@ -24,7 +24,7 @@ public class Grid_Iterator implements Iterator<Grid_Point> {
     public Grid_Point next() {
         int x = Math.floorMod(currentPosition, points.size());
         int y = currentPosition / points.size();
-        currentPosition = currentPosition + 1;
+        currentPosition++;
         return points.get(x).get(y);
     }
 

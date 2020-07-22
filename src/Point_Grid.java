@@ -126,25 +126,25 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public Point_Grid move(int _x, int _y) {
 
-        return Move.grid(_x, _y, this);
+        return Move.move(_x, _y, this);
 
     }
 
     public Point_Grid move(int _x, int _y, Selection _s) {
 
-        return Move.grid(_x, _y, _s, this);
+        return Move.grid_select_move(_x, _y, _s, this);
 
     }
 
     public Point_Grid move_mult(int _x, int _y) {
 
-       return Move.grid_mult(_x, _y, this);
+       return Move.mult(_x, _y, this);
 
     }
 
     public Point_Grid move_mult(int _x, int _y, Selection _s) {
 
-        return Move.grid_mult(_x, _y, _s, this);
+        return Move.grid_select_mult(_x, _y, _s, this);
 
     }
 
@@ -156,19 +156,19 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public Point_Grid move_to(int _x, int _y, Selection _s) {
 
-        return Move.grid_to(_x, _y, _s, this);
+        return Move.grid_select_to(_x, _y, _s, this);
 
     }
 
     public Point_Grid move_reset() {
 
-       return Move.grid_reset(this);
+       return Move.reset(this);
 
     }
 
     public Point_Grid move_reset(Selection _s) {
 
-        return Move.grid_reset(_s, this);
+        return Move.grid_select_reset(_s, this);
 
     }
 
@@ -280,74 +280,75 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public void color(int _col) {
 
-        Applicators.grid_color(_col, this);
+        //Applicators.grid_color(_col, this);
+        Applicators.color(_col, this);
 
     }
 
     public void color(int _col, Selection _s) {
 
-        Applicators.grid_color(_col, _s, this);
+        Applicators.grid_select_color(_col, _s, this);
 
     }
 
     public void weight(double _weight) {
 
-        Applicators.grid_weight(_weight, this);
+        Applicators.weight(_weight, this);
 
     }
 
     public void weight(double _weight, Selection _s) {
 
-        Applicators.grid_weight(_weight, _s, this);
+        Applicators.grid_select_weight(_weight, _s, this);
 
     }
 
     public void weight_add(double _to_add) {
 
-        Applicators.grid_weight_add(_to_add, this);
+        Applicators.weight_add(_to_add, this);
 
     }
 
     public void weight_add(double _to_add, Selection _s) {
 
-        Applicators.grid_weight_add(_to_add, _s, this);
+        Applicators.grid_select_weight_add(_to_add, _s, this);
 
     }
 
     public void weight_multiply(double _factor) {
 
-        Applicators.grid_weight_multiply(_factor, this);
+        Applicators.weight_multiply(_factor, this);
 
     }
 
 
     public void weight_multiply(double _factor, Selection _s) {
 
-        Applicators.grid_weight_multiply(_factor, _s, this);
+        Applicators.grid_select_weight_multiply(_factor, _s, this);
 
     }
 
     public void weight_reset() {
 
-        Applicators.grid_weight_reset(this);
+        Applicators.weight_reset(this);
 
     }
 
     public void weight_reset(Selection _s) {
 
-        Applicators.grid_weight_reset(_s, this);
+        Applicators.grid_select_weight_reset(_s, this);
 
     }
 
     public void filter(double _low, double _high) {
 
-        Applicators.grid_weight_filter(_low, _high, this);
+        Applicators.weight_filter(_low, _high, this);
 
     }
 
     public void filter(double _low, double _high, Selection _s) {
 
-        Applicators.grid_weight_filter(_low, _high, _s, this);
+        Applicators.grid_select_weight_filter(_low, _high, _s, this);
 
     }
 

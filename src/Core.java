@@ -42,8 +42,7 @@ public class Core extends PApplet {
         pg2 = new Point_Grid(pg1);
         pg2.move_to((width/4) * 3, height/2);
 
-
-
+        pg2.color(color(255, 0, 0));
     };
 
     @Override
@@ -55,13 +54,9 @@ public class Core extends PApplet {
     @Override
     public void draw() {
         background(0);
-        //pg1.draw(1, 3, true);
-        for (Grid_Point grid_point : pg1) {
-            fill(grid_point.col);
-            circle(grid_point.x, grid_point.y, 3);
-        }
-        //pg1.draw(1, 3, false);
-        pg2.draw(1, 3, true);
+
+        pl1.draw(1, 3, false);
+        pg2.draw(1, 3, false);
 
     };
 

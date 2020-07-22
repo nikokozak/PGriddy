@@ -2,21 +2,20 @@ import java.util.ArrayList;
 
 public class Move {
 
-    public static Point_Grid grid(int _x, int _y, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> T move(int _x, int _y, T _l) {
+
         // Adds x and y quantities to Point positions.
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.y += _y;
-                currPoint.x += _x;
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.x += _x;
+            currPoint.y += _y;
         }
 
-        return _pg;
+        return _l;
 
     }
 
-    public static Point_Grid grid(int _x, int _y, Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_select_move(int _x, int _y, Selection _s, Point_Grid _pg) {
 
         // Adds x and y quantities to Point positions within a given selection.
 
@@ -34,33 +33,20 @@ public class Move {
 
     }
 
-    public static Point_List list(int _x, int _y, Point_List _pl) {
-        // Adds x and y quantities to Point positions.
-
-        for (Grid_Point currPoint : _pl.points) {
-            currPoint.x += _x;
-            currPoint.y += _y;
-        }
-
-        return _pl;
-    }
-
-    public static Point_Grid grid_mult(int _x, int _y, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> T mult(int _x, int _y, T _l) {
 
         // Multiplies Point positions by _x, _y.
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.y *= _y;
-                currPoint.x *= _x;
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.y *= _y;
+            currPoint.x *= _x;
         }
 
-        return _pg;
+        return _l;
 
     }
 
-    public static Point_Grid grid_mult(int _x, int _y, Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_select_mult(int _x, int _y, Selection _s, Point_Grid _pg) {
 
         // Multiplies x and y positions by _x and _y within a given selection.
 
@@ -75,19 +61,6 @@ public class Move {
         }
 
         return _pg;
-
-    }
-
-    public static Point_List list_mult(int _x, int _y, Point_List _pl) {
-
-        // Multiplies Point positions by _x, _y.
-
-        for (Grid_Point currPoint : _pl.points) {
-            currPoint.x *= _x;
-            currPoint.y *= _y;
-        }
-
-        return _pl;
 
     }
 
@@ -114,7 +87,7 @@ public class Move {
         return _pg;
     }
 
-    public static Point_Grid grid_to(int _x, int _y, Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_select_to(int _x, int _y, Selection _s, Point_Grid _pg) {
 
         // Moves a grid selection to a new x, y center. Translation is based on selection center.
         // DOES NOT AFFECT GRID CENTER ATTRIBUTE.
@@ -149,21 +122,20 @@ public class Move {
 
     }
 
-    public static Point_Grid grid_reset(Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> T reset(T _l) {
 
         // Resets all Points to their original positions.
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.x = currPoint.oX;
-                currPoint.y = currPoint.oY;
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.x = currPoint.oX;
+            currPoint.y = currPoint.oY;
         }
 
-        return _pg;
+        return _l;
+
     }
 
-    public static Point_Grid grid_reset(Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_select_reset(Selection _s, Point_Grid _pg) {
 
         // Resets all Grid_Points within a selection to their original positions.
 
@@ -178,19 +150,6 @@ public class Move {
         }
 
         return _pg;
-
-    }
-
-    public static Point_List list_reset(Point_List _pl) {
-
-       // Resets all Points to their original positions.
-
-       for (Grid_Point currPoint : _pl.points) {
-           currPoint.x = currPoint.oX;
-           currPoint.y = currPoint.oY;
-       }
-
-       return _pl;
 
     }
 

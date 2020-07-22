@@ -1,21 +1,20 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Applicators {
 
-    public static void grid_color(int _col, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> void color(int _col, T _l) {
 
         // Sets all Points in the Grid to _col.
         // Where:
         // _col -> Processing color()
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.col = _col;
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.col = _col;
         }
     }
 
-    public static void grid_color(int _col, Selection _s, Point_Grid _pg) {
+    public static void grid_select_color(int _col, Selection _s, Point_Grid _pg) {
 
         // Sets all Points in a given region of a Grid to _col.
         // Where:
@@ -32,7 +31,7 @@ public class Applicators {
         }
     }
 
-    public static void grid_weight(double _weight, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> void weight(double _weight, T _l) {
 
         // Sets all Points to a given weight.
         // Where:
@@ -40,14 +39,13 @@ public class Applicators {
 
         _weight = Helpers.clamp(_weight, 0.0, 1.0);
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = _weight;
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.weight = _weight;
         }
+
     }
 
-    public static void grid_weight(double _weight, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight(double _weight, Selection _s, Point_Grid _pg) {
 
         // Sets all Points in a given region of a Grid to _weight.
         // Where:
@@ -64,7 +62,7 @@ public class Applicators {
         }
     }
 
-    public static void grid_weight_add(double _to_add, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> void weight_add(double _to_add, T _l) {
 
         // Adds a given weight to all points equally.
         // Where:
@@ -72,14 +70,12 @@ public class Applicators {
 
         _to_add = Helpers.clamp(_to_add, 0.0, 1.0);
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
+            for (Grid_Point currPoint : _l) {
                 currPoint.weight = Helpers.clamp(currPoint.weight + _to_add, 0, 1);
             }
-        }
     }
 
-    public static void grid_weight_add(double _to_add, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_add(double _to_add, Selection _s, Point_Grid _pg) {
 
         // Adds a given weight to all points equally (within Selection).
         // Where:
@@ -97,20 +93,18 @@ public class Applicators {
         }
     }
 
-    public static void grid_weight_multiply(double _factor, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> void weight_multiply(double _factor, T _l) {
 
         // Multiplies the weights of all points by a given number.
         // Where:
         // _factor -> factor by which to multiply
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
         }
     }
 
-    public static void grid_weight_multiply(double _factor, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_multiply(double _factor, Selection _s, Point_Grid _pg) {
 
         // Multiplies the weights of all points by a given number (within selection).
         // Where:
@@ -127,19 +121,17 @@ public class Applicators {
         }
     }
 
-    public static void grid_weight_reset(Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> void weight_reset(T _l) {
 
         // Sets all Points to weight 1.0.
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                currPoint.weight = 1.0;
-            }
+        for (Grid_Point currPoint : _l) {
+            currPoint.weight = 1.0;
         }
     }
 
 
-    public static void grid_weight_reset(Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_reset(Selection _s, Point_Grid _pg) {
 
         // Sets all Points to weight 1.0.
         // Where:
@@ -155,23 +147,21 @@ public class Applicators {
         }
     }
 
-    public static void grid_weight_filter(double _low, double _high, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> void weight_filter(double _low, double _high, T _l) {
 
         // Sets all weights outside the threshold to zero.
         // Where:
         // _low -> floor of threshold
         // _high -> ceiling of threshold
 
-        for (ArrayList<Grid_Point> column : _pg.points)  {
-            for (Grid_Point currPoint : column) {
-                if (currPoint.weight < _low || currPoint.weight > _high) {
-                    currPoint.weight = 0;
-                }
+        for (Grid_Point currPoint : _l) {
+            if (currPoint.weight < _low || currPoint.weight > _high) {
+                currPoint.weight = 0;
             }
         }
     }
 
-    public static void grid_weight_filter(double _low, double _high, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_filter(double _low, double _high, Selection _s, Point_Grid _pg) {
 
         // Sets all weights outside the threshold to zero (within selection).
         // Where:

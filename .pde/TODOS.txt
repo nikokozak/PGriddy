@@ -1,6 +1,6 @@
 TODOS:
 
-- Refactor methods to incorporate Lists and Grids in same method (using new iterator)
+- Add opacity to weight adders.
 - Implement Selections for applicators
 - Figure out how to handle orphan points (or whether we need Points at all)
 
