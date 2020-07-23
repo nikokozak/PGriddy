@@ -42,6 +42,7 @@ public class Core extends PApplet {
 
         pg2 = new Point_Grid(pg1);
         pg2.move_to((width/4) * 3, height/2);
+        pg2 = Noise.apply_perlin_fractal(0, 1, 5, 0.01, 3, 2.0, 1, false, 1, pg2);
 
         pg2.color(color(255, 0, 0));
     };
@@ -60,7 +61,7 @@ public class Core extends PApplet {
         pl1.draw(1, 3, false);
         A.color(color(0, 255, 0));
         A.draw(1, 3, false);
-        pg2.draw(1, 3, false);
+        pg2.draw(1, 3, true);
 
     };
 

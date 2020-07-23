@@ -4,7 +4,8 @@ TODOS:
 
 Features:
 
-- Implement more noise / wave types
+- Implement time for clover
+- Implement more wave types
 - ??Implement meta-grids -> for sampling flocking behavior, etc, and apply back to static grid.
 - Implement naive-graphs -> dirjkstra, pathfinding
 - Circular Grids
