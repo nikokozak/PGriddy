@@ -276,6 +276,12 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     }
 
+    public Point_List get_text(String _sentence, int _xOrigin, int _yOrigin, int _size) {
+
+        return Text.get_sentence(_sentence, _xOrigin, _yOrigin, _size, this);
+
+    }
+
     // * =========== UNIVERSAL APPLICATORS ============== * //
 
     public void color(int _col) {

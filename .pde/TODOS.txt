@@ -1,18 +1,15 @@
 TODOS:
 
-- Add opacity to weight adders.
-- Implement Selections for applicators
 - Figure out how to handle orphan points (or whether we need Points at all)
 
 Features:
 
 - Implement more noise / wave types
-- Implement meta-grids -> for sampling flocking behavior, etc, and apply back to static grid.
+- ??Implement meta-grids -> for sampling flocking behavior, etc, and apply back to static grid.
 - Implement naive-graphs -> dirjkstra, pathfinding
 - Circular Grids
 - Intersection filters w/processing shapes and 3d shapes.
-- Game of Life.
-- Add in text support.
+- **Game of Life.
 - Attractor system.
 - Gravity / Flock system.
 - Add in 3D support.

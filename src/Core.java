@@ -13,6 +13,7 @@ public class Core extends PApplet {
     Point_Grid pg2;
     Point_List pl1;
     Point_List pl2;
+    Point_List A;
     Grid_Point p1;
     List<Integer> directions;
     PImage image;
@@ -35,7 +36,7 @@ public class Core extends PApplet {
         pl1 = pg1.get_polyline_fill(pl2);
         p1 = pg1.get_point(11, 28);
         print(pl1.size());
-
+        A = Text.get_sentence("HKLLKJ", 0, 8, 1, pg1);
         pg1.get_circle(15, 15, 4).color(color(255, 0, 0));
         pg1.get_circle_fill(40, 40, 25).color(color(0, 255, 0));
 
@@ -55,7 +56,10 @@ public class Core extends PApplet {
     public void draw() {
         background(0);
 
+
         pl1.draw(1, 3, false);
+        A.color(color(0, 255, 0));
+        A.draw(1, 3, false);
         pg2.draw(1, 3, false);
 
     };
