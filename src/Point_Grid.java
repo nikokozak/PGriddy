@@ -19,10 +19,12 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     // * =========== PROPERTIES ============== * //
 
-    public final int x, y, sX, sY;
-    public int xOrigin, yOrigin; // Define the lowest X and Y coordinates for the grid system.
-    public Point c;
-    public ArrayList<ArrayList<Grid_Point>> points;
+    public final int x, y; // Number of Grid_Points in x-dir and y-dir (cols, rows).
+    public final int sX, sY; // Spacing between points in x and y axes.
+
+    public int xOrigin, yOrigin; // Define the top-left X and Y pixel-coordinate values for the grid system.
+    public Point c; // CenterPoint of Grid (x, y pixel-coordinate values)
+    public ArrayList<ArrayList<Grid_Point>> points; // Points held by grid.
 
 
     // * =========== CONSTRUCTORS ============== * //

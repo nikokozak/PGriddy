@@ -2,3 +2,5 @@
 .idea/libraries
 /.pde/build-tmp/*
 .pde/build-tmp
+./out
+out/*

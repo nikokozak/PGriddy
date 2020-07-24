@@ -29,14 +29,12 @@ public class Gradients {
         rad = rad - MAX;
         double currWeight;
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                dist = _pg.grid_approx_dist(currPoint, center_point);
-                if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + rad, 0, _init_weight) * _opacity;
-                else currWeight = Helpers.map(dist, MAX + rad, MIN, 0, _init_weight) * _opacity;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
-                else currPoint.weight = currWeight;
-            }
+        for (Grid_Point currPoint : _pg) {
+            dist = _pg.grid_approx_dist(currPoint, center_point);
+            if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + rad, 0, _init_weight) * _opacity;
+            else currWeight = Helpers.map(dist, MAX + rad, MIN, 0, _init_weight) * _opacity;
+            if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+            else currPoint.weight = currWeight;
         }
 
         return _pg;
@@ -71,14 +69,12 @@ public class Gradients {
         _rad = _rad - MAX;
         double currWeight;
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                dist = _pg.grid_exact_dist(currPoint, center_point);
-                if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight) * _opacity;
-                else currWeight = Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight) * _opacity;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
-                else currPoint.weight = currWeight;
-            }
+        for (Grid_Point currPoint : _pg) {
+            dist = _pg.grid_exact_dist(currPoint, center_point);
+            if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight) * _opacity;
+            else currWeight = Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight) * _opacity;
+            if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+            else currPoint.weight = currWeight;
         }
 
         return _pg;
@@ -113,14 +109,12 @@ public class Gradients {
         rad = rad - MAX;
         double currWeight;
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                dist = _pg.grid_approx_dist(currPoint, center_point);
-                if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
-                else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
-                else currPoint.weight = currWeight;
-            }
+        for (Grid_Point currPoint : _pg) {
+            dist = _pg.grid_approx_dist(currPoint, center_point);
+            if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
+            else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
+            if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+            else currPoint.weight = currWeight;
         }
 
         return _pg;
@@ -156,14 +150,12 @@ public class Gradients {
         _rad = _rad - MAX;
         double currWeight;
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                dist = _pg.grid_exact_dist(currPoint, center_point);
-                if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
-                else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
-                else currPoint.weight = currWeight;
-            }
+        for (Grid_Point currPoint : _pg) {
+            dist = _pg.grid_exact_dist(currPoint, center_point);
+            if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
+            else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
+            if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+            else currPoint.weight = currWeight;
         }
 
         return _pg;
@@ -200,14 +192,12 @@ public class Gradients {
         rad = rad - MAX;
         double currWeight;
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                dist = _pg.grid_approx_dist(currPoint, center_point);
-                if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
-                else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
-                else currPoint.weight = currWeight;
-            }
+        for (Grid_Point currPoint : _pg) {
+            dist = _pg.grid_approx_dist(currPoint, center_point);
+            if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
+            else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
+            if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+            else currPoint.weight = currWeight;
         }
 
         return _pg;
@@ -244,14 +234,12 @@ public class Gradients {
         _rad = _rad - MAX;
         double currWeight;
 
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                dist = _pg.grid_exact_dist(currPoint, center_point);
-                if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + _rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
-                else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
-                else currPoint.weight = currWeight;
-            }
+        for (Grid_Point currPoint : _pg) {
+            dist = _pg.grid_exact_dist(currPoint, center_point);
+            if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + _rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
+            else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
+            if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
+            else currPoint.weight = currWeight;
         }
 
         return _pg;
