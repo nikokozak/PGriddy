@@ -100,25 +100,25 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public void draw() {
 
-        Draw.grid(this);
+        Draw.draw(this);
 
     }
 
     public void draw(int _type) {
 
-        Draw.grid(_type, this);
+        Draw.draw(_type, this);
 
     }
 
     public void draw(int _type, boolean _weight) {
 
-        Draw.grid(_type, _weight, this);
+        Draw.draw(_type, _weight, this);
 
     }
 
     public void draw(int _type, float _size, boolean _weight) {
 
-        Draw.grid(_type, _size, _weight, this);
+        Draw.draw(_type, _size, _weight, this);
 
     }
 

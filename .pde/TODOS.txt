@@ -4,6 +4,8 @@ TODOS:
 
 Features:
 
+- Add in 3D support.
+- OBJ export.
 - Implement time for clover
 - Implement more wave types
 - ??Implement meta-grids -> for sampling flocking behavior, etc, and apply back to static grid.
@@ -13,7 +15,6 @@ Features:
 - **Game of Life.
 - Attractor system.
 - Gravity / Flock system.
-- Add in 3D support.
 - Add in gravity / perlin oscilation.
 
 Wishlist:
