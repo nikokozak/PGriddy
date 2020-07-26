@@ -348,7 +348,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public Point_Grid radGradient(Gradient grad) {
 
-        grad.applyValuesToPoints(this);
+        grad.applyWeightsToPoints(this);
         return this;
 
     }
