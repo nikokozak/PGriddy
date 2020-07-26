@@ -1,12 +1,10 @@
-import java.util.ArrayList;
-
 public class Draw {
 
     public static <T extends Iterable<Grid_Point>> void draw(T _l) {
         // Draws points to screen as a simple Processing point (no fill, weight).
 
         for (Grid_Point currPoint : _l) {
-            Core.processing.point(currPoint.x, currPoint.y);
+            Core.processing.point(currPoint.xPos, currPoint.yPos);
         }
     }
 
@@ -22,9 +20,9 @@ public class Draw {
 
         for (Grid_Point currPoint : _l) {
             switch (type) {
-                case 0 -> Core.processing.point(currPoint.x, currPoint.y);
-                case 1 -> Core.processing.circle(currPoint.x, currPoint.y, 3);
-                case 2 -> Core.processing.rect(currPoint.x, currPoint.y, 3, 3);
+                case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
+                case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, 3);
+                case 2 -> Core.processing.rect(currPoint.xPos, currPoint.yPos, 3, 3);
             }
         }
     }
@@ -40,9 +38,9 @@ public class Draw {
             if (weight) Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
             else Core.processing.fill(currPoint.col);
             switch (type) {
-                case 0 -> Core.processing.point(currPoint.x, currPoint.y);
-                case 1 -> Core.processing.circle(currPoint.x, currPoint.y, 3);
-                case 2 -> Core.processing.rect(currPoint.x, currPoint.y, 3, 3);
+                case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
+                case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, 3);
+                case 2 -> Core.processing.rect(currPoint.xPos, currPoint.yPos, 3, 3);
             }
         }
     }
@@ -59,9 +57,9 @@ public class Draw {
             if (weight) Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
             else Core.processing.fill(currPoint.col);
             switch (type) {
-                case 0 -> Core.processing.point(currPoint.x, currPoint.y);
-                case 1 -> Core.processing.circle(currPoint.x, currPoint.y, size);
-                case 2 -> Core.processing.rect(currPoint.x, currPoint.y, size, size);
+                case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
+                case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, size);
+                case 2 -> Core.processing.rect(currPoint.xPos, currPoint.yPos, size, size);
             }
         }
     }

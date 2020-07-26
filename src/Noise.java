@@ -13,8 +13,8 @@ public class Noise {
 
         for (Grid_Point currPoint : _l) {
             if (_blend) currPoint.weight = Helpers.clamp(
-                    currPoint.weight + Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(Core.processing.noise(currPoint.x, currPoint.y, _time), 0, 1, _min, _max) * _opacity; // Call Perlin ~
+                    currPoint.weight + Helpers.map(Core.processing.noise(currPoint.xPos, currPoint.yPos, _time), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+            else currPoint.weight = Helpers.map(Core.processing.noise(currPoint.xPos, currPoint.yPos, _time), 0, 1, _min, _max) * _opacity; // Call Perlin ~
         }
 
         return _l;
@@ -52,8 +52,8 @@ public class Noise {
 
         for (Grid_Point currPoint : _l) {
             if (_blend) currPoint.weight = Helpers.clamp(
-                    currPoint.weight + Helpers.map(noise2D.noise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(noise2D.noise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+                    currPoint.weight + Helpers.map(noise2D.noise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+            else currPoint.weight = Helpers.map(noise2D.noise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity;
         }
 
         return _l;
@@ -73,8 +73,8 @@ public class Noise {
 
         for (Grid_Point currPoint : _l) {
             if (_blend) currPoint.weight = Helpers.clamp(
-                    currPoint.weight + Helpers.map(noise2D.fractalNoise(currPoint.x, currPoint.y, _iterations), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(noise2D.fractalNoise(currPoint.x, currPoint.y, _iterations), 0, 1, _min, _max) * _opacity;
+                    currPoint.weight + Helpers.map(noise2D.fractalNoise(currPoint.xPos, currPoint.yPos, _iterations), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+            else currPoint.weight = Helpers.map(noise2D.fractalNoise(currPoint.xPos, currPoint.yPos, _iterations), 0, 1, _min, _max) * _opacity;
         }
 
         return _l;
@@ -94,8 +94,8 @@ public class Noise {
 
         for (Grid_Point currPoint : _l) {
             if (_blend) currPoint.weight = Helpers.clamp(
-                    currPoint.weight + Helpers.map(noise2D.frostNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(noise2D.frostNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+                    currPoint.weight + Helpers.map(noise2D.frostNoise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+            else currPoint.weight = Helpers.map(noise2D.frostNoise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity;
         }
 
         return _l;
@@ -115,8 +115,8 @@ public class Noise {
 
         for (Grid_Point currPoint : _l) {
             if (_blend) currPoint.weight = Helpers.clamp(
-                    currPoint.weight + Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+                    currPoint.weight + Helpers.map(noise2D.marbleNoise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity, 0.0, 1.0);
+            else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity;
         }
 
         return _l;
@@ -137,12 +137,12 @@ public class Noise {
         double xVal, yVal, weight;
 
         for (Grid_Point currPoint : _l) {
-            CloverNoise.Vector2 curl = noise2D.curlNoise(currPoint.x, currPoint.y);
+            CloverNoise.Vector2 curl = noise2D.curlNoise(currPoint.xPos, currPoint.yPos);
             xVal = curl.getX(); yVal = curl.getY();
             weight = Helpers.mix(xVal, yVal, _mix);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity;
         }
 
         return _l;
@@ -164,12 +164,12 @@ public class Noise {
         double xVal, yVal, weight;
 
         for (Grid_Point currPoint : _l) {
-            CloverNoise.Vector2 curl = noise2D.fractalCurlNoise(currPoint.x, currPoint.y, _iterations);
+            CloverNoise.Vector2 curl = noise2D.fractalCurlNoise(currPoint.xPos, currPoint.yPos, _iterations);
             xVal = curl.getX(); yVal = curl.getY();
             weight = Helpers.mix(xVal, yVal, _mix);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
-            else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.x, currPoint.y), 0, 1, _min, _max) * _opacity;
+            else currPoint.weight = Helpers.map(noise2D.marbleNoise(currPoint.xPos, currPoint.yPos), 0, 1, _min, _max) * _opacity;
         }
 
         return _l;
@@ -196,7 +196,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = valueNoise.GetNoise(currPoint.x, currPoint.y, (float)_time);
+            weight = valueNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float)_time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -231,7 +231,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = valueFractalNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = valueFractalNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -261,7 +261,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = simplexNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = simplexNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -296,7 +296,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = simplexFractalNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = simplexFractalNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -326,7 +326,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = simplexNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = simplexNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -356,7 +356,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = simplexNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = simplexNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -391,7 +391,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = simplexFractalNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = simplexFractalNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;
@@ -426,7 +426,7 @@ public class Noise {
         double weight;
 
         for (Grid_Point currPoint : _l) {
-            weight = simplexFractalNoise.GetNoise(currPoint.x, currPoint.y, (float) _time);
+            weight = simplexFractalNoise.GetNoise(currPoint.xPos, currPoint.yPos, (float) _time);
             if (_blend) currPoint.weight = Helpers.clamp(
                     currPoint.weight + Helpers.map(weight, 0, 1, _min, _max) * _opacity, 0.0, 1.0);
             else currPoint.weight = Helpers.map(weight, 0, 1, _min, _max) * _opacity;

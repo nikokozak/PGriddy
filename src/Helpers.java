@@ -231,21 +231,22 @@ public class Helpers {
         int maxRow = Math.max(_pg1.y, _pg2.y);
         int maxSpacingX = Math.max(_pg1.sX, _pg2.sY);
         int maxSpacingY = Math.max(_pg1.sY, _pg2.sY);
-        float maxXCenter = Math.max(_pg1.c.x, _pg2.c.x);
-        float maxYCenter = Math.max(_pg1.c.y, _pg2.c.y);
+        float maxXCenter = Math.max(_pg1.c.xPos, _pg2.c.xPos);
+        float maxYCenter = Math.max(_pg1.c.yPos, _pg2.c.yPos);
 
         Point_Grid result = new Point_Grid(new Point(maxXCenter, maxYCenter), maxCol, maxRow, maxSpacingX, maxSpacingY);
-        result = new Point_Grid(result, false);
+        result = new Point_Grid(result);
+        result.weight(0);
 
         for (ArrayList<Grid_Point> columns : _pg1.points) {
             for (Grid_Point currPoint : columns) {
-                result.points.get(currPoint.gX).get(currPoint.gY).weight = clamp(result.points.get(currPoint.gX).get(currPoint.gY).weight + currPoint.weight, 0, 1);
+                result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight + currPoint.weight, 0, 1);
             }
         }
 
         for (ArrayList<Grid_Point> columns : _pg2.points) {
             for (Grid_Point currPoint : columns) {
-                result.points.get(currPoint.gX).get(currPoint.gY).weight = clamp(result.points.get(currPoint.gX).get(currPoint.gY).weight + currPoint.weight, 0, 1);
+                result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight + currPoint.weight, 0, 1);
             }
         }
 
@@ -267,8 +268,8 @@ public class Helpers {
         for (ArrayList<Grid_Point> grid_points : _pg2.points) {
             for (Grid_Point grid_point : grid_points) {
                 currPoint = grid_point;
-                if (checkColBounds(currPoint.gX, _pg1) && checkRowBounds(currPoint.gY, _pg1)) {
-                    result.points.get(currPoint.gX).get(currPoint.gY).weight = clamp(result.points.get(currPoint.gX).get(currPoint.gY).weight - currPoint.weight, 0, 1);
+                if (checkColBounds(currPoint.gridIndexX, _pg1) && checkRowBounds(currPoint.gridIndexY, _pg1)) {
+                    result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight - currPoint.weight, 0, 1);
                 }
             }
         }

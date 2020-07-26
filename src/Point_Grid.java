@@ -36,8 +36,8 @@ public class Point_Grid implements Iterable<Grid_Point>{
         this.sX = _sX;
         this.sY = _sY;
 
-        this.xOrigin = (int)_c.x - ((_x/2)*_sX);
-        this.yOrigin = (int)_c.y - ((_y/2)*_sY);
+        this.xOrigin = (int)_c.xPos - ((_x/2)*_sX);
+        this.yOrigin = (int)_c.yPos - ((_y/2)*_sY);
 
         this.points = new ArrayList<ArrayList<Grid_Point>>();
 
@@ -46,7 +46,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
             this.points.add(new ArrayList<Grid_Point>());
             for (int j = 0; j < _y; j += 1) {
                 int yPos = this.yOrigin + (j * _sY);
-                this.points.get(i).add(new Grid_Point(xPos, yPos, i, j));
+                this.points.get(i).add(new Grid_Point(xPos, yPos, i, j, this));
             }
         }
     }
@@ -72,15 +72,6 @@ public class Point_Grid implements Iterable<Grid_Point>{
         this.points = new ArrayList<ArrayList<Grid_Point>>(_al);
 
         this.x = points.size(); this.y = points.get(0).size();
-    }
-
-    public Point_Grid (Point_Grid _pg, boolean _zeroWeight) { // Token override to create grid with zero weights.
-        this(_pg);
-
-        for (Grid_Point currPoint : this) {
-            currPoint.weight = 0;
-        }
-
     }
 
     // * =========== ITERATOR ============== * //
@@ -355,39 +346,10 @@ public class Point_Grid implements Iterable<Grid_Point>{
     // * =========== GRADIENT APPLICATORS ============== * //
 
 
-    public Point_Grid radGradient(int _col, int _row, double _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
+    public Point_Grid radGradient(Gradient grad) {
 
-       return Gradients.apply_radGradient(_col, _row, _rad, _init_weight, _inverse, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid radGradient_slow(int _col, int _row, double _rad, double _init_weight, boolean _inverse, boolean _blend, double _opacity) {
-
-        return Gradients.apply_radGradient_slow(_col, _row, _rad, _init_weight, _inverse, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid radGradient_ease(int _col, int _row, double _rad, double _init_weight, double _feather, boolean _inverse, boolean _blend, double _opacity) {
-
-        return Gradients.apply_radGradient_ease(_col, _row, _rad, _init_weight, _feather, _inverse, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid radGradient_slow_ease(int _col, int _row, double _rad, double _init_weight, double _feather, boolean _inverse, boolean _blend, double _opacity) {
-
-        return Gradients.apply_radGradient_slow_ease(_col, _row, _rad, _init_weight, _feather, _inverse, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid sinGradient(int _col, int _row, double _rad, double _min_weight, double _max_weight, double _frequency, double _shift, boolean _inverse, boolean _blend, double _opacity) {
-
-        return Gradients.apply_sinGradient(_col, _row, _rad, _min_weight, _max_weight, _frequency, _shift, _inverse, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid sinGradient_slow(int _col, int _row, double _rad, double _min_weight, double _max_weight, double _frequency, double _shift, boolean _inverse, boolean _blend, double _opacity) {
-
-        return Gradients.apply_sinGradient_slow(_col, _row, _rad, _min_weight, _max_weight, _frequency, _shift, _inverse, _blend, _opacity, this);
+        grad.applyValuesToPoints(this);
+        return this;
 
     }
 
@@ -566,9 +528,9 @@ public class Point_Grid implements Iterable<Grid_Point>{
         int x_mid = this.x / 2;
         int y_mid = this.y / 2;
 
-        if (grid_point.gX > x_mid && grid_point.gX < y_mid) return 1;
-        else if (grid_point.gX < x_mid && grid_point.gY < y_mid) return 2;
-        else if (grid_point.gX < x_mid && grid_point.gY > y_mid) return 3;
+        if (grid_point.gridIndexX > x_mid && grid_point.gridIndexX < y_mid) return 1;
+        else if (grid_point.gridIndexX < x_mid && grid_point.gridIndexY < y_mid) return 2;
+        else if (grid_point.gridIndexX < x_mid && grid_point.gridIndexY > y_mid) return 3;
         else return 4;
 
     }
@@ -582,7 +544,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
         // _pg1 -> First point
         // _pg2 -> Second point
 
-        return Math.pow(grid_point_1.gX - grid_point_2.gX, 2) + Math.pow(grid_point_1.gY - grid_point_2.gY, 2);
+        return Math.pow(grid_point_1.gridIndexX - grid_point_2.gridIndexX, 2) + Math.pow(grid_point_1.gridIndexY - grid_point_2.gridIndexY, 2);
 
     }
 
@@ -595,7 +557,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
         // _pg1 -> First point
         // _pg2 -> Second point
 
-        return Math.sqrt(Math.pow(grid_point_1.gX - grid_point_2.gX, 2) + Math.pow(grid_point_1.gY - grid_point_2.gY, 2));
+        return Math.sqrt(Math.pow(grid_point_1.gridIndexX - grid_point_2.gridIndexX, 2) + Math.pow(grid_point_1.gridIndexY - grid_point_2.gridIndexY, 2));
 
     }
 

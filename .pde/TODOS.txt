@@ -1,6 +1,6 @@
 TODOS:
 
-- Start w/ Noise and Gradient refacs
+- Start w/ Noise and Gradient refacs (make separate classes)
 - Refac (i.e. last chapter)
 - Unit Tests (URGENT)
 - Figure out how to handle orphan points (or whether we need Points at all)

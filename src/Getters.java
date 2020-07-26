@@ -297,11 +297,11 @@ public class Getters {
 
         while(iter.hasNext()) {
             nextPoint = iter.next();
-            result.add_all(get_grid_line(currPoint.gX, currPoint.gY, nextPoint.gX, nextPoint.gY, _pg));
+            result.add_all(get_grid_line(currPoint.gridIndexX, currPoint.gridIndexY, nextPoint.gridIndexX, nextPoint.gridIndexY, _pg));
             currPoint = nextPoint;
         }
 
-        if (_closed) result.add_all(get_grid_line(currPoint.gX, currPoint.gY, firstPoint.gX, firstPoint.gY, _pg));
+        if (_closed) result.add_all(get_grid_line(currPoint.gridIndexX, currPoint.gridIndexY, firstPoint.gridIndexX, firstPoint.gridIndexY, _pg));
 
         return result;
 
@@ -349,14 +349,14 @@ public class Getters {
             //print(_dlist.get(pointer)); -> debug
 
             switch (_dlist.get(pointer)) {
-                case 0 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX, currentPoint.gY - 1, _pg) : get_grid_point_safe(currentPoint.gX, currentPoint.gY - 1, _pg);
-                case 1 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX + 1, currentPoint.gY - 1, _pg) : get_grid_point_safe(currentPoint.gX + 1, currentPoint.gY - 1, _pg);
-                case 2 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX + 1, currentPoint.gY, _pg) : get_grid_point_safe(currentPoint.gX + 1, currentPoint.gY, _pg);
-                case 3 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX + 1, currentPoint.gY + 1, _pg) : get_grid_point_safe(currentPoint.gX + 1, currentPoint.gY + 1, _pg);
-                case 4 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX, currentPoint.gY + 1, _pg) : get_grid_point_safe(currentPoint.gX, currentPoint.gY + 1, _pg);
-                case 5 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX - 1, currentPoint.gY + 1, _pg) : get_grid_point_safe(currentPoint.gX - 1, currentPoint.gY + 1, _pg);
-                case 6 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX - 1, currentPoint.gY, _pg) : get_grid_point_safe(currentPoint.gX - 1, currentPoint.gY, _pg);
-                case 7 -> currentPoint = _overflow ? get_grid_point(currentPoint.gX - 1, currentPoint.gY - 1, _pg) : get_grid_point_safe(currentPoint.gX - 1, currentPoint.gY - 1, _pg);
+                case 0 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg);
+                case 1 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg);
+                case 2 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg) : get_grid_point_safe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg);
+                case 3 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg);
+                case 4 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg);
+                case 5 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg);
+                case 6 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg) : get_grid_point_safe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg);
+                case 7 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg);
             }
 
             step += 1;
@@ -437,10 +437,10 @@ public class Getters {
                        (new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0), new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0));
 
        for (Grid_Point currPoint : _pl.points) {
-           if (currPoint.gX < result.a.a) result.a.a = currPoint.gX;
-           if (currPoint.gX > result.a.b) result.a.b = currPoint.gX;
-           if (currPoint.gY < result.b.a) result.b.a = currPoint.gY;
-           if (currPoint.gY > result.b.b) result.b.b = currPoint.gX;
+           if (currPoint.gridIndexX < result.a.a) result.a.a = currPoint.gridIndexX;
+           if (currPoint.gridIndexX > result.a.b) result.a.b = currPoint.gridIndexX;
+           if (currPoint.gridIndexY < result.b.a) result.b.a = currPoint.gridIndexY;
+           if (currPoint.gridIndexY > result.b.b) result.b.b = currPoint.gridIndexX;
        }
 
        return result;
@@ -458,7 +458,7 @@ public class Getters {
         boolean found = false;
 
         for (Grid_Point currPoint : _pl.points) {
-            if (currPoint.gX == _col && currPoint.gY == _row) {
+            if (currPoint.gridIndexX == _col && currPoint.gridIndexY == _row) {
                 found = true;
                 break;
             }
@@ -520,8 +520,8 @@ public class Getters {
         // For all vertices
         for (int i = 0; i < n; i++)
         {
-            int x0 = _pl.get(i).gX, y0 = _pl.get(i).gY;
-            int x1 = _pl.get((i + 1) % n).gX, y1 = _pl.get((i + 1) % n).gY;
+            int x0 = _pl.get(i).gridIndexX, y0 = _pl.get(i).gridIndexY;
+            int x1 = _pl.get((i + 1) % n).gridIndexX, y1 = _pl.get((i + 1) % n).gridIndexY;
 
             // Calculate value of A
             // using shoelace formula
