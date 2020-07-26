@@ -234,7 +234,7 @@ public class Helpers {
         float maxXCenter = Math.max(_pg1.c.x, _pg2.c.x);
         float maxYCenter = Math.max(_pg1.c.y, _pg2.c.y);
 
-        Point_Grid result = new Point_Grid(maxCol, maxRow, new Point(maxXCenter, maxYCenter), maxSpacingX, maxSpacingY);
+        Point_Grid result = new Point_Grid(new Point(maxXCenter, maxYCenter), maxCol, maxRow, maxSpacingX, maxSpacingY);
         result = new Point_Grid(result, false);
 
         for (ArrayList<Grid_Point> columns : _pg1.points) {

@@ -14,23 +14,16 @@ public class Gradients {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
         // _opacity -> opacity of gradient
 
-        double MAX = 1, MIN = 0;
+        double MIN = 0;
+        double MAX = get_farthest_distance_from_point_approx(_col, _row, _pg);
         double dist;
         double rad = Math.pow(_rad, 2);
-
-        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) { // Checks quadrant of center_point to determine where in grid to sample farthest point.
-            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, 0, _pg));
-        }
 
         rad = rad - MAX;
         double currWeight;
 
         for (Grid_Point currPoint : _pg) {
-            dist = _pg.grid_approx_dist(currPoint, center_point);
+            dist = _pg.grid_approx_dist(currPoint, Getters.get_grid_point(_col, _row, _pg));
             if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + rad, 0, _init_weight) * _opacity;
             else currWeight = Helpers.map(dist, MAX + rad, MIN, 0, _init_weight) * _opacity;
             if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
@@ -55,22 +48,15 @@ public class Gradients {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
         // _opacity -> opacity of gradient
 
-        double MAX = 1, MIN = 0;
+        double MIN = 0;
+        double MAX = get_farthest_distance_from_point_exact(_col, _row, _pg);
         double dist;
-
-        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, 0, _pg));
-        }
 
         _rad = _rad - MAX;
         double currWeight;
 
         for (Grid_Point currPoint : _pg) {
-            dist = _pg.grid_exact_dist(currPoint, center_point);
+            dist = _pg.grid_exact_dist(currPoint, Getters.get_grid_point(_col, _row, _pg));
             if (_inverse) currWeight = Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight) * _opacity;
             else currWeight = Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight) * _opacity;
             if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
@@ -94,23 +80,16 @@ public class Gradients {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
         // _opacity -> opacity of gradient
 
-        double MAX = 1, MIN = 0;
+        double MIN = 0;
+        double MAX = get_farthest_distance_from_point_approx(_col, _row, _pg);
         double dist;
         double rad = Math.pow(_rad, 2);
-
-        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, 0, _pg));
-        }
 
         rad = rad - MAX;
         double currWeight;
 
         for (Grid_Point currPoint : _pg) {
-            dist = _pg.grid_approx_dist(currPoint, center_point);
+            dist = _pg.grid_approx_dist(currPoint, Getters.get_grid_point(_col, _row, _pg));
             if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
             else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
             if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
@@ -136,22 +115,15 @@ public class Gradients {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
         // _opacity -> opacity of gradient
 
-        double MAX = 1, MIN = 0;
+        double MIN = 0;
+        double MAX = get_farthest_distance_from_point_exact(_col, _row, _pg);
         double dist;
-
-        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, 0, _pg));
-        }
 
         _rad = _rad - MAX;
         double currWeight;
 
         for (Grid_Point currPoint : _pg) {
-            dist = _pg.grid_exact_dist(currPoint, center_point);
+            dist = _pg.grid_exact_dist(currPoint, Getters.get_grid_point(_col, _row, _pg));
             if (_inverse) currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MIN, MAX + _rad, 0, _init_weight), _init_weight, _init_weight,  _feather) * _opacity;
             else currWeight = Helpers.easeInOutCubic(Helpers.map(dist, MAX + _rad, MIN, 0, _init_weight), 0, _init_weight,  _feather) * _opacity;
             if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
@@ -177,23 +149,16 @@ public class Gradients {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
         // _opacity -> opacity of gradient
 
-        double MAX = 1, MIN = 0;
+        double MIN = 0;
+        double MAX = get_farthest_distance_from_point_approx(_col, _row, _pg);
         double dist;
         double rad = Math.pow(_rad, 2);
-
-        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_approx_dist(center_point, Getters.get_grid_point(0, 0, _pg));
-        }
 
         rad = rad - MAX;
         double currWeight;
 
         for (Grid_Point currPoint : _pg) {
-            dist = _pg.grid_approx_dist(currPoint, center_point);
+            dist = _pg.grid_approx_dist(currPoint, Getters.get_grid_point(_col, _row, _pg));
             if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
             else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
             if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
@@ -220,22 +185,15 @@ public class Gradients {
         // _blend -> whether to add the gradient onto the previous Point_Grid or start anew
         // _opacity -> opacity of gradient
 
-        double MAX = 1, MIN = 0;
+        double MIN = 0;
+        double MAX = get_farthest_distance_from_point_exact(_col, _row, _pg);
         double dist;
-
-        Grid_Point center_point = Getters.get_grid_point(_col, _row, _pg);
-        switch(_pg.check_quad(center_point)) {
-            case 1 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, _pg.y - 1, _pg));
-            case 2 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
-            case 3 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
-            case 4 -> MAX = _pg.grid_exact_dist(center_point, Getters.get_grid_point(0, 0, _pg));
-        }
 
         _rad = _rad - MAX;
         double currWeight;
 
         for (Grid_Point currPoint : _pg) {
-            dist = _pg.grid_exact_dist(currPoint, center_point);
+            dist = _pg.grid_exact_dist(currPoint, Getters.get_grid_point(_col, _row, _pg));
             if (_inverse) currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX + _rad, 0, 2*Math.PI), _frequency, _shift,  _max_weight), 1, -1, _min_weight, 1) * _opacity;
             else currWeight = Helpers.map(Helpers.sinMap(Helpers.map(dist, MIN, MAX, 0, 2*Math.PI), _frequency,  _shift,  _max_weight), -1, 1, _min_weight, 1) * _opacity;
             if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + currWeight, 0, 1);
@@ -243,6 +201,50 @@ public class Gradients {
         }
 
         return _pg;
+    }
+
+    private static double get_farthest_distance_from_point_exact(int _col, int _row, Point_Grid _pg) {
+
+        // Returns the greatest distance from current point possible within a given grid,
+        // using Pythagorean method. Use approx version of this function if performance is a concern.
+        // Where:
+        // _col, _row -> grid coordinates of point to be sampled from.
+        // _pg -> grid to sample from.
+
+        double max_distance = 0;
+        Grid_Point point = Getters.get_grid_point(_col, _row, _pg);
+
+        switch(_pg.check_quad(point)) {
+            case 1 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(0, 0, _pg));
+        }
+
+        return max_distance;
+
+    }
+
+    private static double get_farthest_distance_from_point_approx(int _col, int _row, Point_Grid _pg) {
+
+        // Returns the greatest distance from current point possible within a given grid,
+        // using a relative dist approximation method.
+        // Where:
+        // _col, _row -> grid coordinates of point to be sampled from.
+        // _pg -> grid to sample from.
+
+        double max_distance = 0;
+        Grid_Point point = Getters.get_grid_point(_col, _row, _pg);
+
+        switch(_pg.check_quad(point)) {
+            case 1 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(0, _pg.y - 1, _pg));
+            case 2 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(_pg.x - 1, _pg.y - 1, _pg));
+            case 3 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(_pg.x - 1, 0, _pg));
+            case 4 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(0, 0, _pg));
+        }
+
+        return max_distance;
+
     }
 
 }

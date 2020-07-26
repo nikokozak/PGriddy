@@ -197,7 +197,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     public Point_List move_mult(int _x, int _y) {
 
-        return Move.mult(_x, _y, this);
+        return Move.multiply_posns(_x, _y, this);
 
     }
 
@@ -209,7 +209,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     public Point_List move_reset() {
 
-        return Move.reset(this);
+        return Move.reset_posns(this);
 
     }
 

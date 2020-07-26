@@ -3,7 +3,7 @@ import java.util.Iterator;
 
 // Custom Iterator for Point_Grid
 // essentially flattens points without having to copy into new data structure
-// allows for DRY methods that deal with grids and lists both.
+// allows for DRY methods that deal with both grids and lists.
 
 public class Grid_Iterator implements Iterator<Grid_Point> {
 

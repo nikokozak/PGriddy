@@ -1,10 +1,12 @@
 TODOS:
 
+- Start w/ Noise and Gradient refacs
+- Refac (i.e. last chapter)
+- Unit Tests (URGENT)
 - Figure out how to handle orphan points (or whether we need Points at all)
 
 Features:
 
-- Add in 3D support.
 - OBJ export.
 - Implement time for clover
 - Implement more wave types

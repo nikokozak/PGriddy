@@ -1,7 +1,5 @@
 import processing.core.*;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class Core extends PApplet {
@@ -23,8 +21,8 @@ public class Core extends PApplet {
     public void setup() {
         processing = this; /* <-- Necessary to pass PApplet reference to other classes. -- */
         image = loadImage("C:\\Users\\Nikolai\\Documents\\Processing\\projects\\PGriddy\\.pde\\data\\Processing_Test_Image.png");
-        pg1 = new Point_Grid(60, 60, new Point(width/4, height/2), 5, 5);
-        pg2 = new Point_Grid(60, 60, new Point((width/4) * 3, height/2), 5, 5);
+        pg1 = new Point_Grid(new Point(width/4, height/2), 60, 60, 5, 5);
+        pg2 = new Point_Grid(new Point((width/4) * 3, height/2), 60, 60, 5, 5);
         pg1.color(color(255));
         pg2.color(color(255));
         //pg1.image(image, "r", 0, 0, false, false, 1);

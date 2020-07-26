@@ -29,7 +29,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     // * =========== CONSTRUCTORS ============== * //
 
-    public Point_Grid(int _x, int _y, Point _c, int _sX, int _sY) {
+    public Point_Grid(Point _c, int _x, int _y, int _sX, int _sY) {
         this.x = _x;
         this.y = _y;
         this.c = _c;
@@ -75,20 +75,12 @@ public class Point_Grid implements Iterable<Grid_Point>{
     }
 
     public Point_Grid (Point_Grid _pg, boolean _zeroWeight) { // Token override to create grid with zero weights.
-        this.x = _pg.x; this.y = _pg.y;
-        this.c = new Point(_pg.c);
-        this.sX = _pg.sX; this.sY = _pg.sY;
+        this(_pg);
 
-        this.xOrigin = _pg.xOrigin;
-        this.yOrigin = _pg.yOrigin;
-
-        this.points = Helpers.cloneGridPoints(_pg);
-
-        for (int i = 0; i < x; i += 1) {
-            for (int j = 0; j < y; j += 1) {
-                this.points.get(i).get(j).weight = 0;
-            }
+        for (Grid_Point currPoint : this) {
+            currPoint.weight = 0;
         }
+
     }
 
     // * =========== ITERATOR ============== * //
@@ -134,19 +126,19 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public Point_Grid move(int _x, int _y, Selection _s) {
 
-        return Move.grid_select_move(_x, _y, _s, this);
+        return Move.grid_selection_move(_x, _y, _s, this);
 
     }
 
     public Point_Grid move_mult(int _x, int _y) {
 
-       return Move.mult(_x, _y, this);
+       return Move.multiply_posns(_x, _y, this);
 
     }
 
     public Point_Grid move_mult(int _x, int _y, Selection _s) {
 
-        return Move.grid_select_mult(_x, _y, _s, this);
+        return Move.grid_selection_multiply_posns(_x, _y, _s, this);
 
     }
 
@@ -158,19 +150,19 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     public Point_Grid move_to(int _x, int _y, Selection _s) {
 
-        return Move.grid_select_to(_x, _y, _s, this);
+        return Move.grid_selection_to(_x, _y, _s, this);
 
     }
 
     public Point_Grid move_reset() {
 
-       return Move.reset(this);
+       return Move.reset_posns(this);
 
     }
 
     public Point_Grid move_reset(Selection _s) {
 
-        return Move.grid_select_reset(_s, this);
+        return Move.grid_selection_reset_posns(_s, this);
 
     }
 
@@ -564,7 +556,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     // * =========== PRIVATE HELPERS ============== * //
 
-    public int check_quad(Grid_Point _pg) {
+    public int check_quad(Grid_Point grid_point) {
 
         // Returns the number corresponding to the quadrant a given Grid_Point is in.
         // 1 -> TR, 2 -> TL, 3 -> BL, 4 -> BR
@@ -574,14 +566,14 @@ public class Point_Grid implements Iterable<Grid_Point>{
         int x_mid = this.x / 2;
         int y_mid = this.y / 2;
 
-        if (_pg.gX > x_mid && _pg.gX < y_mid) return 1;
-        else if (_pg.gX < x_mid && _pg.gY < y_mid) return 2;
-        else if (_pg.gX < x_mid && _pg.gY > y_mid) return 3;
+        if (grid_point.gX > x_mid && grid_point.gX < y_mid) return 1;
+        else if (grid_point.gX < x_mid && grid_point.gY < y_mid) return 2;
+        else if (grid_point.gX < x_mid && grid_point.gY > y_mid) return 3;
         else return 4;
 
     }
 
-    public double grid_approx_dist(Grid_Point _pg1, Grid_Point _pg2) {
+    public double grid_approx_dist(Grid_Point grid_point_1, Grid_Point grid_point_2) {
 
         // Returns a non-sqrt based distance between two points in Grid.
         // Use when a precise distance is not necessary.
@@ -590,11 +582,11 @@ public class Point_Grid implements Iterable<Grid_Point>{
         // _pg1 -> First point
         // _pg2 -> Second point
 
-        return Math.pow(_pg1.gX - _pg2.gX, 2) + Math.pow(_pg1.gY - _pg2.gY, 2);
+        return Math.pow(grid_point_1.gX - grid_point_2.gX, 2) + Math.pow(grid_point_1.gY - grid_point_2.gY, 2);
 
     }
 
-    public double grid_exact_dist(Grid_Point _pg1, Grid_Point _pg2) {
+    public double grid_exact_dist(Grid_Point grid_point_1, Grid_Point grid_point_2) {
 
         // Returns the sqrt based distance between two points in Grid.
         // Avoid using if possible.
@@ -603,7 +595,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
         // _pg1 -> First point
         // _pg2 -> Second point
 
-        return Math.sqrt(Math.pow(_pg1.gX - _pg2.gX, 2) + Math.pow(_pg1.gY - _pg2.gY, 2));
+        return Math.sqrt(Math.pow(grid_point_1.gX - grid_point_2.gX, 2) + Math.pow(grid_point_1.gY - grid_point_2.gY, 2));
 
     }
 

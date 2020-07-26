@@ -15,7 +15,7 @@ public class Move {
 
     }
 
-    public static Point_Grid grid_select_move(int _x, int _y, Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_selection_move(int _x, int _y, Selection _s, Point_Grid _pg) {
 
         // Adds x and y quantities to Point positions within a given selection.
 
@@ -33,7 +33,7 @@ public class Move {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> T mult(int _x, int _y, T _l) {
+    public static <T extends Iterable<Grid_Point>> T multiply_posns(int _x, int _y, T _l) {
 
         // Multiplies Point positions by _x, _y.
 
@@ -46,7 +46,7 @@ public class Move {
 
     }
 
-    public static Point_Grid grid_select_mult(int _x, int _y, Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_selection_multiply_posns(int _x, int _y, Selection _s, Point_Grid _pg) {
 
         // Multiplies x and y positions by _x and _y within a given selection.
 
@@ -87,7 +87,7 @@ public class Move {
         return _pg;
     }
 
-    public static Point_Grid grid_select_to(int _x, int _y, Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_selection_to(int _x, int _y, Selection _s, Point_Grid _pg) {
 
         // Moves a grid selection to a new x, y center. Translation is based on selection center.
         // DOES NOT AFFECT GRID CENTER ATTRIBUTE.
@@ -122,7 +122,7 @@ public class Move {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> T reset(T _l) {
+    public static <T extends Iterable<Grid_Point>> T reset_posns(T _l) {
 
         // Resets all Points to their original positions.
 
@@ -135,7 +135,7 @@ public class Move {
 
     }
 
-    public static Point_Grid grid_select_reset(Selection _s, Point_Grid _pg) {
+    public static Point_Grid grid_selection_reset_posns(Selection _s, Point_Grid _pg) {
 
         // Resets all Grid_Points within a selection to their original positions.
 
