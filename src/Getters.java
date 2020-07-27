@@ -31,7 +31,7 @@ public class Getters {
 
     }
 
-    public static Point_List get_grid_points_by_weight(int _floor, int _ceil, Point_Grid _pg) {
+    public static <T extends Iterable<Grid_Point>> Point_List get_points_by_weight(double _floor, double _ceil, T _points) {
 
         // Returns a Point_List of all points in a Point_Grid within a given weight threshold [_floor, _ceil)
         // Where:
@@ -39,15 +39,11 @@ public class Getters {
         // _ceil -> threshold ceiling (exclusive)
 
         Point_List result = new Point_List();
-
-        for (ArrayList<Grid_Point> column : _pg.points) {
-            for (Grid_Point currPoint : column) {
-                if (currPoint.weight >= _floor && currPoint.weight < _ceil) {
-                    result.add(currPoint);
-                }
+        for (Grid_Point currPoint : _points) {
+            if (currPoint.weight >= _floor && currPoint.weight < _ceil) {
+                result.add(currPoint);
             }
         }
-
         return result;
 
     }

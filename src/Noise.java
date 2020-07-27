@@ -52,9 +52,9 @@ public class Noise {
 
     public <T extends Iterable<Grid_Point>> T applyWeightToPoints(T points) {
 
-
         if (isCloverType(this.type)) {
             CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
+
             applyCloverNoiseToPoints(this.type, points);
         }
 
@@ -66,6 +66,7 @@ public class Noise {
             fastNoise.SetFractalLacunarity((float)this.lacunarity);
             fastNoise.SetFractalGain((float)this.gain);
             fastNoise.SetInterp(FastNoise.Interp.Hermite);
+
             applyFastNoiseToPoints(fastNoise, points);
         }
 
@@ -82,6 +83,8 @@ public class Noise {
     }
 
     private <T extends Iterable<Grid_Point>> void applyCloverNoiseToPoints(Type type, T pg) {
+
+        // TODO: think about extracting CloverNoise to allow for a version of this that doens't call a switch statement on each iter (check if JIT optimizes type here)
 
         CloverNoise.Noise2D noise = new CloverNoise.Noise2D();
 

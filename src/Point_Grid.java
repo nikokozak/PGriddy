@@ -189,9 +189,9 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List get_points_by_weight(int _floor, int _ceil) {
+    public Point_List get_points_by_weight(double _floor, double _ceil) {
 
-       return Getters.get_grid_points_by_weight(_floor, _ceil, this);
+       return Getters.get_points_by_weight(_floor, _ceil, this);
 
     }
 
@@ -367,62 +367,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
     public void image(PImage _img, String _mode, int _shift_x, int _shift_y, boolean _subtract, boolean _blend, double _opacity) {
         // TODO: Add Scaling
 
-        // Loads an image and applies weights to Grid_Points in Point_Grid
-        // based on R, G, B, L (lightness) values or combinations thereof.
-        // Where:
-        // _img -> PImage to sample from
-        // _mode -> any of the following: "r", "g", "b", "l" (luma)
-        // _shift_x -> shift the image left (-) or right (+)
-        // _shift_y -> shift the image top (+) or bottom (-)
-        // _blend -> whether to blend the new weights onto previous weights
-        // _subtract -> whether to subtract the new weights from previous weights (only works in blend mode)
-        // _opacity -> opacity of new weights
-
-        PImage new_img;
-
-        int grid_pixel_width = this.x * this.sX;
-        int grid_pixel_height = this.y * this.sY;
-
-        int sample_padding_X = Math.abs((grid_pixel_width - _img.width)/2);
-        int sample_padding_Y = Math.abs((grid_pixel_height - _img.height)/2);
-
-        if (_img.width > grid_pixel_width || _img.height > grid_pixel_height) {
-            new_img = _img.get(sample_padding_X, sample_padding_Y, grid_pixel_width, grid_pixel_height);
-            new_img.loadPixels();
-            sample_padding_X = 0;
-            sample_padding_Y = 0;
-        } else {
-            new_img = _img;
-            new_img.loadPixels();
-        }
-
-        Grid_Point currPoint;
-        int x, y, r, g, b;
-        int currPixel;
-        double weight = 0;
-
-        for (int x_g = 0; x_g < this.x; x_g++) {
-            x = (sample_padding_X + _shift_x) + (x_g * this.sX);
-            for (int y_g = 0; y_g < this.y; y_g++) {
-                y = (sample_padding_Y + _shift_y) + (y_g * this.sY);
-                if (y*new_img.width+x > new_img.pixels.length - 1 || y*new_img.width+x < 0) currPixel = Core.processing.color(0);
-                else currPixel = new_img.pixels[y*new_img.width+x];
-                currPoint = this.points.get(x_g).get(y_g);
-                r = (currPixel >> 16) & 0xFF;
-                g = (currPixel >> 8) & 0xFF;
-                b = currPixel & 0xFF;
-                switch (_mode) {
-                    case ("r") -> weight = PApplet.map((float) r, 0, 255, 0, 1);
-                    case ("g") -> weight = PApplet.map((float) g, 0, 255, 0, 1);
-                    case ("b") -> weight = PApplet.map((float) b, 0, 255, 0, 1);
-                    case ("l") -> weight = PApplet.map(Helpers.rgbToLuma(r, g, b), 0, 255, 0, 1);
-                }
-                if (_subtract && _blend) weight *= -1;
-                if (_blend) currPoint.weight = Helpers.clamp(currPoint.weight + weight * _opacity, 0.0, 1.0);
-                else currPoint.weight = weight * _opacity;
-
-            }
-        }
+        Image.image(_img, _mode, _shift_x, _shift_y, _subtract, _blend, _opacity, this);
 
     }
 

@@ -1,12 +1,16 @@
 TODOS:
 
-- Start w/ Noise and Gradient refacs (make separate classes)
+- Refac CloverNoise gradient (so that it looks like FastNoise)
+
 - Refac (i.e. last chapter)
 - Unit Tests (URGENT)
 - Figure out how to handle orphan points (or whether we need Points at all)
 
 Features:
 
+- Image to Points
+- Shape to Points
+- Pattern Tile
 - OBJ export.
 - Implement time for clover
 - Implement more wave types

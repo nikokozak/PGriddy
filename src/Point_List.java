@@ -187,6 +187,12 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
+    public Point_List get_points_by_weight(double min, double max) {
+
+        return Getters.get_points_by_weight(min, max, this);
+
+    }
+
     // * ================ POINT MOVERS =================== * //
 
     public Point_List move(int _x, int _y) {
@@ -253,100 +259,10 @@ public class Point_List implements Iterable<Grid_Point>{
 
     // * ================ NOISE APPLICATORS =================== * //
 
-    public Point_List perlin(double _min, double _max, float _time, boolean _blend, double _opacity) {
+    public Point_List applyNoise(Noise noise) {
 
-        return Noise.apply_perlin(_min, _max, _time, _blend, _opacity, this);
-
-    }
-
-    public Point_List random(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.applyRandomToPoint(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_List clover_2D(double _min, double _max, boolean _blend, double _opacity) {
-
-       return Noise.applyClover2DToPoint(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_List fractal(double _min, double _max, int _iterations, boolean _blend, double _opacity) {
-
-        return Noise.applyCloverFractalToPoint(_min, _max, _iterations, _blend, _opacity, this);
-
-    }
-
-    public Point_List frost(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.applyCloverFrostToPoint(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_List marble(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.applyCloverMarble(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_List curl(double _min, double _max, double _mix, boolean _blend, double _opacity) {
-
-        return Noise.applyCloverCurlToPoint(_min, _max, _mix, _blend, _opacity, this);
-
-    }
-
-    public Point_List curl_fractal(double _min, double _max, int _iterations, double _mix, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_curlFractal(_min, _max, _iterations, _mix, _blend, _opacity, this);
-
-    }
-
-
-    public Point_List noise_value(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_value(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_value_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_value_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_simplex(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_simplex(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_simplex_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_simplex_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_cellular(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_cellular(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_cubic(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_cubic(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_cubic_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_cubic_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
-
-    }
-
-    public Point_List noise_perlin_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_perlin_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
+        noise.applyWeightToPoints(this);
+        return this;
 
     }
 
