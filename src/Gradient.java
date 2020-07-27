@@ -64,7 +64,6 @@ public class Gradient {
 
         Grid_Point centerPoint = makeDefaultCenterPoint(pg);
 
-        double minimumDistance = 0;
         double maximumDistance = slow?
                 getFarthestDistanceFromPointExact(this.gradientCenterX, this.gradientCenterY, pg) :
                 getFarthestDistanceFromPointApprox(this.gradientCenterX, this.gradientCenterY, pg);
@@ -83,34 +82,34 @@ public class Gradient {
 
     }
 
-    private double getRadialWeightForPoint (double rad, double distanceToCenter, double maxDistance) {
-        double MIN = 0;
+    private double getRadialWeightForPoint (double radius, double distanceToCenter, double maxDistance) {
+        double minimumDistance = 0;
         double weight;
 
-        if (this.inverse) weight = Helpers.map(distanceToCenter, MIN, maxDistance + rad, 0, this.initWeight) * this.opacity;
-        else weight = Helpers.map(distanceToCenter, maxDistance + rad, MIN, 0, this.initWeight) * this.opacity;
+        if (this.inverse) weight = Helpers.map(distanceToCenter, minimumDistance, maxDistance + radius, 0, this.initWeight) * this.opacity;
+        else weight = Helpers.map(distanceToCenter, maxDistance + radius, minimumDistance, 0, this.initWeight) * this.opacity;
 
         return weight;
 
     }
 
-    private double getSmoothWeightForPoint (double rad, double distanceToCenter, double maxDistance) {
-        double MIN = 0;
+    private double getSmoothWeightForPoint (double radius, double distanceToCenter, double maxDistance) {
+        double minimumDistance = 0;
         double weight;
 
-        if (this.inverse) weight = Helpers.easeInOutCubic(Helpers.map(distanceToCenter, MIN, maxDistance + rad, 0, this.initWeight), this.initWeight, this.initWeight,  this.feather) * this.opacity;
-        else weight = Helpers.easeInOutCubic(Helpers.map(distanceToCenter, maxDistance + rad, MIN, 0, this.initWeight), 0, this.initWeight,  this.feather) * this.opacity;
+        if (this.inverse) weight = Helpers.easeInOutCubic(Helpers.map(distanceToCenter, minimumDistance, maxDistance + radius, 0, this.initWeight), this.initWeight, this.initWeight,  this.feather) * this.opacity;
+        else weight = Helpers.easeInOutCubic(Helpers.map(distanceToCenter, maxDistance + radius, minimumDistance, 0, this.initWeight), 0, this.initWeight,  this.feather) * this.opacity;
 
         return weight;
 
     }
 
-    private double getSinWeightForPoint (double rad, double distanceToCenter, double maxDistance) {
-        double MIN = 0;
+    private double getSinWeightForPoint (double radius, double distanceToCenter, double maxDistance) {
+        double minimumDistance = 0;
         double weight;
 
-        if (this.inverse) weight = Helpers.map(Helpers.sinMap(Helpers.map(distanceToCenter, MIN, maxDistance + rad, 0, 2*Math.PI), this.frequency, this.shift,  this.maxWeight), 1, -1, this.minWeight, 1) * this.opacity;
-        else weight = Helpers.map(Helpers.sinMap(Helpers.map(distanceToCenter, MIN, maxDistance, 0, 2*Math.PI), this.frequency,  this.shift,  this.maxWeight), -1, 1, this.minWeight, 1) * this.opacity;
+        if (this.inverse) weight = Helpers.map(Helpers.sinMap(Helpers.map(distanceToCenter, minimumDistance, maxDistance + radius, 0, 2*Math.PI), this.frequency, this.shift,  this.maxWeight), 1, -1, this.minWeight, 1) * this.opacity;
+        else weight = Helpers.map(Helpers.sinMap(Helpers.map(distanceToCenter, minimumDistance, maxDistance, 0, 2*Math.PI), this.frequency,  this.shift,  this.maxWeight), -1, 1, this.minWeight, 1) * this.opacity;
 
         return weight;
 

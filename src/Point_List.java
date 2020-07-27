@@ -261,37 +261,37 @@ public class Point_List implements Iterable<Grid_Point>{
 
     public Point_List random(double _min, double _max, boolean _blend, double _opacity) {
 
-        return Noise.apply_random(_min, _max, _blend, _opacity, this);
+        return Noise.applyRandomToPoint(_min, _max, _blend, _opacity, this);
 
     }
 
     public Point_List clover_2D(double _min, double _max, boolean _blend, double _opacity) {
 
-       return Noise.apply_clover_2D(_min, _max, _blend, _opacity, this);
+       return Noise.applyClover2DToPoint(_min, _max, _blend, _opacity, this);
 
     }
 
     public Point_List fractal(double _min, double _max, int _iterations, boolean _blend, double _opacity) {
 
-        return Noise.apply_clover_fractal(_min, _max, _iterations, _blend, _opacity, this);
+        return Noise.applyCloverFractalToPoint(_min, _max, _iterations, _blend, _opacity, this);
 
     }
 
     public Point_List frost(double _min, double _max, boolean _blend, double _opacity) {
 
-        return Noise.apply_clover_frost(_min, _max, _blend, _opacity, this);
+        return Noise.applyCloverFrostToPoint(_min, _max, _blend, _opacity, this);
 
     }
 
     public Point_List marble(double _min, double _max, boolean _blend, double _opacity) {
 
-        return Noise.apply_clover_marble(_min, _max, _blend, _opacity, this);
+        return Noise.applyCloverMarble(_min, _max, _blend, _opacity, this);
 
     }
 
     public Point_List curl(double _min, double _max, double _mix, boolean _blend, double _opacity) {
 
-        return Noise.apply_clover_curl(_min, _max, _mix, _blend, _opacity, this);
+        return Noise.applyCloverCurlToPoint(_min, _max, _mix, _blend, _opacity, this);
 
     }
 

@@ -355,99 +355,10 @@ public class Point_Grid implements Iterable<Grid_Point>{
 
     /// * =========== NOISE APPLICATORS ============== * ///
 
-    public Point_Grid noise_perlin(double _min, double _max, float _time, boolean _blend, double _opacity) {
+    public Point_Grid applyNoise(Noise noise) {
 
-        return Noise.apply_perlin(_min, _max, _time, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_random(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.apply_random(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_clover_2D(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_2D(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_clover_fractal(double _min, double _max, int _iterations, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_fractal(_min, _max, _iterations, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_clover_frost(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_frost(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_clover_marble(double _min, double _max, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_marble(_min, _max, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_clover_curl(double _min, double _max, double _mix, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_curl(_min, _max, _mix, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_clover_curlFractal(double _min, double _max, int _iterations, double _mix, boolean _blend, double _opacity) {
-
-        return Noise.apply_clover_curlFractal(_min, _max, _iterations, _mix, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_value(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_value(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_value_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_value_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_simplex(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_simplex(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_simplex_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_simplex_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_cellular(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_cellular(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_cubic(double _min, double _max, double _time, double _freq, boolean _blend, double _opacity) {
-
-        return Noise.apply_cubic(_min, _max, _time, _freq, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_cubic_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_cubic_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
-
-    }
-
-    public Point_Grid noise_perlin_fractal(double _min, double _max, double _time, double _freq, int _octaves, double _lacunarity, double _gain, boolean _blend, double _opacity) {
-
-        return Noise.apply_perlin_fractal(_min, _max, _time, _freq, _octaves, _lacunarity, _gain, _blend, _opacity, this);
+        noise.applyWeightToPoints(this);
+        return this;
 
     }
 
