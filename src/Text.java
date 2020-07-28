@@ -10,10 +10,11 @@ public class Text {
         char[] characters = _sentence.toCharArray();
         LinkedHashSet<Grid_Point> result = new LinkedHashSet<>();
         int spacing = size_calc(_size) + 1;
-        int currX = _xOrigin;
+        Grid_Point safe_origin = _pg.get_point(_xOrigin, _yOrigin); // wraps points around grid if they happen to overflow.
+        int currX = safe_origin.gridIndexX;
 
         for (char c : characters) {
-            result.addAll(get_letter(c, currX, _yOrigin, _size, _pg));
+            result.addAll(get_letter(c, currX, safe_origin.gridIndexY, _size, _pg));
             currX += spacing;
         }
 
@@ -616,7 +617,7 @@ public class Text {
             if (i < _pg.x) result.add(_pg.get_point(i, _yOrigin));
         }
         for (int j = _yOrigin; j < _yOrigin + _size; j++) {
-            if (j < _pg.y) result.add(_pg.get_point(mid - 1, j));
+            if (j < _pg.y) result.add(_pg.get_point(_xOrigin + mid - 1, j));
         }
 
         return result;

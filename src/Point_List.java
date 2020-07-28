@@ -221,39 +221,45 @@ public class Point_List implements Iterable<Grid_Point>{
 
     // * ================ UNIVERSAL APPLICATORS =================== * //
 
-    public void color(int _col) {
+    public Point_List color(int _col) {
 
         Applicators.color(_col, this);
+        return this;
 
     }
 
-    public void weight(double _weight) {
+    public Point_List weight(double _weight) {
 
         Applicators.weight(_weight, this);
+        return this;
 
     }
 
-    public void weight_add(double _to_add) {
+    public Point_List weight_add(double _to_add) {
 
         Applicators.weight_add(_to_add, this);
+        return this;
 
     }
 
-    public void weight_multiply(double _factor) {
+    public Point_List weight_multiply(double _factor) {
 
         Applicators.weight_multiply(_factor, this);
+        return this;
 
     }
 
-    public void weight_reset() {
+    public Point_List weight_reset() {
 
         Applicators.weight_reset(this);
+        return this;
 
     }
 
-    public void filter(double _low, double _high) {
+    public Point_List filter(double _low, double _high) {
 
         Applicators.weight_filter(_low, _high, this);
+        return this;
 
     }
 

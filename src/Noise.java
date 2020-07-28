@@ -53,8 +53,6 @@ public class Noise {
     public <T extends Iterable<Grid_Point>> T applyWeightToPoints(T points) {
 
         if (isCloverType(this.type)) {
-            CloverNoise.Noise2D noise2D = new CloverNoise.Noise2D();
-
             applyCloverNoiseToPoints(this.type, points);
         }
 

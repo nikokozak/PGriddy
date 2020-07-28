@@ -36,7 +36,7 @@ public class Point_Grid implements Iterable<Grid_Point>{
         this.sX = _sX;
         this.sY = _sY;
 
-        this.xOrigin = (int)_c.xPos - ((_x/2)*_sX);
+        this.xOrigin = (int)(_c.xPos - ((_x/2)*_sX));
         this.yOrigin = (int)_c.yPos - ((_y/2)*_sY);
 
         this.points = new ArrayList<ArrayList<Grid_Point>>();

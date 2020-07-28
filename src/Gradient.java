@@ -5,7 +5,7 @@ public class Gradient {
     public double initWeight;
     public double minWeight, maxWeight;
     public double frequency, shift;
-    public boolean inverse, blend;
+    public boolean inverse, blend, subtract;
     public double opacity;
     public double feather;
     private final Type type;
@@ -35,6 +35,7 @@ public class Gradient {
         this.feather = 1.0;
         this.inverse = false;
         this.blend = false;
+        this.subtract = false;
         this.opacity = 1.0;
         this.gradientCenterX = -1; // -1 used to mark uninitialized centerPoint
         this.gradientCenterY = -1;
@@ -78,7 +79,7 @@ public class Gradient {
             case PERIODIC -> weight = getSinWeightForPoint(radius, currentDistance, maximumDistance);
         }
 
-        currPoint.weight = this.blend ? clampWeight(currPoint.weight + weight) : weight;
+        currPoint.weight = this.blend ? clampWeight(this.subtract ? (currPoint.weight - weight) : (currPoint.weight + weight)) : weight;
 
     }
 

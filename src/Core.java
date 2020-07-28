@@ -6,8 +6,13 @@ public class Core extends PApplet {
 
     public static PApplet processing;
     public static void main(String args[]) { PApplet.main("Core"); }
+    PShape shape1;
+    PShape shape2;
 
     Point_Grid pg1;
+    Noise n1;
+    Noise n2;
+    Gradient g1;
     Point_Grid pg2;
     Point_List pl1;
     Point_List pl2;
@@ -20,46 +25,61 @@ public class Core extends PApplet {
     @Override
     public void setup() {
         processing = this; /* <-- Necessary to pass PApplet reference to other classes. -- */
-        image = loadImage("C:\\Users\\Nikolai\\Documents\\Processing\\projects\\PGriddy\\.pde\\data\\Processing_Test_Image.png");
-        pg1 = new Point_Grid(new Point(width/4, height/2), 60, 60, 5, 5);
-        pg2 = new Point_Grid(new Point((width/4) * 3, height/2), 60, 60, 5, 5);
+
+        shape1 = loadShape("C:\\Users\\Nikolai\\Documents\\Processing\\projects\\PGriddy\\.pde\\data\\eye_1.svg");
+        pg1 = new Point_Grid(new Point(width/2 + 85, height/2 + 45), 50, 50, 20, 20);
+        n1 = new Noise(Noise.Type.SIMPLEX_FRACTAL);
+        n2 = new Noise(Noise.Type.VALUE_FRACTAL);
+        g1 = new Gradient(Gradient.Type.PERIODIC);
+        g1.blend = true;
+        g1.subtract = false;
+        n1.blend = false;
+
+        pl1 = pg1.get_text("control", 5, point, 1);
+        //shape1.setFill(255);
+
+        pg1.applyNoise(n1);
         pg1.color(color(255));
-        pg2.color(color(255));
-        //pg1.image(image, "r", 0, 0, false, false, 1);
-        //pg2.image(image, "r", 0, 200, true, true, 1);
-        pl2 = new Point_List();
-        pl2.add(pg1.get_point(0, 15), pg1.get_point(20, 25), pg1.get_point(15, 45), pg1.get_point(4, 50));
+        pg1.weight(0);
+        pl1.color(color(255, 0, 0));
 
-        //pl1 = pg1.get_polyline_fill(pl2);
-        pl1 = pg1.get_polyline_fill(pl2);
-        p1 = pg1.get_point(11, 28);
-        print(pl1.size());
-        A = Text.get_sentence("HKLLKJ", 0, 8, 1, pg1);
-        pg1.get_circle(15, 15, 4).color(color(255, 0, 0));
-        pg1.get_circle_fill(40, 40, 25).color(color(0, 255, 0));
-
-        pg2 = new Point_Grid(pg1);
-        pg2.move_to((width/4) * 3, height/2);
-        pg2 = Noise.apply_perlin_fractal(0, 1, 5, 0.01, 3, 2.0, 1, false, 1, pg2);
-
-        pg2.color(color(255, 0, 0));
     };
 
     @Override
     public void settings() {
 
-        size(1000, 500);
+        size(1000, 1000);
+
     };
+
+    float count = 0;
+    int point = 0;
+    double shift = 0;
 
     @Override
     public void draw() {
         background(0);
+        shift += 0.1;
+        count+= 0.5;
+        point++;
+        n1.time = count;
+        n2.time = count;
+        g1.shift = shift;
+        g1.frequency = 2;
+        //g1.maxWeight = 0.2;
+        g1.opacity = 0.7;
+        pg1.applyNoise(n2);
+        pg1.applyNoise(n1);
+        pg1.weight_multiply(2);
+        //pg1.radGradient(g1);
 
+        shape1.disableStyle();
+        Image.drawScaledColoredShapeAtPoints(shape1, (float)0.08, pg1);
+        pg1.color(255);
+        //pg1.draw(1, 3, true);
+        pg1.weight(0);
 
-        pl1.draw(1, 3, false);
-        A.color(color(0, 255, 0));
-        A.draw(1, 3, false);
-        pg2.draw(1, 3, true);
+        saveFrame();
 
     };
 
