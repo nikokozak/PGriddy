@@ -35,8 +35,14 @@ public class Draw {
         Core.processing.rectMode(3); // Set rectMode to CENTER;
 
         for (Grid_Point currPoint : _l) {
-            if (weight) Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
-            else Core.processing.fill(currPoint.col);
+            if (weight) {
+                Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
+                Core.processing.stroke(currPoint.col, Helpers.weightToRGB(currPoint.weight));
+            }
+            else {
+                Core.processing.stroke(currPoint.col);
+                Core.processing.fill(currPoint.col);
+            }
             switch (type) {
                 case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
                 case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, 3);
@@ -54,8 +60,14 @@ public class Draw {
         Core.processing.rectMode(3);
 
         for (Grid_Point currPoint : _l) {
-            if (weight) Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
-            else Core.processing.fill(currPoint.col);
+            if (weight) {
+                Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
+                Core.processing.stroke(currPoint.col, Helpers.weightToRGB(currPoint.weight));
+            }
+            else {
+                Core.processing.stroke(currPoint.col);
+                Core.processing.fill(currPoint.col);
+            }
             switch (type) {
                 case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
                 case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, size);
