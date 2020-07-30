@@ -10,7 +10,7 @@ public class Selection {
     public int startRow, endRow;
     private int center_x, center_y;
 
-    public Selection (int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
+    public Selection (int _col0, int _row0, int _col1, int _row1, PointGrid _pg) {
 
         if ( Helpers.checkBounds(_col0, _row0, _col1, _row1, _pg) && _col0 <= _col1 && _row0 <= _row1 ) {
             startCol = _col0;

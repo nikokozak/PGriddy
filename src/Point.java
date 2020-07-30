@@ -114,10 +114,38 @@ public class Point {
         this.xPos = _x;
     }
 
-    public void reset() {
+    public void move_reset() {
        // Moves Point to original x, y position (position when it was created).
         this.yPos = this.originalYPos;
         this.xPos = this.originalXPos;
+    }
+
+    public int color() {
+
+        return this.col;
+
+    }
+
+    public Point color(int _col) {
+
+        this.col = Core.processing.color(_col);
+        return this;
+
+    }
+
+    public Point color(int _r, int _g, int _b) {
+
+        this.col = Core.processing.color(_r, _g, _b);
+        return this;
+
+    }
+
+
+    public Point color(int _r, int _g, int _b, int _a) {
+
+        this.col = Core.processing.color(_r, _g, _b, _a);
+        return this;
+
     }
 
 }

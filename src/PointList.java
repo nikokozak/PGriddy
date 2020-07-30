@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Point_List implements Iterable<Grid_Point>{
+public class PointList implements Iterable<Grid_Point>{
 
     // Point_List is used to contain lists of Grid_Points, mainly used
     // when dealing with pattern extraction from Grids.
@@ -12,24 +12,24 @@ public class Point_List implements Iterable<Grid_Point>{
     public ArrayList<Grid_Point> points;
     private boolean is_capped = false;
 
-    public Point_List() {
+    public PointList() {
        this.points = new ArrayList<Grid_Point>();
     }
 
-    public Point_List(int _size) {
+    public PointList(int _size) {
        this.points = new ArrayList<Grid_Point>(_size);
     }
 
-    public Point_List(Grid_Point... pts) {
+    public PointList(Grid_Point... pts) {
         this.points = new ArrayList<Grid_Point>(pts.length);
         this.points.addAll(Arrays.asList(pts));
     }
 
-    public Point_List(ArrayList<Grid_Point> _list) {
+    public PointList(ArrayList<Grid_Point> _list) {
         this.points = Helpers.cloneGridPoints(_list);
     }
 
-    public Point_List(Collection<Grid_Point> _list) {
+    public PointList(Collection<Grid_Point> _list) {
         this.points = new ArrayList<Grid_Point>(_list);
     }
 
@@ -42,7 +42,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     //** ============= UTILS ================= **//
 
-    public Point_List add(Grid_Point _p) {
+    public PointList add(Grid_Point _p) {
 
         // Adds a point to a point list if list is not capped.
 
@@ -51,7 +51,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List add(Grid_Point... pts) {
+    public PointList add(Grid_Point... pts) {
 
         // Adds a series of points to a list if it is not capped.
 
@@ -59,7 +59,7 @@ public class Point_List implements Iterable<Grid_Point>{
         return this;
     }
 
-    public Point_List add_all(Point_List _pl) {
+    public PointList add_all(PointList _pl) {
 
         // Appends given points onto the end of point list.
 
@@ -68,7 +68,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List add_all_cloned(Point_List _pl) {
+    public PointList add_all_cloned(PointList _pl) {
 
         // Appends given points onto the end of point list, clones them first.
 
@@ -77,7 +77,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List remove(int _index) {
+    public PointList remove(int _index) {
 
         // Removes a given point from the list.
 
@@ -86,7 +86,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List clear(int _start, int _end) {
+    public PointList clear(int _start, int _end) {
 
         // Removes all points from the list.
 
@@ -103,7 +103,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List cap() {
+    public PointList cap() {
 
         // Adds null to the end of point list to mark the list as terminated.
 
@@ -128,7 +128,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List remove_duplicates() {
+    public PointList remove_duplicates() {
 
         // Removes duplicate points from Point_List
 
@@ -175,19 +175,19 @@ public class Point_List implements Iterable<Grid_Point>{
 
     }
 
-    public Point_List get_range(int _start, int _end) {
+    public PointList get_range(int _start, int _end) {
 
         return Getters.get_list_point_range(_start, _end, this);
 
     }
 
-    public Point_List get_every(int _x) {
+    public PointList get_every(int _x) {
 
         return Getters.get_list_every_other(_x, this);
 
     }
 
-    public Point_List get_points_by_weight(double min, double max) {
+    public PointList get_points_by_weight(double min, double max) {
 
         return Getters.get_points_by_weight(min, max, this);
 
@@ -195,25 +195,25 @@ public class Point_List implements Iterable<Grid_Point>{
 
     // * ================ POINT MOVERS =================== * //
 
-    public Point_List move(int _x, int _y) {
+    public PointList move(int _x, int _y) {
 
         return Move.move(_x, _y, this);
 
     }
 
-    public Point_List move_mult(int _x, int _y) {
+    public PointList move_mult(int _x, int _y) {
 
         return Move.multiply_posns(_x, _y, this);
 
     }
 
-    public Point_List move_to(int _x, int _y) {
+    public PointList move_to(int _x, int _y) {
 
         return Move.list_to(_x, _y, this);
 
     }
 
-    public Point_List move_reset() {
+    public PointList move_reset() {
 
         return Move.reset_posns(this);
 
@@ -221,42 +221,42 @@ public class Point_List implements Iterable<Grid_Point>{
 
     // * ================ UNIVERSAL APPLICATORS =================== * //
 
-    public Point_List color(int _col) {
+    public PointList color(int _col) {
 
         Applicators.color(_col, this);
         return this;
 
     }
 
-    public Point_List weight(double _weight) {
+    public PointList weight(double _weight) {
 
         Applicators.weight(_weight, this);
         return this;
 
     }
 
-    public Point_List weight_add(double _to_add) {
+    public PointList weight_add(double _to_add) {
 
         Applicators.weight_add(_to_add, this);
         return this;
 
     }
 
-    public Point_List weight_multiply(double _factor) {
+    public PointList weight_multiply(double _factor) {
 
         Applicators.weight_multiply(_factor, this);
         return this;
 
     }
 
-    public Point_List weight_reset() {
+    public PointList weight_reset() {
 
         Applicators.weight_reset(this);
         return this;
 
     }
 
-    public Point_List filter(double _low, double _high) {
+    public PointList filter(double _low, double _high) {
 
         Applicators.weight_filter(_low, _high, this);
         return this;
@@ -265,7 +265,7 @@ public class Point_List implements Iterable<Grid_Point>{
 
     // * ================ NOISE APPLICATORS =================== * //
 
-    public Point_List applyNoise(Noise noise) {
+    public PointList applyNoise(Noise noise) {
 
         noise.applyWeightToPoints(this);
         return this;

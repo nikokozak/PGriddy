@@ -11,7 +11,7 @@ public class Grid_Point extends Point {
     // weight -> associated weight of point.
 
     public final int gridIndexX, gridIndexY;
-    private Point_Grid parentGrid;
+    private PointGrid parentGrid;
 
     public Grid_Point (int _x, int _y, int _gx, int _gy) {
         super(_x, _y);
@@ -19,7 +19,7 @@ public class Grid_Point extends Point {
         this.gridIndexY = _gy;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, Point_Grid parent) {
+    public Grid_Point (int _x, int _y, int _gx, int _gy, PointGrid parent) {
         this(_x, _y, _gx, _gy);
         this.parentGrid = parent;
     }
@@ -29,7 +29,7 @@ public class Grid_Point extends Point {
         this.weight = _weight;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, double _weight, Point_Grid parent) {
+    public Grid_Point (int _x, int _y, int _gx, int _gy, double _weight, PointGrid parent) {
         this(_x, _y, _gx, _gy, _weight);
         this.parentGrid = parent;
     }
@@ -39,7 +39,7 @@ public class Grid_Point extends Point {
         this.col = _color;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, int _color, double _weight, Point_Grid parent) {
+    public Grid_Point (int _x, int _y, int _gx, int _gy, int _color, double _weight, PointGrid parent) {
         this(_x, _y, _gx, _gy, _color, _weight);
         this.parentGrid = parent;
     }
@@ -52,11 +52,11 @@ public class Grid_Point extends Point {
         this.parentGrid = _p.parentGrid;
     }
 
-    public Optional<Point_Grid> getParentGrid() {
+    public Optional<PointGrid> getParentGrid() {
         return Optional.ofNullable(this.parentGrid);
     }
 
-    public void setParentGrid(Point_Grid parentGrid) {
+    public void setParentGrid(PointGrid parentGrid) {
         this.parentGrid = parentGrid;
     }
 

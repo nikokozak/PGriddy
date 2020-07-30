@@ -1,0 +1,206 @@
+PGRIDDY
+
+PGriddy is a simple library for working with grids and grid-based graphics in Processing.
+It's a compilation of many functions and workflows I found myself using constantly in my work.
+PGriddy is useful when working with limited resolution systems (like LED arrays), or just for the sake of its
+low-fi aesthetic (which I quite like).
+
+PGriddy is by no means a full, or even regularly maintained library, just a set of tools I though might be useful
+to people. Feel free to use PGriddy in any project you like, and let me know if you make something cool :)
+
+* Feel free to submit pull requests if you'd like.
+
+BASICS
+
+- Creating a Grid -
+
+Everything in PGriddy revolves around the PointGrid. A PointGrid is exactly what it sounds like - 
+a grid of points.
+
+PointGrid myPointGrid = new PointGrid((width/2), (height/2), 15, 15, 10, 10);
+
+This will create a PointGrid at the center of the Processing sketch, with 15 points in the x direction and 15 points in the y direction, each with a spacing of 10 pixels around it.
+
+Once you've created a PointGrid, you cannot change its spacing or the number of points it contains.
+
+- Grid Points -
+
+Unsurprisingly, points in PGriddy are called GridPoints. The secret to most of the functions in the PGriddy library
+is that each GridPoint has a unique "weight" associated with it. We'll look at this a bit later.
+
+While you can technically create a GridPoint that has no parent PointGrid, there's really no point to doing so.
+
+Instead, you usually "select" GridPoints from a PointGrid.
+
+GridPoint myGridPoint = myPointGrid.get_point(3, 3);
+
+This point is still tied to the point in the Grid - it's not a new point, we've only selected it! This means
+that we can then do cool stuff with the point, and see it reflected in our original PointGrid.
+
+- Drawing Points and Grids -
+
+You can draw a GridPoint or PointGrid by calling the draw() method of either.
+
+myGridPoint.draw();
+myPointGrid.draw();
+
+This will draw the points as simple Processing point()s. You can also specify whether you want to draw the points
+as circles or rectangles, the size of each point, and whether they're colored according to their weight.
+
+myGridPoint.draw(1); <-- Draws the GridPoint as a circle [0: point, 1: circle, 2: square]
+myGridPoint.draw(1, true); <-- Draws the GridPoint as a circle, and colors it by its weight.
+myGridPoint.draw(2, 3, true); <-- Draws a GridPoint as a square, of size 3, and colors it by its weight.
+
+myPointGrid.draw(1); <-- Draws the points in PointGrid as circles [0: point, 1: circle, 2: square]
+myPointGrid.draw(1, true); <-- Draws the points in PointGrid as circles, and colors them by their weight.
+myPointGrid.draw(2, 3, true); <-- Draws the points in PointGrid as squares, of size 3, and colors them by their weight.
+
+You can set the color of individual points, or all GridPoints in a PointGrid collectively.
+
+myGridPoint.color(255); <-- GrayScale
+myGridPoint.color(255, 0, 125); <--- R, G, B
+myGridPoint.color(255, 0, 125, 115); <--- R, B, B, A
+
+myPointGrid.color(255); <-- GrayScale (All points!)
+myPointGrid.color(255, 0, 125); <--- R, G, B (All points!)
+myPointGrid.color(255, 0, 125, 115); <--- R, B, B, A (All points!)
+
+- Selecting and modifying Points -
+
+Cool things start to happen when we can select and modify points in a given PointGrid. If we select multiple points
+in a PointGrid, we'll get back a PointList.
+
+PointList myPointList = myPointGrid.get_column(2) <-- returns all the GridPoints in the second column of the PointGrid.
+
+PointList myPointList2 = myPointGrid.get_circle(7, 7, 5) <-- returns a circle of GridPoints, radius 5.
+
+A PointList holds references to GridPoints in the PointGrid we took them from. This means we can change things in our
+PointList, and see them reflected in our PointGrid! Let's draw our second PointList from above, to get an idea of how
+this works.
+
+PointGrid myPointGrid; <--- Declare we'll be making a new PointGrid
+PointList myCirclePoints; <--- Declare we'll be making a new PointList (to hold our circle point selection)
+
+setup() {
+    size(500, 500);
+    myPointGrid = new PointGrid(width/2, height/2, 30, 30, 5, 5); <--- Create a new 30x30 Grid, at the center of the screen
+    myCirclePoints = myPointGrid.get_circle(15, 15, 8); <--- Select a circle of points, center (15, 15), radius 8
+
+    myPointGrid.color(255); <--- Set all points in our PointGrid to white
+    myCirclePoints.color(255, 0, 0); <--- Set only the selected points in our PointGrid to red.
+}
+
+draw() {
+    background(0);
+
+    myPointGrid.draw(1, 3, false); <--- Draw our PointGrid as circles, size 3, with no weight coloring.
+}
+
+We could also choose to only draw our PointList, by calling:
+
+    myCirclePoints.draw(1, 3, false); <--- Draw our PointList as circles, size3, with no weight coloring.
+
+In fact, most methods available to you as part of the PointGrid class are also available as part of the PointList class.
+This is because all points in a PointList still belong, ultimately, to the PointGrid in which they were created.
+
+- Moving Points -
+
+Moving GridPoints by themselves, in a PointList, or in a PointList is as easy as calling:
+
+myGridPoint.move(10, 15);
+myPointList.move(10, 15);
+myPointGrid.move(10, 15);
+
+If you're moving points in the draw() cycle, you might not want to do so incrementally. You can call move_reset()
+after moving them to bring them back to their original positions.
+
+myGridPoint.move(10, 15);
+myPointList.move(10, 15);
+myPointGrid.move(10, 15);
+.... Draw them ...
+myGridPoint.reset_move();
+myPointList.reset_move();
+myPointGrid.reset_move();
+
+- Point Weight -
+
+Every GridPoint has an associated "weight", ranging from 0.0 to 1.0.
+This weight can be set manually, through gradients, and/or noise functions.
+A point's weight can then be used to influence other operations on it, like how far it moves relative to other points,
+or how it is colored relative to other points. Let's explore this a bit by applying some noise to our grid.
+
+PointGrid myPointGrid;
+Noise myNoise; <--- Declare a variable to hold our noise, and its related options.
+
+setup() {
+    size(500, 500);
+    myPointGrid = new PointGrid(width/2, height/2, 30, 30, 5, 5);
+    myNoise = new Noise(Noise.Type.PERLIN);
+    myPointGrid.applyNoise(myNoise);
+}
+
+draw() {
+    background(0);
+    myPointGrid.draw(1, 3, true); <--- Draw as circles, size 3, and color according to weight (0 - black, 1.0 - white)
+}
+
+As you can see, each GridPoint in the PointGrid received a different weight based on a layer of Perlin Noise.
+
+We can use these weight values to drive anything we want. Let's try using them to influence the size of each GridPoint
+when drawn.
+
+PointGrid myPointGrid;
+Noise myNoise; <--- Declare a variable to hold our noise, and its related options.
+
+setup() {
+    size(500, 500);
+    myPointGrid = new PointGrid(width/2, height/2, 30, 30, 5, 5);
+    myNoise = new Noise(Noise.Type.PERLIN);
+    myPointGrid.applyNoise(myNoise);
+}
+
+draw() {
+    background(0);
+
+    for (GridPoint point : myPointGrid) { <--- Loop through all the GridPoints in our PointGrid
+        point.draw(1, point.weight * 10, false); <--- Draw every point as a circle, but its size is determined by its weight.
+    }
+}
+
+- Gradients, Noise, and Blending -
+
+Most weight applicators (Noises, Gradients, or just weight() methods) have a blending and opacity option. This means that
+weight applicators can be layered to produce even more complex patterns. Let's look at a few examples of this workflow:
+
+PointGrid myPointGrid;
+Noise myNoise; <--- Declare a variable to hold our noise, and its related options.
+Gradient myGradient; <--- Declare a variable to hold our gradient, and its related options.
+PointList myCircle; <--- Declare a variable to hold our circle selection.
+
+setup() {
+    size(1000, 1000);
+    myPointGrid = new PointGrid(width/2, height/2, 50, 50, 10, 10);
+    myNoise = new Noise(Noise.Type.SIMPLEX_FRACTAL);
+    myGradient = new Gradient(Gradient.Type.RADIAL);
+    myCircle = myPointGrid.get_circle(25, 25, 20);
+
+    myGradient.blend = true;
+    myGradient.subtract = true;
+    myGradient.inverse = true;
+    myGradient.radius = 20;
+
+    myPointGrid.applyNoise(myNoise);
+    myPointGrid.weight_multiply(6);
+    myPointGrid.applyGradient(myGradient);
+    myCircle.weight(1);
+}
+
+draw() {
+    background(0);
+
+    myPointGrid.draw(1, 5, true);
+}
+
+This workflow is similar to how most image editing programs work - you add and subtract layers from the base PointGrid.
+A significant amount of complexity is achievable in this way. Because every point has its own weight property, this
+complexity can then be used to move points around, color them, or even drive other Processing elements in interesting ways.

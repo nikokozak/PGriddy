@@ -4,7 +4,6 @@ import processing.core.PImage;
 import processing.core.PShape;
 
 import static processing.core.PConstants.CENTER;
-import static processing.core.PConstants.CORNER;
 
 public class Image {
 
@@ -76,11 +75,11 @@ public class Image {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> Point_List shapeMask(PShape shape, T points) {
+    public static <T extends Iterable<Grid_Point>> PointList shapeMask(PShape shape, T points) {
 
         // Returns a list of points found to be contained in a given PShape (i.e. a mask).
 
-        Point_List result = new Point_List();
+        PointList result = new PointList();
 
         for (Grid_Point point : points) {
             if (shape.contains(point.xPos, point.yPos)) {
@@ -92,7 +91,7 @@ public class Image {
 
     }
 
-    public static void image(PImage _img, String _mode, int _shift_x, int _shift_y, boolean _subtract, boolean _blend, double _opacity, Point_Grid pg) {
+    public static void image(PImage _img, String _mode, int _shift_x, int _shift_y, boolean _subtract, boolean _blend, double _opacity, PointGrid pg) {
         // TODO: Add Scaling
 
         // Loads an image and applies weights to Grid_Points in Point_Grid
@@ -108,8 +107,8 @@ public class Image {
 
         PImage new_img;
 
-        int grid_pixel_width = pg.x * pg.sX;
-        int grid_pixel_height = pg.y * pg.sY;
+        int grid_pixel_width = pg.xPoints * pg.spacingX;
+        int grid_pixel_height = pg.yPoints * pg.spacingY;
 
         int sample_padding_X = Math.abs((grid_pixel_width - _img.width)/2);
         int sample_padding_Y = Math.abs((grid_pixel_height - _img.height)/2);
@@ -129,10 +128,10 @@ public class Image {
         int currPixel;
         double weight = 0;
 
-        for (int x_g = 0; x_g < pg.x; x_g++) {
-            x = (sample_padding_X + _shift_x) + (x_g * pg.sX);
-            for (int y_g = 0; y_g < pg.y; y_g++) {
-                y = (sample_padding_Y + _shift_y) + (y_g * pg.sY);
+        for (int x_g = 0; x_g < pg.xPoints; x_g++) {
+            x = (sample_padding_X + _shift_x) + (x_g * pg.spacingX);
+            for (int y_g = 0; y_g < pg.yPoints; y_g++) {
+                y = (sample_padding_Y + _shift_y) + (y_g * pg.spacingY);
                 if (y*new_img.width+x > new_img.pixels.length - 1 || y*new_img.width+x < 0) currPixel = Core.processing.color(0);
                 else currPixel = new_img.pixels[y*new_img.width+x];
                 currPoint = pg.points.get(x_g).get(y_g);

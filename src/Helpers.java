@@ -68,7 +68,7 @@ public class Helpers {
 
     }
 
-    public static boolean checkBounds(int _col0, int _row0, int _col1, int _row1, Point_Grid _pg) {
+    public static boolean checkBounds(int _col0, int _row0, int _col1, int _row1, PointGrid _pg) {
 
         // Checks whether the given row and column values exceed the number of columns and rows in a POINT_GRID
         // Returns True if it does not
@@ -80,7 +80,7 @@ public class Helpers {
         return checkRowBounds(_row0, _pg) && checkRowBounds(_row1, _pg) && checkColBounds(_col0, _pg) && checkColBounds(_col1, _pg);
     }
 
-    public static boolean checkBounds(int _col, int _row, Point_Grid _pg) {
+    public static boolean checkBounds(int _col, int _row, PointGrid _pg) {
 
         // Checks whether the given row and column values exceed the number of columns and rows in a POINT_GRID
         // Returns True if they do not (i.e. bounds are correct)
@@ -92,7 +92,7 @@ public class Helpers {
 
     }
 
-    public static boolean checkRowBounds(int _row, Point_Grid _pg) {
+    public static boolean checkRowBounds(int _row, PointGrid _pg) {
 
         // Checks whether the given row exceeds the bounds of the given POINT_GRID
         // Returns True if it does not (i.e. bounds are correct)
@@ -100,11 +100,11 @@ public class Helpers {
         // _row -> row value to check
         // _pg -> Point_Grid against which to check
 
-        return _row > -1 && _row < _pg.y;
+        return _row > -1 && _row < _pg.yPoints;
 
     }
 
-    public static boolean checkColBounds(int _col, Point_Grid _pg) {
+    public static boolean checkColBounds(int _col, PointGrid _pg) {
 
         // Checks whether the given column exceeds the bounds of the given POINT_GRID
         // Returns True if it does not
@@ -112,7 +112,7 @@ public class Helpers {
         // _col -> col value to check
         // _pg -> Point_Grid against which to check
 
-        return _col > -1 && _col < _pg.x;
+        return _col > -1 && _col < _pg.xPoints;
     }
 
     public static double clamp(double val, double min, double max) {
@@ -169,19 +169,19 @@ public class Helpers {
 
     }
 
-    public static ArrayList<ArrayList<Grid_Point>> cloneGridPoints(Point_Grid _pg) {
+    public static ArrayList<ArrayList<Grid_Point>> cloneGridPoints(PointGrid _pg) {
 
         // Deep clones points from a given Point_Grid into a new ArrayList.
         // Used to avoid shallow copies.
         // Where:
         // _pg -> Point_Grid to copy from
 
-        ArrayList<ArrayList<Grid_Point>> parent = new ArrayList<ArrayList<Grid_Point>>(_pg.y);
+        ArrayList<ArrayList<Grid_Point>> parent = new ArrayList<ArrayList<Grid_Point>>(_pg.yPoints);
         Grid_Point currPoint;
 
-        for (int x = 0; x < _pg.x; x++) {
-            parent.add(new ArrayList<Grid_Point>(_pg.y));
-            for (int y = 0; y < _pg.y; y++) {
+        for (int x = 0; x < _pg.xPoints; x++) {
+            parent.add(new ArrayList<Grid_Point>(_pg.yPoints));
+            for (int y = 0; y < _pg.yPoints; y++) {
                 currPoint = _pg.points.get(x).get(y);
                 parent.get(x).add(new Grid_Point(currPoint));
             }
@@ -220,22 +220,22 @@ public class Helpers {
         return result;
     }
 
-    public static Point_Grid addGridWeights(Point_Grid _pg1, Point_Grid _pg2) {
+    public static PointGrid addGridWeights(PointGrid _pg1, PointGrid _pg2) {
 
         // Adds point weights, returns a new Point_Grid
         // Where:
         // _pg1 -> First Point_Grid to add
         // _pg2 -> Second Point_Grid to add
 
-        int maxCol = Math.max(_pg1.x, _pg2.x);
-        int maxRow = Math.max(_pg1.y, _pg2.y);
-        int maxSpacingX = Math.max(_pg1.sX, _pg2.sY);
-        int maxSpacingY = Math.max(_pg1.sY, _pg2.sY);
-        float maxXCenter = Math.max(_pg1.c.xPos, _pg2.c.xPos);
-        float maxYCenter = Math.max(_pg1.c.yPos, _pg2.c.yPos);
+        int maxCol = Math.max(_pg1.xPoints, _pg2.xPoints);
+        int maxRow = Math.max(_pg1.yPoints, _pg2.yPoints);
+        int maxSpacingX = Math.max(_pg1.spacingX, _pg2.spacingY);
+        int maxSpacingY = Math.max(_pg1.spacingY, _pg2.spacingY);
+        float maxXCenter = Math.max(_pg1.centerPoint.xPos, _pg2.centerPoint.xPos);
+        float maxYCenter = Math.max(_pg1.centerPoint.yPos, _pg2.centerPoint.yPos);
 
-        Point_Grid result = new Point_Grid(new Point(maxXCenter, maxYCenter), maxCol, maxRow, maxSpacingX, maxSpacingY);
-        result = new Point_Grid(result);
+        PointGrid result = new PointGrid(new Point(maxXCenter, maxYCenter), maxCol, maxRow, maxSpacingX, maxSpacingY);
+        result = new PointGrid(result);
         result.weight(0);
 
         for (ArrayList<Grid_Point> columns : _pg1.points) {
@@ -254,7 +254,7 @@ public class Helpers {
 
     }
 
-    public static Point_Grid subtractGridWeights(Point_Grid _pg1, Point_Grid _pg2) {
+    public static PointGrid subtractGridWeights(PointGrid _pg1, PointGrid _pg2) {
 
         // Subtracts point weights, returns a new Point_Grid
         // Where:
@@ -263,7 +263,7 @@ public class Helpers {
 
         Grid_Point currPoint;
 
-        Point_Grid result = new Point_Grid(_pg1);
+        PointGrid result = new PointGrid(_pg1);
 
         for (ArrayList<Grid_Point> grid_points : _pg2.points) {
             for (Grid_Point grid_point : grid_points) {

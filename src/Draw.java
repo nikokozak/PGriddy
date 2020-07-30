@@ -10,7 +10,7 @@ public class Draw {
 
     public static <T extends Iterable<Grid_Point>> void draw(int type, T _l) {
         // Draws points to screen as either a Processing point, circle, or rect (size 3 for circle and rect).
-        // No fill, or weight set.
+        // No fill or weight set.
         // Where:
         // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
 

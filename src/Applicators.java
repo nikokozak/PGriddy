@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-
 public class Applicators {
 
     public static <T extends Iterable<Grid_Point>> void color(int _col, T _l) {
@@ -14,7 +11,7 @@ public class Applicators {
         }
     }
 
-    public static void grid_select_color(int _col, Selection _s, Point_Grid _pg) {
+    public static void grid_select_color(int _col, Selection _s, PointGrid _pg) {
 
         // Sets all Points in a given region of a Grid to _col.
         // Where:
@@ -45,7 +42,7 @@ public class Applicators {
 
     }
 
-    public static void grid_select_weight(double _weight, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight(double _weight, Selection _s, PointGrid _pg) {
 
         // Sets all Points in a given region of a Grid to _weight.
         // Where:
@@ -75,7 +72,7 @@ public class Applicators {
             }
     }
 
-    public static void grid_select_weight_add(double _to_add, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_add(double _to_add, Selection _s, PointGrid _pg) {
 
         // Adds a given weight to all points equally (within Selection).
         // Where:
@@ -104,7 +101,7 @@ public class Applicators {
         }
     }
 
-    public static void grid_select_weight_multiply(double _factor, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_multiply(double _factor, Selection _s, PointGrid _pg) {
 
         // Multiplies the weights of all points by a given number (within selection).
         // Where:
@@ -131,7 +128,7 @@ public class Applicators {
     }
 
 
-    public static void grid_select_weight_reset(Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_reset(Selection _s, PointGrid _pg) {
 
         // Sets all Points to weight 1.0.
         // Where:
@@ -161,7 +158,7 @@ public class Applicators {
         }
     }
 
-    public static void grid_select_weight_filter(double _low, double _high, Selection _s, Point_Grid _pg) {
+    public static void grid_select_weight_filter(double _low, double _high, Selection _s, PointGrid _pg) {
 
         // Sets all weights outside the threshold to zero (within selection).
         // Where:
