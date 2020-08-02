@@ -21,8 +21,8 @@ public class Core extends PApplet {
         n2 = new Noise(Noise.Type.VALUE_FRACTAL);
         n2.frequency = 0.005;
         g1 = new Gradient(Gradient.Type.RADIAL);
-        c1 = pg1.get_circle(50, 50, 20);
-        c2 = pg2.get_circle_fill(100, 100, 20);
+        c1 = pg1.getCircle(50, 50, 20);
+        c2 = pg2.getCircleFill(100, 100, 20);
 
 
         g1.subtract = true;
@@ -30,7 +30,7 @@ public class Core extends PApplet {
         g1.blend = true;
         g1.radius = 20;
         pg1.applyNoise(n1);
-        pg1.weight_multiply(6);
+        pg1.weightMultiply(6);
         pg1.applyGradient(g1);
         c1.weight(1);
 
@@ -55,14 +55,14 @@ public class Core extends PApplet {
 
 
 
-        c1 = pg1.get_circle(50, 50, count);
+        c1 = pg1.getCircle(50, 50, count);
 
 
         n1.time = counter;
         n2.time = counter2;
         pg1.applyNoise(n1);
         pg2.applyNoise(n2);
-        pg1.weight_multiply(8);
+        pg1.weightMultiply(8);
         pg1.applyGradient(g1);
         c1.weight(0.5);
         c2.weight(0);

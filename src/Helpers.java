@@ -169,21 +169,21 @@ public class Helpers {
 
     }
 
-    public static ArrayList<ArrayList<Grid_Point>> cloneGridPoints(PointGrid _pg) {
+    public static ArrayList<ArrayList<GridPoint>> cloneGridPoints(PointGrid _pg) {
 
         // Deep clones points from a given Point_Grid into a new ArrayList.
         // Used to avoid shallow copies.
         // Where:
         // _pg -> Point_Grid to copy from
 
-        ArrayList<ArrayList<Grid_Point>> parent = new ArrayList<ArrayList<Grid_Point>>(_pg.yPoints);
-        Grid_Point currPoint;
+        ArrayList<ArrayList<GridPoint>> parent = new ArrayList<ArrayList<GridPoint>>(_pg.yPoints);
+        GridPoint currPoint;
 
         for (int x = 0; x < _pg.xPoints; x++) {
-            parent.add(new ArrayList<Grid_Point>(_pg.yPoints));
+            parent.add(new ArrayList<GridPoint>(_pg.yPoints));
             for (int y = 0; y < _pg.yPoints; y++) {
                 currPoint = _pg.points.get(x).get(y);
-                parent.get(x).add(new Grid_Point(currPoint));
+                parent.get(x).add(new GridPoint(currPoint));
             }
         }
 
@@ -191,16 +191,16 @@ public class Helpers {
 
     }
 
-    public static ArrayList<Grid_Point> cloneGridPoints(ArrayList<Grid_Point> _list) {
+    public static ArrayList<GridPoint> cloneGridPoints(ArrayList<GridPoint> _list) {
 
         // Deep clones Grid_Points from one ArrayList to another.
         // Used to get around some issues regarding unwanted object references.
         // Where:
         // _list -> ArrayList<Grid_Point> to copy
 
-        ArrayList<Grid_Point> result = new ArrayList<Grid_Point>(_list.size());
-        for (Grid_Point currPoint : _list) {
-            result.add(new Grid_Point(currPoint));
+        ArrayList<GridPoint> result = new ArrayList<GridPoint>(_list.size());
+        for (GridPoint currPoint : _list) {
+            result.add(new GridPoint(currPoint));
         }
 
         return result;
@@ -238,14 +238,14 @@ public class Helpers {
         result = new PointGrid(result);
         result.weight(0);
 
-        for (ArrayList<Grid_Point> columns : _pg1.points) {
-            for (Grid_Point currPoint : columns) {
+        for (ArrayList<GridPoint> columns : _pg1.points) {
+            for (GridPoint currPoint : columns) {
                 result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight + currPoint.weight, 0, 1);
             }
         }
 
-        for (ArrayList<Grid_Point> columns : _pg2.points) {
-            for (Grid_Point currPoint : columns) {
+        for (ArrayList<GridPoint> columns : _pg2.points) {
+            for (GridPoint currPoint : columns) {
                 result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight + currPoint.weight, 0, 1);
             }
         }
@@ -261,12 +261,12 @@ public class Helpers {
         // _pg1 -> Point_Grid to subtract from
         // _pg2 -> Point_Grid to subtract with
 
-        Grid_Point currPoint;
+        GridPoint currPoint;
 
         PointGrid result = new PointGrid(_pg1);
 
-        for (ArrayList<Grid_Point> grid_points : _pg2.points) {
-            for (Grid_Point grid_point : grid_points) {
+        for (ArrayList<GridPoint> grid_points : _pg2.points) {
+            for (GridPoint grid_point : grid_points) {
                 currPoint = grid_point;
                 if (checkColBounds(currPoint.gridIndexX, _pg1) && checkRowBounds(currPoint.gridIndexY, _pg1)) {
                     result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight - currPoint.weight, 0, 1);

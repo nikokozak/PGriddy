@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class PointList implements Iterable<Grid_Point>{
+public class PointList implements Iterable<GridPoint>{
 
     // Point_List is used to contain lists of Grid_Points, mainly used
     // when dealing with pattern extraction from Grids.
@@ -9,57 +9,57 @@ public class PointList implements Iterable<Grid_Point>{
     // Where:
     // points -> ArrayList<Grid_Point> of points
 
-    public ArrayList<Grid_Point> points;
+    public ArrayList<GridPoint> points;
     private boolean is_capped = false;
 
     public PointList() {
-       this.points = new ArrayList<Grid_Point>();
+       this.points = new ArrayList<GridPoint>();
     }
 
     public PointList(int _size) {
-       this.points = new ArrayList<Grid_Point>(_size);
+       this.points = new ArrayList<GridPoint>(_size);
     }
 
-    public PointList(Grid_Point... pts) {
-        this.points = new ArrayList<Grid_Point>(pts.length);
+    public PointList(GridPoint... pts) {
+        this.points = new ArrayList<GridPoint>(pts.length);
         this.points.addAll(Arrays.asList(pts));
     }
 
-    public PointList(ArrayList<Grid_Point> _list) {
+    public PointList(ArrayList<GridPoint> _list) {
         this.points = Helpers.cloneGridPoints(_list);
     }
 
-    public PointList(Collection<Grid_Point> _list) {
-        this.points = new ArrayList<Grid_Point>(_list);
+    public PointList(Collection<GridPoint> _list) {
+        this.points = new ArrayList<GridPoint>(_list);
     }
 
     //** ============= ITERATOR ================= **//
 
     @Override
-    public Iterator<Grid_Point> iterator() {
+    public Iterator<GridPoint> iterator() {
         return this.points.iterator();
     }
 
     //** ============= UTILS ================= **//
 
-    public PointList add(Grid_Point _p) {
+    public PointList add(GridPoint _p) {
 
         // Adds a point to a point list if list is not capped.
 
-       if (!this.is_capped()) this.points.add(_p);
+       if (!this.isCapped()) this.points.add(_p);
        return this;
 
     }
 
-    public PointList add(Grid_Point... pts) {
+    public PointList add(GridPoint... pts) {
 
         // Adds a series of points to a list if it is not capped.
 
-        if (!this.is_capped()) this.points.addAll(Arrays.asList(pts));
+        if (!this.isCapped()) this.points.addAll(Arrays.asList(pts));
         return this;
     }
 
-    public PointList add_all(PointList _pl) {
+    public PointList addAll(PointList _pl) {
 
         // Appends given points onto the end of point list.
 
@@ -68,7 +68,7 @@ public class PointList implements Iterable<Grid_Point>{
 
     }
 
-    public PointList add_all_cloned(PointList _pl) {
+    public PointList addAllCloned(PointList _pl) {
 
         // Appends given points onto the end of point list, clones them first.
 
@@ -81,7 +81,7 @@ public class PointList implements Iterable<Grid_Point>{
 
         // Removes a given point from the list.
 
-        if (!this.is_empty()) this.points.remove(_index);
+        if (!this.isEmpty()) this.points.remove(_index);
         return this;
 
     }
@@ -90,7 +90,7 @@ public class PointList implements Iterable<Grid_Point>{
 
         // Removes all points from the list.
 
-        if (!this.is_empty()) this.points.clear();
+        if (!this.isEmpty()) this.points.clear();
         return this;
 
     }
@@ -112,7 +112,7 @@ public class PointList implements Iterable<Grid_Point>{
 
     }
 
-    public boolean is_capped() {
+    public boolean isCapped() {
 
         // Returns true if a Point_List is capped (null as last item).
 
@@ -120,7 +120,7 @@ public class PointList implements Iterable<Grid_Point>{
 
     }
 
-    public boolean is_empty() {
+    public boolean isEmpty() {
 
         // Returns true if a Point_List is empty.
 
@@ -128,11 +128,11 @@ public class PointList implements Iterable<Grid_Point>{
 
     }
 
-    public PointList remove_duplicates() {
+    public PointList removeDuplicates() {
 
         // Removes duplicate points from Point_List
 
-        Set<Grid_Point> set = new LinkedHashSet<>(this.points.size());
+        Set<GridPoint> set = new LinkedHashSet<>(this.points.size());
         set.addAll(set);
         this.points.clear();
         this.points.addAll(set);
@@ -169,27 +169,27 @@ public class PointList implements Iterable<Grid_Point>{
 
     //** ============= POINT GETTERS ================= **//
 
-    public Grid_Point get(int _index) {
+    public GridPoint get(int _index) {
 
-       return Getters.get_list_point(_index, this);
-
-    }
-
-    public PointList get_range(int _start, int _end) {
-
-        return Getters.get_list_point_range(_start, _end, this);
+       return Getters.getListPoint(_index, this);
 
     }
 
-    public PointList get_every(int _x) {
+    public PointList getRange(int _start, int _end) {
 
-        return Getters.get_list_every_other(_x, this);
+        return Getters.getListPointRange(_start, _end, this);
 
     }
 
-    public PointList get_points_by_weight(double min, double max) {
+    public PointList getEvery(int _x) {
 
-        return Getters.get_points_by_weight(min, max, this);
+        return Getters.getListEveryOther(_x, this);
+
+    }
+
+    public PointList getPointsByWeight(double min, double max) {
+
+        return Getters.getPointsByWeight(min, max, this);
 
     }
 
@@ -201,21 +201,21 @@ public class PointList implements Iterable<Grid_Point>{
 
     }
 
-    public PointList move_mult(int _x, int _y) {
+    public PointList moveMult(int _x, int _y) {
 
-        return Move.multiply_posns(_x, _y, this);
-
-    }
-
-    public PointList move_to(int _x, int _y) {
-
-        return Move.list_to(_x, _y, this);
+        return Move.multiplyPosns(_x, _y, this);
 
     }
 
-    public PointList move_reset() {
+    public PointList moveTo(int _x, int _y) {
 
-        return Move.reset_posns(this);
+        return Move.listTo(_x, _y, this);
+
+    }
+
+    public PointList moveReset() {
+
+        return Move.resetPosns(this);
 
     }
 
@@ -235,30 +235,30 @@ public class PointList implements Iterable<Grid_Point>{
 
     }
 
-    public PointList weight_add(double _to_add) {
+    public PointList weightAdd(double _to_add) {
 
-        Applicators.weight_add(_to_add, this);
+        Applicators.weightAdd(_to_add, this);
         return this;
 
     }
 
-    public PointList weight_multiply(double _factor) {
+    public PointList weightMultiply(double _factor) {
 
-        Applicators.weight_multiply(_factor, this);
+        Applicators.weightMultiply(_factor, this);
         return this;
 
     }
 
-    public PointList weight_reset() {
+    public PointList weightReset() {
 
-        Applicators.weight_reset(this);
+        Applicators.weightReset(this);
         return this;
 
     }
 
     public PointList filter(double _low, double _high) {
 
-        Applicators.weight_filter(_low, _high, this);
+        Applicators.weightFilter(_low, _high, this);
         return this;
 
     }

@@ -1,7 +1,7 @@
 import java.util.Objects;
 import java.util.Optional;
 
-public class Grid_Point extends Point {
+public class GridPoint extends Point {
 
     // a GRID_POINT is a data structure
     // GRID_POINT ( x: INT, y: INT, gridIndexX: INT, gridIndexY: INT )
@@ -13,38 +13,38 @@ public class Grid_Point extends Point {
     public final int gridIndexX, gridIndexY;
     private PointGrid parentGrid;
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy) {
+    public GridPoint(int _x, int _y, int _gx, int _gy) {
         super(_x, _y);
         this.gridIndexX = _gx;
         this.gridIndexY = _gy;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, PointGrid parent) {
+    public GridPoint(int _x, int _y, int _gx, int _gy, PointGrid parent) {
         this(_x, _y, _gx, _gy);
         this.parentGrid = parent;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, double _weight) {
+    public GridPoint(int _x, int _y, int _gx, int _gy, double _weight) {
         this(_x, _y, _gx, _gy);
         this.weight = _weight;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, double _weight, PointGrid parent) {
+    public GridPoint(int _x, int _y, int _gx, int _gy, double _weight, PointGrid parent) {
         this(_x, _y, _gx, _gy, _weight);
         this.parentGrid = parent;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, int _color, double _weight) {
+    public GridPoint(int _x, int _y, int _gx, int _gy, int _color, double _weight) {
         this(_x, _y, _gx, _gy, _weight);
         this.col = _color;
     }
 
-    public Grid_Point (int _x, int _y, int _gx, int _gy, int _color, double _weight, PointGrid parent) {
+    public GridPoint(int _x, int _y, int _gx, int _gy, int _color, double _weight, PointGrid parent) {
         this(_x, _y, _gx, _gy, _color, _weight);
         this.parentGrid = parent;
     }
 
-    public Grid_Point (Grid_Point _p) {
+    public GridPoint(GridPoint _p) {
         super(_p);
         this.gridIndexX = _p.gridIndexX;
         this.gridIndexY = _p.gridIndexY;
@@ -64,7 +64,7 @@ public class Grid_Point extends Point {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Grid_Point that = (Grid_Point) o;
+        GridPoint that = (GridPoint) o;
         return gridIndexX == that.gridIndexX &&
                 gridIndexY == that.gridIndexY;
     }

@@ -1,10 +1,10 @@
 public class Move {
 
-    public static <T extends Iterable<Grid_Point>> T move(int _x, int _y, T _l) {
+    public static <T extends Iterable<GridPoint>> T move(int _x, int _y, T _l) {
 
         // Adds x and y quantities to Point positions.
 
-        for (Grid_Point currPoint : _l) {
+        for (GridPoint currPoint : _l) {
             currPoint.xPos += _x;
             currPoint.yPos += _y;
         }
@@ -13,11 +13,11 @@ public class Move {
 
     }
 
-    public static PointGrid grid_selection_move(int _x, int _y, Selection _s, PointGrid _pg) {
+    public static PointGrid gridSelectionMove(int _x, int _y, Selection _s, PointGrid _pg) {
 
         // Adds x and y quantities to Point positions within a given selection.
 
-        Grid_Point currPoint;
+        GridPoint currPoint;
 
         for (int x = _s.startCol; x <= _s.endCol; x++) {
             for (int y = _s.startRow; y <= _s.endRow; y++) {
@@ -31,11 +31,11 @@ public class Move {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> T multiply_posns(int _x, int _y, T _l) {
+    public static <T extends Iterable<GridPoint>> T multiplyPosns(int _x, int _y, T _l) {
 
         // Multiplies Point positions by _x, _y.
 
-        for (Grid_Point currPoint : _l) {
+        for (GridPoint currPoint : _l) {
             currPoint.yPos *= _y;
             currPoint.xPos *= _x;
         }
@@ -44,11 +44,11 @@ public class Move {
 
     }
 
-    public static PointGrid grid_selection_multiply_posns(int _x, int _y, Selection _s, PointGrid _pg) {
+    public static PointGrid gridSelectionMultiplyPosns(int _x, int _y, Selection _s, PointGrid _pg) {
 
         // Multiplies x and y positions by _x and _y within a given selection.
 
-        Grid_Point currPoint;
+        GridPoint currPoint;
 
         for (int x = _s.startCol; x <= _s.endCol; x++) {
             for (int y = _s.startRow; y <= _s.endRow; y++) {
@@ -62,7 +62,7 @@ public class Move {
 
     }
 
-    public static PointGrid grid_to(int _x, int _y, PointGrid _pg) {
+    public static PointGrid gridTo(int _x, int _y, PointGrid _pg) {
 
         // Moves the entire Grid to a new x, y center.
         // RESETS ALL PAREMETERS PERTAINING TO ORIGIN, ETC.
@@ -85,7 +85,7 @@ public class Move {
         return _pg;
     }
 
-    public static PointGrid grid_selection_to(int _x, int _y, Selection _s, PointGrid _pg) {
+    public static PointGrid gridSelectionTo(int _x, int _y, Selection _s, PointGrid _pg) {
 
         // Moves a grid selection to a new x, y center. Translation is based on selection center.
         // DOES NOT AFFECT GRID CENTER ATTRIBUTE.
@@ -103,7 +103,7 @@ public class Move {
         return _pg;
     }
 
-    public static PointList list_to(int _x, int _y, PointList _pl) {
+    public static PointList listTo(int _x, int _y, PointList _pl) {
 
         // Moves the entire Point List to a new x, y position.
         // Translation is based on the first point in the list.
@@ -111,7 +111,7 @@ public class Move {
         float x_translation = _pl.get(0).xPos - _x;
         float y_translation = _pl.get(0).yPos - _y;
 
-        for (Grid_Point currPoint : _pl.points) {
+        for (GridPoint currPoint : _pl.points) {
             currPoint.xPos += x_translation;
             currPoint.yPos += y_translation;
         }
@@ -120,11 +120,11 @@ public class Move {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> T reset_posns(T _l) {
+    public static <T extends Iterable<GridPoint>> T resetPosns(T _l) {
 
         // Resets all Points to their original positions.
 
-        for (Grid_Point currPoint : _l) {
+        for (GridPoint currPoint : _l) {
             currPoint.xPos = currPoint.originalXPos;
             currPoint.yPos = currPoint.originalYPos;
         }
@@ -133,11 +133,11 @@ public class Move {
 
     }
 
-    public static PointGrid grid_selection_reset_posns(Selection _s, PointGrid _pg) {
+    public static PointGrid gridSelectionResetPosns(Selection _s, PointGrid _pg) {
 
         // Resets all Grid_Points within a selection to their original positions.
 
-        Grid_Point currPoint;
+        GridPoint currPoint;
 
         for (int x = _s.startCol; x < _s.endCol; x++) {
             for (int y = _s.startRow; y < _s.endRow; y++) {

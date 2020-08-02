@@ -21,24 +21,18 @@ public class Point {
     }
 
     public Point (float _x, float _y, int _color) {
-        this.xPos = _x; this.yPos = _y;
-        this.originalXPos = _x; this.originalYPos = _y;
-        this.weight = 1;
+        this(_x, _y);
         this.col = _color;
     }
 
     public Point (float _x, float _y, double _weight) {
-        this.xPos = _x; this.yPos = _y;
-        this.originalXPos = _x; this.originalYPos = _y;
+        this(_x, _y);
         this.weight = Helpers.clamp(_weight, 0.0, 1.0);
-        this.col = Core.processing.color(255);
     }
 
     public Point (float _x, float _y, int _color, double _weight) {
-        this.xPos = _x; this.yPos = _y;
-        this.originalXPos = _x; this.originalYPos = _y;
+        this(_x, _y, _color);
         this.weight = Helpers.clamp(_weight, 0.0, 1.0);
-        this.col = _color;
     }
 
     public Point (Point _p) {
@@ -48,7 +42,7 @@ public class Point {
         this.col = _p.col;
     }
 
-    public Point (Grid_Point _p) {
+    public Point (GridPoint _p) {
         this.xPos = _p.xPos; this.yPos = _p.yPos;
         this.originalXPos = _p.originalXPos; this.originalYPos = _p.originalYPos;
         this.weight = _p.weight;
@@ -108,13 +102,13 @@ public class Point {
         this.xPos += _x;
     }
 
-    public void move_to(int _x, int _y) {
+    public void moveTo(int _x, int _y) {
         // Moves Point to x, y.
         this.yPos = _y;
         this.xPos = _x;
     }
 
-    public void move_reset() {
+    public void moveReset() {
        // Moves Point to original x, y position (position when it was created).
         this.yPos = this.originalYPos;
         this.xPos = this.originalXPos;

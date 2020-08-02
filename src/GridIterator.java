@@ -5,12 +5,12 @@ import java.util.Iterator;
 // essentially flattens points without having to copy into new data structure
 // allows for DRY methods that deal with both grids and lists.
 
-public class Grid_Iterator implements Iterator<Grid_Point> {
+public class GridIterator implements Iterator<GridPoint> {
 
-    private final ArrayList<ArrayList<Grid_Point>> points;
+    private final ArrayList<ArrayList<GridPoint>> points;
     private int currentPosition;
 
-    public Grid_Iterator(ArrayList<ArrayList<Grid_Point>> _points) {
+    public GridIterator(ArrayList<ArrayList<GridPoint>> _points) {
         points = _points;
         currentPosition = 0;
     }
@@ -21,7 +21,7 @@ public class Grid_Iterator implements Iterator<Grid_Point> {
     }
 
     @Override
-    public Grid_Point next() {
+    public GridPoint next() {
         int x = Math.floorMod(currentPosition, points.size());
         int y = currentPosition / points.size();
         currentPosition++;

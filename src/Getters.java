@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Getters {
 
-    public static Grid_Point get_grid_point(int _col, int _row, PointGrid _pg) {
+    public static GridPoint getGridPoint(int _col, int _row, PointGrid _pg) {
 
         // Fetches a POINT from a POINT_GRID
         // Where:
@@ -16,7 +16,7 @@ public class Getters {
 
     }
 
-    public static Grid_Point get_grid_point_safe(int _col, int _row, PointGrid _pg) {
+    public static GridPoint getGridPointSafe(int _col, int _row, PointGrid _pg) {
 
         // Fetches a POINT from a POINT_GRID, throwing an exception if point is out of bounds.
         // Where:
@@ -31,7 +31,7 @@ public class Getters {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> PointList get_points_by_weight(double _floor, double _ceil, T _points) {
+    public static <T extends Iterable<GridPoint>> PointList getPointsByWeight(double _floor, double _ceil, T _points) {
 
         // Returns a Point_List of all points in a Point_Grid within a given weight threshold [_floor, _ceil)
         // Where:
@@ -39,7 +39,7 @@ public class Getters {
         // _ceil -> threshold ceiling (exclusive)
 
         PointList result = new PointList();
-        for (Grid_Point currPoint : _points) {
+        for (GridPoint currPoint : _points) {
             if (currPoint.weight >= _floor && currPoint.weight < _ceil) {
                 result.add(currPoint);
             }
@@ -48,20 +48,20 @@ public class Getters {
 
     }
 
-    public static Grid_Point get_list_point(int _index, PointList _pl) {
+    public static GridPoint getListPoint(int _index, PointList _pl) {
 
         // Fetches a Grid_Point from a Point_List, returning NULL if point doesn't exist.
 
-        if (!_pl.is_empty()) return _pl.points.get(_index);
+        if (!_pl.isEmpty()) return _pl.points.get(_index);
         else return null;
 
     }
 
-    public static PointList get_list_point_range(int _start, int _end, PointList _pl) {
+    public static PointList getListPointRange(int _start, int _end, PointList _pl) {
 
         // Returns a new Point_List with points in a given range [_start, _end);
 
-        if (!_pl.is_empty() && (_start < _end) && _start >= 0 && _end < _pl.points.size()) {
+        if (!_pl.isEmpty() && (_start < _end) && _start >= 0 && _end < _pl.points.size()) {
             PointList result = new PointList(_end - _start);
 
             for (int i = _start; i < _end; i++) {
@@ -76,7 +76,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_column(int _index, PointGrid _pg) {
+    public static PointList getGridColumn(int _index, PointGrid _pg) {
 
         // Fetches a column of POINTs from a POINT_GRID
         // Where:
@@ -87,7 +87,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_row(int _index, PointGrid _pg) {
+    public static PointList getGridRow(int _index, PointGrid _pg) {
 
         // Fetches a row of POINTs from a POINT_GRID
         // Where:
@@ -103,7 +103,7 @@ public class Getters {
         return result;
     }
 
-    public static Grid_Point get_grid_point_mirror(int _col, int _row, PointGrid _pg){
+    public static GridPoint getGridPointMirror(int _col, int _row, PointGrid _pg){
 
         // Fetches a vertically and horizontally symmetrical POINT based on a source POINT and POINT_GRID
         // Where:
@@ -116,11 +116,11 @@ public class Getters {
         int opposite_x = grid_width - _col;
         int opposite_y = grid_height - _row;
 
-        return get_grid_point(opposite_x, opposite_y, _pg);
+        return getGridPoint(opposite_x, opposite_y, _pg);
 
     }
 
-    public static Grid_Point get_grid_point_mirror_y(int _col, int _row, PointGrid _pg) {
+    public static GridPoint getGridPointMirrorY(int _col, int _row, PointGrid _pg) {
 
         // Fetches a vertically symmetrical POINT based on a source POINT and POINT_GRID
         // Where:
@@ -131,11 +131,11 @@ public class Getters {
         int grid_height = _pg.yPoints - 1;
         int opposite_y = grid_height - _row;
 
-        return get_grid_point(_col, opposite_y, _pg);
+        return getGridPoint(_col, opposite_y, _pg);
 
     }
 
-    public static Grid_Point get_grid_point_mirror_x(int _col, int _row, PointGrid _pg) {
+    public static GridPoint getGridPointMirrorX(int _col, int _row, PointGrid _pg) {
 
         // Fetches a horizontally symmetrical POINT based on a source POINT and POINT_GRID
         // Where:
@@ -146,11 +146,11 @@ public class Getters {
         int grid_width = _pg.xPoints - 1;
         int opposite_x = grid_width - _col;
 
-        return get_grid_point(opposite_x, _row, _pg);
+        return getGridPoint(opposite_x, _row, _pg);
 
     }
 
-    public static PointList get_grid_line(int _col0, int _row0, int _col1, int _row1, PointGrid _pg) {
+    public static PointList getGridLine(int _col0, int _row0, int _col1, int _row1, PointGrid _pg) {
 
         // fetches points on grid according to line given by (_col0, _row0), (_col1, _row1)
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -168,7 +168,7 @@ public class Getters {
 
         while (true) {
             if (Helpers.checkBounds(_col0, _row0, _col1, _row1, _pg)) { // Make sure we're not out of bounds.
-                result.add(get_grid_point(_col0, _row0, _pg));
+                result.add(getGridPoint(_col0, _row0, _pg));
             }
             e2 = 2 * err;
             if (e2 >= dy) {
@@ -185,7 +185,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_line_no_op(int _col0, int _row0, int _col1, int _row1, PointGrid _pg) {
+    public static PointList getGridLineNoOp(int _col0, int _row0, int _col1, int _row1, PointGrid _pg) {
 
         // fetches points on grid according to line given by (_col0, _row0), (_col1, _row1)
         // instead of an optimized algorithm, uses a non-optimized slope-intercept based method.
@@ -214,7 +214,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_circle(int _col, int _row, int _rad, PointGrid _pg) {
+    public static PointList getGridCircle(int _col, int _row, int _rad, PointGrid _pg) {
 
         // fetches points on grid according to circle with center (_col, _row) and radius (_rad)
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -231,16 +231,16 @@ public class Getters {
 
         while (x < 0) {
             if (_col-x < _pg.xPoints && _col-x > -1 && _row+y < _pg.yPoints && _row+y > -1) { // Same as with line (out of bounds checks).
-                result.add(get_grid_point(_col-x, _row+y, _pg));
+                result.add(getGridPoint(_col-x, _row+y, _pg));
             }
             if (_col-y > -1 && _col-y < _pg.xPoints && _row-x < _pg.yPoints && _row-x > -1) {
-                result.add(get_grid_point(_col-y, _row-x, _pg));
+                result.add(getGridPoint(_col-y, _row-x, _pg));
             }
             if (_col+x > -1 && _col+x < _pg.xPoints && _row-y > -1 && _row-y < _pg.yPoints) {
-                result.add(get_grid_point(_col+x, _row-y, _pg));
+                result.add(getGridPoint(_col+x, _row-y, _pg));
             }
             if (_col+y < _pg.xPoints && _col+y > -1 && _row+x > -1 && _row+x < _pg.yPoints) {
-                result.add(get_grid_point(_col+y, _row+x, _pg));
+                result.add(getGridPoint(_col+y, _row+x, _pg));
             }
             _rad = err;
             if (_rad <= y) {
@@ -257,7 +257,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_circle_fill(int _col, int _row, int _rad, PointGrid _pg) {
+    public static PointList getGridCircleFill(int _col, int _row, int _rad, PointGrid _pg) {
 
         // fetches points on grid according to circle with center (_col, _row) and radius (_rad).
         // fetches all points inside said circle as well.
@@ -267,15 +267,15 @@ public class Getters {
         // _rad -> radius of circle
         // _pg -> POINT_GRID to sample from
 
-        PointList result = get_grid_circle(_col, _row, _rad, _pg);
+        PointList result = getGridCircle(_col, _row, _rad, _pg);
 
-        result.add_all(grid_fill_bounds(_col, _row, result, _pg));
+        result.addAll(gridFillBounds(_col, _row, result, _pg));
 
         return result;
 
     }
 
-    public static PointList get_grid_polyline(PointList _pl, boolean _closed, PointGrid _pg) {
+    public static PointList getGridPolyline(PointList _pl, boolean _closed, PointGrid _pg) {
 
         // fetches points on grid according to coordinates of polygon passed in as Point List _pl
         // uses modified rasterizing algorithm by Alois Zingl (http://members.chello.at/~easyfilter/Bresenham.pdf)
@@ -283,27 +283,27 @@ public class Getters {
         // _pl -> Point_List of endpoints to build Polygon outline
         // _pg -> POINT_GRID to sample from
 
-        if (_pl.is_empty()) return null;
+        if (_pl.isEmpty()) return null;
 
         PointList result = new PointList();
-        Iterator<Grid_Point> iter = _pl.iterator();
-        Grid_Point firstPoint = iter.next();
-        Grid_Point currPoint = firstPoint;
-        Grid_Point nextPoint;
+        Iterator<GridPoint> iter = _pl.iterator();
+        GridPoint firstPoint = iter.next();
+        GridPoint currPoint = firstPoint;
+        GridPoint nextPoint;
 
         while(iter.hasNext()) {
             nextPoint = iter.next();
-            result.add_all(get_grid_line(currPoint.gridIndexX, currPoint.gridIndexY, nextPoint.gridIndexX, nextPoint.gridIndexY, _pg));
+            result.addAll(getGridLine(currPoint.gridIndexX, currPoint.gridIndexY, nextPoint.gridIndexX, nextPoint.gridIndexY, _pg));
             currPoint = nextPoint;
         }
 
-        if (_closed) result.add_all(get_grid_line(currPoint.gridIndexX, currPoint.gridIndexY, firstPoint.gridIndexX, firstPoint.gridIndexY, _pg));
+        if (_closed) result.addAll(getGridLine(currPoint.gridIndexX, currPoint.gridIndexY, firstPoint.gridIndexX, firstPoint.gridIndexY, _pg));
 
         return result;
 
     }
 
-    public static PointList get_grid_polyline_fill(PointList _pl, PointGrid _pg) {
+    public static PointList getGridPolylineFill(PointList _pl, PointGrid _pg) {
 
         // fetches all points within and including polyline _pl in a given grid.
         // if open, the polyline is closed before processing it.
@@ -311,16 +311,16 @@ public class Getters {
         // _pl -> polyline to sample
         // _pg -> point grid to sample
 
-       PointList result = get_grid_polyline(_pl, true, _pg);
-       Tuple2<Integer, Integer> centroid = polygon_centroid(_pl);
+       PointList result = getGridPolyline(_pl, true, _pg);
+       Tuple2<Integer, Integer> centroid = polygonCentroid(_pl);
        assert result != null;
-       result.add_all(grid_fill_bounds(centroid.a, centroid.b, result, _pg));
+       result.addAll(gridFillBounds(centroid.a, centroid.b, result, _pg));
 
        return result;
 
     }
 
-    public static PointList get_grid_pattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow, PointGrid _pg) {
+    public static PointList getGridPattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow, PointGrid _pg) {
 
         // fetches points according to a list of directions (explained below) for a certain number of iterations
         // Where:
@@ -332,27 +332,27 @@ public class Getters {
 
         PointList result = new PointList(); // Consider just checking ArrayList for duplicates
 
-        Grid_Point currentPoint = new Grid_Point(get_grid_point(_col, _row, _pg));
+        GridPoint currentPoint = new GridPoint(getGridPoint(_col, _row, _pg));
         int step = 0;
         int pointer = 0;
         int mod = _dlist.size();
 
         while (step < _reps) {
             if (result.get(0) == currentPoint || currentPoint == null) break;
-            result.add(new Grid_Point(currentPoint));
+            result.add(new GridPoint(currentPoint));
 
             pointer = step % mod;
             //print(_dlist.get(pointer)); -> debug
 
             switch (_dlist.get(pointer)) {
-                case 0 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg);
-                case 1 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg);
-                case 2 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg) : get_grid_point_safe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg);
-                case 3 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg);
-                case 4 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg);
-                case 5 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg);
-                case 6 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg) : get_grid_point_safe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg);
-                case 7 -> currentPoint = _overflow ? get_grid_point(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg) : get_grid_point_safe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg);
+                case 0 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg);
+                case 1 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg);
+                case 2 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg) : getGridPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg);
+                case 3 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg);
+                case 4 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg);
+                case 5 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg);
+                case 6 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg) : getGridPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg);
+                case 7 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg);
             }
 
             step += 1;
@@ -363,7 +363,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_every(int _x, int _y, PointGrid _pg) {
+    public static PointList getGridEvery(int _x, int _y, PointGrid _pg) {
 
         // fetches points in a grid, by sampling every _x column and _y row.
         // Where:
@@ -383,7 +383,7 @@ public class Getters {
 
     }
 
-    public static PointList get_list_every_other(int _x, PointList _pl) {
+    public static PointList getListEveryOther(int _x, PointList _pl) {
 
         // fetches points in a point_list, skipping _x points per sample.
         // Where:
@@ -400,7 +400,7 @@ public class Getters {
 
     }
 
-    public static PointList get_grid_region(int _x0, int _y0, int _x1, int _y1, PointGrid _pg) {
+    public static PointList getGridRegion(int _x0, int _y0, int _x1, int _y1, PointGrid _pg) {
 
         // fetches points within a given Point_Grid region
         // Where:
@@ -411,7 +411,7 @@ public class Getters {
 
         for (int x = _x0; x <= _x1; x++) {
             for (int y = _y0; y <= _y1; y++) {
-                result.add(_pg.get_point(x, y));
+                result.add(_pg.getPoint(x, y));
             }
         }
 
@@ -421,7 +421,7 @@ public class Getters {
 
     //** ==================== PRIVATE HELPERS ====================== **//
 
-    private static Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> get_list_min_max_coords(PointList _pl) {
+    private static Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> getListMinMaxCoords(PointList _pl) {
 
         // finds the min/max gX and min/max gY coordinates in a Point_List.
         // returns ((x-min, x-max), (y-min, y-max))
@@ -432,7 +432,7 @@ public class Getters {
                new Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>>
                        (new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0), new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0));
 
-       for (Grid_Point currPoint : _pl.points) {
+       for (GridPoint currPoint : _pl.points) {
            if (currPoint.gridIndexX < result.a.a) result.a.a = currPoint.gridIndexX;
            if (currPoint.gridIndexX > result.a.b) result.a.b = currPoint.gridIndexX;
            if (currPoint.gridIndexY < result.b.a) result.b.a = currPoint.gridIndexY;
@@ -442,7 +442,7 @@ public class Getters {
        return result;
     }
 
-    private static boolean point_in_list(int _col, int _row, PointList _pl) {
+    private static boolean pointInList(int _col, int _row, PointList _pl) {
 
         // checks whether a certain point exists in a list based on given x, y grid coordinates.
         // Where:
@@ -453,7 +453,7 @@ public class Getters {
 
         boolean found = false;
 
-        for (Grid_Point currPoint : _pl.points) {
+        for (GridPoint currPoint : _pl.points) {
             if (currPoint.gridIndexX == _col && currPoint.gridIndexY == _row) {
                 found = true;
                 break;
@@ -464,7 +464,7 @@ public class Getters {
 
     }
 
-    private static void fill_util(int _col, int _row, PointList _outline, PointGrid _pg, PointList _result) {
+    private static void fillUtil(int _col, int _row, PointList _outline, PointGrid _pg, PointList _result) {
 
         // Recurs over points within _pl (must be closed) and adds them to _result
         // Where:
@@ -475,19 +475,19 @@ public class Getters {
         // _result -> Point_List to add points to
 
         if (!Helpers.checkBounds(_col, _row, _pg)) return;
-        if (point_in_list(_col, _row, _outline)) return;
-        if (point_in_list(_col, _row, _result)) return;
+        if (pointInList(_col, _row, _outline)) return;
+        if (pointInList(_col, _row, _result)) return;
 
-        _result.add(get_grid_point(_col, _row, _pg));
+        _result.add(getGridPoint(_col, _row, _pg));
 
-        fill_util(_col + 1, _row, _outline, _pg, _result);
-        fill_util(_col - 1, _row, _outline, _pg, _result);
-        fill_util(_col, _row + 1, _outline, _pg, _result);
-        fill_util(_col, _row - 1, _outline, _pg, _result);
+        fillUtil(_col + 1, _row, _outline, _pg, _result);
+        fillUtil(_col - 1, _row, _outline, _pg, _result);
+        fillUtil(_col, _row + 1, _outline, _pg, _result);
+        fillUtil(_col, _row - 1, _outline, _pg, _result);
 
     }
 
-    private static PointList grid_fill_bounds(int _col, int _row, PointList _outline, PointGrid _pg) {
+    private static PointList gridFillBounds(int _col, int _row, PointList _outline, PointGrid _pg) {
 
         // Returns points within the bounds of a Point_List (i.e. circle) (must be closed bounds)
         // Where:
@@ -497,12 +497,12 @@ public class Getters {
         // _pg -> Point_Grid to draw points from
 
         PointList result = new PointList();
-        fill_util(_col, _row, _outline, _pg, result);
+        fillUtil(_col, _row, _outline, _pg, result);
         return result;
 
     }
 
-    private static Tuple2<Integer, Integer> polygon_centroid(PointList _pl) {
+    private static Tuple2<Integer, Integer> polygonCentroid(PointList _pl) {
 
        // Returns the centroid of a non-self intersecting Polygon (VERTICES MUST BE IN ORDER)
        // Where:

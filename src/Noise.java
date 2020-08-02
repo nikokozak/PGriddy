@@ -50,7 +50,7 @@ public class Noise {
 
     }
 
-    public <T extends Iterable<Grid_Point>> T applyWeightToPoints(T points) {
+    public <T extends Iterable<GridPoint>> T applyWeightToPoints(T points) {
 
         if (isCloverType(this.type)) {
             applyCloverNoiseToPoints(this.type, points);
@@ -80,13 +80,13 @@ public class Noise {
 
     }
 
-    private <T extends Iterable<Grid_Point>> void applyCloverNoiseToPoints(Type type, T pg) {
+    private <T extends Iterable<GridPoint>> void applyCloverNoiseToPoints(Type type, T pg) {
 
         // TODO: think about extracting CloverNoise to allow for a version of this that doens't call a switch statement on each iter (check if JIT optimizes type here)
 
         CloverNoise.Noise2D noise = new CloverNoise.Noise2D();
 
-        for (Grid_Point point : pg) {
+        for (GridPoint point : pg) {
             if (this.blend) point.weight = Helpers.clamp(
                     point.weight + Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0);
             else
@@ -95,7 +95,7 @@ public class Noise {
 
     }
 
-    private double getCloverNoiseValueForPoint(Type type, CloverNoise.Noise2D noise, Grid_Point point) {
+    private double getCloverNoiseValueForPoint(Type type, CloverNoise.Noise2D noise, GridPoint point) {
 
         switch(type) {
             case CLOVER_2D: return noise.noise(point.xPos, point.yPos);
@@ -115,9 +115,9 @@ public class Noise {
 
     }
 
-    private <T extends Iterable<Grid_Point>> void applyFastNoiseToPoints(FastNoise noise, T points) {
+    private <T extends Iterable<GridPoint>> void applyFastNoiseToPoints(FastNoise noise, T points) {
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             double weight = noise.GetNoise(point.xPos, point.yPos, this.time);
             if (this.blend) point.weight = Helpers.clamp(
                     point.weight + Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0);
@@ -141,7 +141,7 @@ public class Noise {
 
     }
 
-    private <T extends Iterable<Grid_Point>> void applyPerlinNoiseToPoints(T points) {
+    private <T extends Iterable<GridPoint>> void applyPerlinNoiseToPoints(T points) {
 
         // Apply weights to points based on Perlin Noise.
         // Where:
@@ -150,7 +150,7 @@ public class Noise {
         // _time -> Time (Z-axis) factor for animating Perlin (takes values from 0.0 - 1.0);
         // _blend -> Whether to blend weight with any previous weight present in Point_Grid
         // _opacity -> Opacity of applied weights
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             if (this.blend) point.weight = Helpers.clamp(point.weight +
                     Helpers.map(Core.processing.noise(point.xPos, point.yPos, this.time), 0, 1, this.minimumWeight, this.maximumWeight)
                             * this.opacity, 0.0, 1.0);
@@ -160,7 +160,7 @@ public class Noise {
 
     }
 
-    private <T extends Iterable<Grid_Point>> void applyRandomNoiseToPoints(T points) {
+    private <T extends Iterable<GridPoint>> void applyRandomNoiseToPoints(T points) {
 
         // Apply weights to points randomly.
         // Where:
@@ -169,7 +169,7 @@ public class Noise {
         // _blend -> Whether to blend weight with any previous weight present in Point_Grid
         // _opacity -> Opacity of applied weights
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             if (this.blend) point.weight = Helpers.clamp(point.weight +
                     Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, this.minimumWeight, this.maximumWeight)
                             * this.opacity, 0, 1);

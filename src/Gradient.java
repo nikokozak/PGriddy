@@ -44,7 +44,7 @@ public class Gradient {
 
     public PointGrid applyWeightsToPoints(PointGrid pg) {
 
-        for (Grid_Point currPoint : pg) {
+        for (GridPoint currPoint : pg) {
 
             switch (this.type) {
                 case RADIAL -> applyWeightToPoint(false, Type.RADIAL, currPoint, pg);
@@ -61,15 +61,15 @@ public class Gradient {
 
     }
 
-    private void applyWeightToPoint(boolean slow, Type type, Grid_Point currPoint, PointGrid pg) {
+    private void applyWeightToPoint(boolean slow, Type type, GridPoint currPoint, PointGrid pg) {
 
-        Grid_Point centerPoint = makeDefaultCenterPoint(pg);
+        GridPoint centerPoint = makeDefaultCenterPoint(pg);
 
         double maximumDistance = slow?
                 getFarthestDistanceFromPointExact(centerPoint.gridIndexX, centerPoint.gridIndexY, pg) :
                 getFarthestDistanceFromPointApprox(centerPoint.gridIndexX, centerPoint.gridIndexY, pg);
 
-        double currentDistance = slow? pg.grid_exact_dist(currPoint, centerPoint) : pg.grid_approx_dist(currPoint, centerPoint);
+        double currentDistance = slow? pg.gridExactDist(currPoint, centerPoint) : pg.gridApproxDist(currPoint, centerPoint);
         double radius = (slow? this.radius : Math.pow(this.radius, 2)) - maximumDistance;
         double weight = 0;
 
@@ -121,12 +121,12 @@ public class Gradient {
         return Helpers.clamp(weight, 0, 1);
     }
 
-    private Grid_Point makeDefaultCenterPoint(PointGrid pg) {
+    private GridPoint makeDefaultCenterPoint(PointGrid pg) {
 
         if (this.gradientCenterX == -1 || this.gradientCenterY == -1) {
-            return pg.get_point(pg.xPoints / 2, pg.yPoints / 2);
+            return pg.getPoint(pg.xPoints / 2, pg.yPoints / 2);
         } else {
-            return pg.get_point(this.gradientCenterX, this.gradientCenterY);
+            return pg.getPoint(this.gradientCenterX, this.gradientCenterY);
         }
 
     }
@@ -140,13 +140,13 @@ public class Gradient {
         // _pg -> grid to sample from.
 
         double max_distance = 0;
-        Grid_Point point = Getters.get_grid_point(_col, _row, _pg);
+        GridPoint point = Getters.getGridPoint(_col, _row, _pg);
 
-        switch(_pg.check_quad(point)) {
-            case 1 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(0, _pg.yPoints - 1, _pg));
-            case 2 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(_pg.xPoints - 1, _pg.yPoints - 1, _pg));
-            case 3 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(_pg.xPoints - 1, 0, _pg));
-            case 4 -> max_distance = _pg.grid_exact_dist(point, Getters.get_grid_point(0, 0, _pg));
+        switch(_pg.checkQuad(point)) {
+            case 1 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(0, _pg.yPoints - 1, _pg));
+            case 2 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(_pg.xPoints - 1, _pg.yPoints - 1, _pg));
+            case 3 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(_pg.xPoints - 1, 0, _pg));
+            case 4 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(0, 0, _pg));
         }
 
         return max_distance;
@@ -162,13 +162,13 @@ public class Gradient {
         // _pg -> grid to sample from.
 
         double max_distance = 0;
-        Grid_Point point = Getters.get_grid_point(_col, _row, _pg);
+        GridPoint point = Getters.getGridPoint(_col, _row, _pg);
 
-        switch(_pg.check_quad(point)) {
-            case 1 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(0, _pg.yPoints - 1, _pg));
-            case 2 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(_pg.xPoints - 1, _pg.yPoints - 1, _pg));
-            case 3 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(_pg.xPoints - 1, 0, _pg));
-            case 4 -> max_distance = _pg.grid_approx_dist(point, Getters.get_grid_point(0, 0, _pg));
+        switch(_pg.checkQuad(point)) {
+            case 1 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(0, _pg.yPoints - 1, _pg));
+            case 2 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(_pg.xPoints - 1, _pg.yPoints - 1, _pg));
+            case 3 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(_pg.xPoints - 1, 0, _pg));
+            case 4 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(0, 0, _pg));
         }
 
         return max_distance;

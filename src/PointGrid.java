@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PointGrid implements Iterable<Grid_Point>{
+public class PointGrid implements Iterable<GridPoint>{
 
     // a POINT_GRID is a data structure
     // a POINT_GRID contains a 2D collection of POINTs
@@ -23,7 +23,7 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     public int xOrigin, yOrigin; // Define the top-left X and Y pixel-coordinate values for the grid system.
     public Point centerPoint; // CenterPoint of Grid (x, y pixel-coordinate values)
-    public ArrayList<ArrayList<Grid_Point>> points; // Points held by grid.
+    public ArrayList<ArrayList<GridPoint>> points; // Points held by grid.
 
     public int getxPoints() {
         return xPoints;
@@ -53,14 +53,14 @@ public class PointGrid implements Iterable<Grid_Point>{
         this.xOrigin = (int)(centerPoint.xPos - ((xPoints/2)*spacingX));
         this.yOrigin = (int)centerPoint.yPos - ((yPoints/2)*spacingY);
 
-        this.points = new ArrayList<ArrayList<Grid_Point>>();
+        this.points = new ArrayList<ArrayList<GridPoint>>();
 
         for (int i = 0; i < xPoints; i += 1) {
             int xPos = this.xOrigin + (i * spacingX);
-            this.points.add(new ArrayList<Grid_Point>());
+            this.points.add(new ArrayList<GridPoint>());
             for (int j = 0; j < yPoints; j += 1) {
                 int yPos = this.yOrigin + (j * spacingY);
-                this.points.get(i).add(new Grid_Point(xPos, yPos, i, j, this));
+                this.points.get(i).add(new GridPoint(xPos, yPos, i, j, this));
             }
         }
     }
@@ -80,7 +80,7 @@ public class PointGrid implements Iterable<Grid_Point>{
         this.points = Helpers.cloneGridPoints(_pg);
     }
 
-    public PointGrid(PointGrid _pg, ArrayList<ArrayList<Grid_Point>> _al) {
+    public PointGrid(PointGrid _pg, ArrayList<ArrayList<GridPoint>> _al) {
 
         this.centerPoint = new Point(_pg.centerPoint);
         this.spacingX = _pg.spacingX; this.spacingY = _pg.spacingY;
@@ -88,7 +88,7 @@ public class PointGrid implements Iterable<Grid_Point>{
         this.xOrigin = _pg.xOrigin;
         this.yOrigin = _pg.yOrigin;
 
-        this.points = new ArrayList<ArrayList<Grid_Point>>(_al);
+        this.points = new ArrayList<ArrayList<GridPoint>>(_al);
 
         this.xPoints = points.size(); this.yPoints = points.get(0).size();
     }
@@ -96,8 +96,8 @@ public class PointGrid implements Iterable<Grid_Point>{
     // * =========== ITERATOR ============== * //
 
     @Override
-    public Iterator<Grid_Point> iterator() {
-        return new Grid_Iterator(this.points);
+    public Iterator<GridPoint> iterator() {
+        return new GridIterator(this.points);
     }
 
     // * =========== DRAWING TOOLS ============== * //
@@ -136,153 +136,153 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     public PointGrid move(int _x, int _y, Selection _s) {
 
-        return Move.grid_selection_move(_x, _y, _s, this);
+        return Move.gridSelectionMove(_x, _y, _s, this);
 
     }
 
-    public PointGrid move_mult(int _x, int _y) {
+    public PointGrid moveMult(int _x, int _y) {
 
-       return Move.multiply_posns(_x, _y, this);
-
-    }
-
-    public PointGrid move_mult(int _x, int _y, Selection _s) {
-
-        return Move.grid_selection_multiply_posns(_x, _y, _s, this);
+       return Move.multiplyPosns(_x, _y, this);
 
     }
 
-    public PointGrid move_to(int _x, int _y) {
+    public PointGrid moveMult(int _x, int _y, Selection _s) {
 
-        return Move.grid_to(_x, _y, this);
-
-    }
-
-    public PointGrid move_to(int _x, int _y, Selection _s) {
-
-        return Move.grid_selection_to(_x, _y, _s, this);
+        return Move.gridSelectionMultiplyPosns(_x, _y, _s, this);
 
     }
 
-    public PointGrid move_reset() {
+    public PointGrid moveTo(int _x, int _y) {
 
-       return Move.reset_posns(this);
+        return Move.gridTo(_x, _y, this);
 
     }
 
-    public PointGrid move_reset(Selection _s) {
+    public PointGrid moveTo(int _x, int _y, Selection _s) {
 
-        return Move.grid_selection_reset_posns(_s, this);
+        return Move.gridSelectionTo(_x, _y, _s, this);
+
+    }
+
+    public PointGrid moveReset() {
+
+       return Move.resetPosns(this);
+
+    }
+
+    public PointGrid moveReset(Selection _s) {
+
+        return Move.gridSelectionResetPosns(_s, this);
 
     }
 
     // * =========== GETTERS ============== * //
 
-    public Grid_Point get_point(int _col, int _row) {
+    public GridPoint getPoint(int _col, int _row) {
 
-        return Getters.get_grid_point(_col, _row, this);
-
-    }
-
-    public Grid_Point get_point_safe(int _col, int _row) {
-
-        return Getters.get_grid_point_safe(_col, _row, this);
+        return Getters.getGridPoint(_col, _row, this);
 
     }
 
-    public Grid_Point get_point_mirror(int _col, int _row) {
+    public GridPoint getPointSafe(int _col, int _row) {
 
-        return Getters.get_grid_point_mirror(_col, _row, this);
-
-    }
-
-    public Grid_Point get_point_mirror_x(int _col, int _row) {
-
-        return Getters.get_grid_point_mirror_x(_col, _row, this);
+        return Getters.getGridPointSafe(_col, _row, this);
 
     }
 
-    public Grid_Point get_point_mirror_y(int _col, int _row) {
+    public GridPoint getPointMirror(int _col, int _row) {
 
-        return Getters.get_grid_point_mirror_y(_col, _row, this);
-
-    }
-
-    public PointList get_points_by_weight(double _floor, double _ceil) {
-
-       return Getters.get_points_by_weight(_floor, _ceil, this);
+        return Getters.getGridPointMirror(_col, _row, this);
 
     }
 
-    public PointList get_column(int _x) {
+    public GridPoint getPointMirrorX(int _col, int _row) {
 
-        return Getters.get_grid_column(_x, this);
-
-    }
-
-    public PointList get_row(int _y) {
-
-        return Getters.get_grid_row(_y, this);
+        return Getters.getGridPointMirrorX(_col, _row, this);
 
     }
 
-    public PointList get_line(int _col0, int _row0, int _col1, int _row1) {
+    public GridPoint getPointMirrorY(int _col, int _row) {
 
-        return Getters.get_grid_line(_col0, _row0, _col1, _row1, this);
-
-    }
-
-    public PointList get_line_No_Op(int _col0, int _row0, int _col1, int _row1) {
-
-        return Getters.get_grid_line_no_op(_col0, _row0, _col1, _row1, this);
+        return Getters.getGridPointMirrorY(_col, _row, this);
 
     }
 
-    public PointList get_circle(int _col0, int _row0, int _rad) {
+    public PointList getPointsByWeight(double _floor, double _ceil) {
 
-        return Getters.get_grid_circle(_col0, _row0, _rad, this);
-
-    }
-
-    public PointList get_circle_fill(int _col, int _row, int _rad) {
-
-        return Getters.get_grid_circle_fill(_col, _row, _rad, this);
+       return Getters.getPointsByWeight(_floor, _ceil, this);
 
     }
 
-    public PointList get_polyline(PointList _pl, boolean _closed) {
+    public PointList getColumn(int _x) {
 
-        return Getters.get_grid_polyline(_pl, _closed, this);
-
-    }
-
-    public PointList get_polyline_fill(PointList _pl) {
-
-        return Getters.get_grid_polyline_fill(_pl, this);
+        return Getters.getGridColumn(_x, this);
 
     }
 
-    public PointList get_pattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow) {
+    public PointList getRow(int _y) {
 
-        return Getters.get_grid_pattern(_col, _row, _dlist, _reps, _overflow, this);
-
-    }
-
-    public PointList get_every(int _x, int _y) {
-
-        return Getters.get_grid_every(_x, _y, this);
+        return Getters.getGridRow(_y, this);
 
     }
 
-    public PointList get_region(int _x1, int _y1, int _x2, int _y2) {
+    public PointList getLine(int _col0, int _row0, int _col1, int _row1) {
 
-        return Getters.get_grid_region(_x1, _y1, _x2, _y2, this);
+        return Getters.getGridLine(_col0, _row0, _col1, _row1, this);
 
     }
 
-    public PointList get_text(String _sentence, int _xOrigin, int _yOrigin, int _size) {
+    public PointList getLineNoOp(int _col0, int _row0, int _col1, int _row1) {
 
-        return Text.get_sentence(_sentence, _xOrigin, _yOrigin, _size, this);
+        return Getters.getGridLineNoOp(_col0, _row0, _col1, _row1, this);
+
+    }
+
+    public PointList getCircle(int _col0, int _row0, int _rad) {
+
+        return Getters.getGridCircle(_col0, _row0, _rad, this);
+
+    }
+
+    public PointList getCircleFill(int _col, int _row, int _rad) {
+
+        return Getters.getGridCircleFill(_col, _row, _rad, this);
+
+    }
+
+    public PointList getPolyline(PointList _pl, boolean _closed) {
+
+        return Getters.getGridPolyline(_pl, _closed, this);
+
+    }
+
+    public PointList getPolylineFill(PointList _pl) {
+
+        return Getters.getGridPolylineFill(_pl, this);
+
+    }
+
+    public PointList getPattern(int _col, int _row, List<Integer> _dlist, int _reps, boolean _overflow) {
+
+        return Getters.getGridPattern(_col, _row, _dlist, _reps, _overflow, this);
+
+    }
+
+    public PointList getEvery(int _x, int _y) {
+
+        return Getters.getGridEvery(_x, _y, this);
+
+    }
+
+    public PointList getRegion(int _x1, int _y1, int _x2, int _y2) {
+
+        return Getters.getGridRegion(_x1, _y1, _x2, _y2, this);
+
+    }
+
+    public PointList getText(String _sentence, int _xOrigin, int _yOrigin, int _size) {
+
+        return Text.getSentence(_sentence, _xOrigin, _yOrigin, _size, this);
 
     }
 
@@ -309,19 +309,19 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     public void color(int _col, Selection _s) {
 
-        Applicators.grid_select_color(Core.processing.color(_col), _s, this);
+        Applicators.gridSelectColor(Core.processing.color(_col), _s, this);
 
     }
 
     public void color(int _r, int _g, int _b, Selection _s) {
 
-        Applicators.grid_select_color(Core.processing.color(_r, _g, _b), _s, this);
+        Applicators.gridSelectColor(Core.processing.color(_r, _g, _b), _s, this);
 
     }
 
     public void color(int _r, int _g, int _b, int _a, Selection _s) {
 
-        Applicators.grid_select_color(Core.processing.color(_r, _g, _b, _a), _s, this);
+        Applicators.gridSelectColor(Core.processing.color(_r, _g, _b, _a), _s, this);
 
     }
 
@@ -333,56 +333,56 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     public void weight(double _weight, Selection _s) {
 
-        Applicators.grid_select_weight(_weight, _s, this);
+        Applicators.gridSelectWeight(_weight, _s, this);
 
     }
 
-    public void weight_add(double _to_add) {
+    public void weightAdd(double _to_add) {
 
-        Applicators.weight_add(_to_add, this);
-
-    }
-
-    public void weight_add(double _to_add, Selection _s) {
-
-        Applicators.grid_select_weight_add(_to_add, _s, this);
+        Applicators.weightAdd(_to_add, this);
 
     }
 
-    public void weight_multiply(double _factor) {
+    public void weightAdd(double _to_add, Selection _s) {
 
-        Applicators.weight_multiply(_factor, this);
+        Applicators.gridSelectWeightAdd(_to_add, _s, this);
+
+    }
+
+    public void weightMultiply(double _factor) {
+
+        Applicators.weightMultiply(_factor, this);
 
     }
 
 
-    public void weight_multiply(double _factor, Selection _s) {
+    public void weightMultiply(double _factor, Selection _s) {
 
-        Applicators.grid_select_weight_multiply(_factor, _s, this);
-
-    }
-
-    public void weight_reset() {
-
-        Applicators.weight_reset(this);
+        Applicators.gridSelectWeightMultiply(_factor, _s, this);
 
     }
 
-    public void weight_reset(Selection _s) {
+    public void weightReset() {
 
-        Applicators.grid_select_weight_reset(_s, this);
+        Applicators.weightReset(this);
+
+    }
+
+    public void weightReset(Selection _s) {
+
+        Applicators.gridSelectWeightReset(_s, this);
 
     }
 
     public void filter(double _low, double _high) {
 
-        Applicators.weight_filter(_low, _high, this);
+        Applicators.weightFilter(_low, _high, this);
 
     }
 
     public void filter(double _low, double _high, Selection _s) {
 
-        Applicators.grid_select_weight_filter(_low, _high, _s, this);
+        Applicators.gridSelectWeightFilter(_low, _high, _s, this);
 
     }
 
@@ -417,7 +417,7 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     // * =========== PRIVATE HELPERS ============== * //
 
-    public int check_quad(Grid_Point grid_point) {
+    public int checkQuad(GridPoint grid_point) {
 
         // Returns the number corresponding to the quadrant a given Grid_Point is in.
         // 1 -> TR, 2 -> TL, 3 -> BL, 4 -> BR
@@ -434,7 +434,7 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     }
 
-    public double grid_approx_dist(Grid_Point grid_point_1, Grid_Point grid_point_2) {
+    public double gridApproxDist(GridPoint grid_point_1, GridPoint grid_point_2) {
 
         // Returns a non-sqrt based distance between two points in Grid.
         // Use when a precise distance is not necessary.
@@ -447,7 +447,7 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     }
 
-    public double grid_exact_dist(Grid_Point grid_point_1, Grid_Point grid_point_2) {
+    public double gridExactDist(GridPoint grid_point_1, GridPoint grid_point_2) {
 
         // Returns the sqrt based distance between two points in Grid.
         // Avoid using if possible.
@@ -460,7 +460,7 @@ public class PointGrid implements Iterable<Grid_Point>{
 
     }
 
-    private int szdudzik_hash(int a, int b) {
+    private int szdudzikHash(int a, int b) {
 
         // Returns a unique value for any two integers a, b >= 0
 

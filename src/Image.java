@@ -7,7 +7,7 @@ import static processing.core.PConstants.CENTER;
 
 public class Image {
 
-    public static <T extends Iterable<Grid_Point>> void drawShapeAtPoints(PShape shape, float scale, T points) {
+    public static <T extends Iterable<GridPoint>> void drawShapeAtPoints(PShape shape, float scale, T points) {
 
         // Draws a shape at each of the points of a Point_Grid or Point_List
 
@@ -15,7 +15,7 @@ public class Image {
 
         Core.processing.shapeMode(PConstants.CENTER);
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             shape.scale(scale);
             Core.processing.shape(shape, point.xPos, point.yPos);
             shape.scale(1/scale);
@@ -23,7 +23,7 @@ public class Image {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> void drawColoredShapeAtPoints(PShape shape, float scale, T points) {
+    public static <T extends Iterable<GridPoint>> void drawColoredShapeAtPoints(PShape shape, float scale, T points) {
 
         // Draws a shape at each of the points of a Point_Grid or Point_List
 
@@ -31,7 +31,7 @@ public class Image {
 
         //Core.processing.shapeMode(PConstants.CENTER); <-- Figure out what this is about... apparently not necessary?
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             shape.setFill(point.col);
             shape.scale(scale);
             Core.processing.shape(shape, point.xPos, point.yPos);
@@ -40,14 +40,14 @@ public class Image {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> void drawScaledShapeAtPoints(PShape shape, double factor, T points) {
+    public static <T extends Iterable<GridPoint>> void drawScaledShapeAtPoints(PShape shape, double factor, T points) {
 
         // Draws a shape at each of the points of a Point_Grid or Point_List
         // Scaled by every point's weight. Can be further tuned by adjusting the factor.
 
         //Core.processing.shapeMode(CORNER);
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             if (point.weight > 0) {
                 shape.scale((float) (point.weight * factor));
                 Core.processing.shape(shape, point.xPos, point.yPos);
@@ -57,14 +57,14 @@ public class Image {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> void drawScaledColoredShapeAtPoints(PShape shape, double factor, T points) {
+    public static <T extends Iterable<GridPoint>> void drawScaledColoredShapeAtPoints(PShape shape, double factor, T points) {
 
         // Draws a shape at each of the points of a Point_Grid or Point_List
         // Scaled by every point's weight. Can be further tuned by adjusting the factor.
 
         Core.processing.shapeMode(CENTER);
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             if (point.weight > 0) {
                 Core.processing.fill(point.col);
                 shape.scale((float) (point.weight * factor));
@@ -75,13 +75,13 @@ public class Image {
 
     }
 
-    public static <T extends Iterable<Grid_Point>> PointList shapeMask(PShape shape, T points) {
+    public static <T extends Iterable<GridPoint>> PointList shapeMask(PShape shape, T points) {
 
         // Returns a list of points found to be contained in a given PShape (i.e. a mask).
 
         PointList result = new PointList();
 
-        for (Grid_Point point : points) {
+        for (GridPoint point : points) {
             if (shape.contains(point.xPos, point.yPos)) {
                 result.add(point);
             }
@@ -123,7 +123,7 @@ public class Image {
             new_img.loadPixels();
         }
 
-        Grid_Point currPoint;
+        GridPoint currPoint;
         int x, y, r, g, b;
         int currPixel;
         double weight = 0;
