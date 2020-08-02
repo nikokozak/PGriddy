@@ -9,9 +9,50 @@ public class Point {
     // weight -> associated weight of point.[DOUBLE]
     // col -> color in Processing color() format.[INT]
 
-    public float originalXPos, originalYPos, xPos, yPos;
-    public int col;
-    public double weight;
+    private float xPos, yPos;
+    private final float originalXPos, originalYPos;
+    private int col;
+    private double weight;
+
+    public float xPos() {
+        return xPos;
+    }
+
+    public void xPos(float xPos) {
+        this.xPos = xPos;
+    }
+
+    public float yPos() {
+        return yPos;
+    }
+
+    public void yPos(float yPos) {
+        this.yPos = yPos;
+    }
+
+    public float originalXPos() {
+        return originalXPos;
+    }
+
+    public float originalYPos() {
+        return originalYPos;
+    }
+
+    public int col() {
+        return col;
+    }
+
+    public void col(int col) {
+        this.col = col;
+    }
+
+    public double weight() {
+        return weight;
+    }
+
+    public void weight(double weight) {
+        this.weight = weight;
+    }
 
     public Point (float _x, float _y) {
         this.xPos = _x; this.yPos = _y;
@@ -43,10 +84,10 @@ public class Point {
     }
 
     public Point (GridPoint _p) {
-        this.xPos = _p.xPos; this.yPos = _p.yPos;
-        this.originalXPos = _p.originalXPos; this.originalYPos = _p.originalYPos;
-        this.weight = _p.weight;
-        this.col = _p.col;
+        this.xPos = _p.xPos(); this.yPos = _p.yPos();
+        this.originalXPos = _p.originalXPos(); this.originalYPos = _p.originalYPos();
+        this.weight = _p.weight();
+        this.col = _p.col();
     }
 
     public void draw() {
@@ -133,7 +174,6 @@ public class Point {
         return this;
 
     }
-
 
     public Point color(int _r, int _g, int _b, int _a) {
 
