@@ -25,10 +25,10 @@ public class Core extends PApplet {
         c2 = pg2.getCircleFill(100, 100, 20);
 
 
-        g1.subtract = true;
-        g1.inverse = true;
-        g1.blend = true;
-        g1.radius = 20;
+        g1.subtract(true);
+        g1.inverse(true);
+        g1.blend(true);
+        g1.radius(20);
         pg1.applyNoise(n1);
         pg1.weightMultiply(6);
         pg1.applyGradient(g1);
