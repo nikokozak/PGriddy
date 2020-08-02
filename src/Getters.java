@@ -52,7 +52,7 @@ public class Getters {
 
         // Fetches a Grid_Point from a Point_List, returning NULL if point doesn't exist.
 
-        if (!_pl.isEmpty()) return _pl.points.get(_index);
+        if (!_pl.isEmpty()) return _pl.points().get(_index);
         else return null;
 
     }
@@ -61,11 +61,11 @@ public class Getters {
 
         // Returns a new Point_List with points in a given range [_start, _end);
 
-        if (!_pl.isEmpty() && (_start < _end) && _start >= 0 && _end < _pl.points.size()) {
+        if (!_pl.isEmpty() && (_start < _end) && _start >= 0 && _end < _pl.points().size()) {
             PointList result = new PointList(_end - _start);
 
             for (int i = _start; i < _end; i++) {
-                result.add(_pl.points.get(i));
+                result.add(_pl.points().get(i));
             }
 
             return result;
@@ -432,7 +432,7 @@ public class Getters {
                new Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>>
                        (new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0), new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0));
 
-       for (GridPoint currPoint : _pl.points) {
+       for (GridPoint currPoint : _pl.points()) {
            if (currPoint.gridIndexX() < result.a.a) result.a.a = currPoint.gridIndexX();
            if (currPoint.gridIndexX() > result.a.b) result.a.b = currPoint.gridIndexX();
            if (currPoint.gridIndexY() < result.b.a) result.b.a = currPoint.gridIndexY();
@@ -453,7 +453,7 @@ public class Getters {
 
         boolean found = false;
 
-        for (GridPoint currPoint : _pl.points) {
+        for (GridPoint currPoint : _pl.points()) {
             if (currPoint.gridIndexX() == _col && currPoint.gridIndexY() == _row) {
                 found = true;
                 break;

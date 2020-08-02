@@ -111,7 +111,7 @@ public class Move {
         float x_translation = _pl.get(0).xPos - _x;
         float y_translation = _pl.get(0).yPos - _y;
 
-        for (GridPoint currPoint : _pl.points) {
+        for (GridPoint currPoint : _pl.points()) {
             currPoint.xPos += x_translation;
             currPoint.yPos += y_translation;
         }

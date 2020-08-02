@@ -9,35 +9,35 @@ public class PointList implements Iterable<GridPoint>{
     // Where:
     // points -> ArrayList<Grid_Point> of points
 
-    public ArrayList<GridPoint> points;
+    private ArrayList<GridPoint> points;
     private boolean is_capped = false;
 
     public PointList() {
-       this.points = new ArrayList<GridPoint>();
+       this.points(new ArrayList<GridPoint>());
     }
 
     public PointList(int _size) {
-       this.points = new ArrayList<GridPoint>(_size);
+       this.points(new ArrayList<GridPoint>(_size));
     }
 
     public PointList(GridPoint... pts) {
-        this.points = new ArrayList<GridPoint>(pts.length);
-        this.points.addAll(Arrays.asList(pts));
+        this.points(new ArrayList<GridPoint>(pts.length));
+        this.points().addAll(Arrays.asList(pts));
     }
 
     public PointList(ArrayList<GridPoint> _list) {
-        this.points = Helpers.cloneGridPoints(_list);
+        this.points(Helpers.cloneGridPoints(_list));
     }
 
     public PointList(Collection<GridPoint> _list) {
-        this.points = new ArrayList<GridPoint>(_list);
+        this.points(new ArrayList<GridPoint>(_list));
     }
 
     //** ============= ITERATOR ================= **//
 
     @Override
     public Iterator<GridPoint> iterator() {
-        return this.points.iterator();
+        return this.points().iterator();
     }
 
     //** ============= UTILS ================= **//
@@ -46,7 +46,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Adds a point to a point list if list is not capped.
 
-       if (!this.isCapped()) this.points.add(_p);
+       if (!this.isCapped()) this.points().add(_p);
        return this;
 
     }
@@ -55,7 +55,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Adds a series of points to a list if it is not capped.
 
-        if (!this.isCapped()) this.points.addAll(Arrays.asList(pts));
+        if (!this.isCapped()) this.points().addAll(Arrays.asList(pts));
         return this;
     }
 
@@ -63,7 +63,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Appends given points onto the end of point list.
 
-        this.points.addAll(_pl.points);
+        this.points().addAll(_pl.points());
         return this;
 
     }
@@ -72,7 +72,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Appends given points onto the end of point list, clones them first.
 
-        this.points.addAll(Helpers.cloneGridPoints(_pl.points));
+        this.points().addAll(Helpers.cloneGridPoints(_pl.points()));
         return this;
 
     }
@@ -81,7 +81,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Removes a given point from the list.
 
-        if (!this.isEmpty()) this.points.remove(_index);
+        if (!this.isEmpty()) this.points().remove(_index);
         return this;
 
     }
@@ -90,7 +90,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Removes all points from the list.
 
-        if (!this.isEmpty()) this.points.clear();
+        if (!this.isEmpty()) this.points().clear();
         return this;
 
     }
@@ -99,7 +99,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Returns the size of the point list.
 
-        return this.points.size();
+        return this.points().size();
 
     }
 
@@ -107,16 +107,8 @@ public class PointList implements Iterable<GridPoint>{
 
         // Adds null to the end of point list to mark the list as terminated.
 
-        if (!this.is_capped) this.is_capped = true;
+        if (!this.isCapped()) this.isCapped(true);
         return this;
-
-    }
-
-    public boolean isCapped() {
-
-        // Returns true if a Point_List is capped (null as last item).
-
-        return this.is_capped;
 
     }
 
@@ -124,7 +116,7 @@ public class PointList implements Iterable<GridPoint>{
 
         // Returns true if a Point_List is empty.
 
-        return this.points.isEmpty();
+        return this.points().isEmpty();
 
     }
 
@@ -132,10 +124,10 @@ public class PointList implements Iterable<GridPoint>{
 
         // Removes duplicate points from Point_List
 
-        Set<GridPoint> set = new LinkedHashSet<>(this.points.size());
+        Set<GridPoint> set = new LinkedHashSet<>(this.points().size());
         set.addAll(set);
-        this.points.clear();
-        this.points.addAll(set);
+        this.points().clear();
+        this.points().addAll(set);
 
         return this;
 
@@ -272,4 +264,19 @@ public class PointList implements Iterable<GridPoint>{
 
     }
 
+    public ArrayList<GridPoint> points() {
+        return points;
+    }
+
+    public void points(ArrayList<GridPoint> points) {
+        this.points = points;
+    }
+
+    public boolean isCapped() {
+        return is_capped;
+    }
+
+    public void isCapped(boolean is_capped) {
+        this.is_capped = is_capped;
+    }
 }

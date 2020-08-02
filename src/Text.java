@@ -357,9 +357,9 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin + mid - 1, _xOrigin + _size - 1, _yOrigin);
-        result.addAll(line.points);
+        result.addAll(line.points());
         line = _pg.getLine(_xOrigin, _yOrigin + mid - 1, _xOrigin + _size - 1, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
             if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
@@ -408,9 +408,9 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin, _xOrigin + mid - 1, _yOrigin + mid - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
         line = _pg.getLine(_xOrigin + _size - 1, _yOrigin, _xOrigin + mid - 1, _yOrigin + mid - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
             if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
@@ -436,7 +436,7 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin, _xOrigin + _size - 1, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
             if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
@@ -515,7 +515,7 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin + mid - 1, _yOrigin + _size - 1, _xOrigin + _size - 1, _yOrigin + mid);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _xOrigin + 1; i < _xOrigin + _size - 1; i++) {
             if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
@@ -552,7 +552,7 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin + mid - 1, _xOrigin + _size - 1, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _xOrigin; i < _xOrigin + _size - 1; i++) {
             if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
@@ -662,9 +662,9 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin, _xOrigin + mid - 1, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
         line = _pg.getLine(_xOrigin + _size - 1, _yOrigin, _xOrigin + mid - 1, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         return result;
 
@@ -686,9 +686,9 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin + _size - 1, _xOrigin + mid - 1, _yOrigin + mid - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
         line = _pg.getLine(_xOrigin + _size - 1, _yOrigin + _size - 1, _xOrigin + mid - 1, _yOrigin + mid - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _yOrigin; i < _yOrigin + _size - 1; i++) {
             if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
@@ -714,9 +714,9 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin, _xOrigin + _size - 1, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
         line = _pg.getLine(_xOrigin + _size - 1, _yOrigin, _xOrigin, _yOrigin + _size - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         return result;
 
@@ -737,9 +737,9 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin, _xOrigin + mid - 1, _yOrigin + mid - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
         line = _pg.getLine(_xOrigin + _size - 1, _yOrigin, _xOrigin + mid - 1, _yOrigin + mid - 1);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         for (int i = _yOrigin + mid; i < _yOrigin + _size - 1; i++) {
             if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + mid - 1, i));
@@ -768,7 +768,7 @@ public class Text {
         }
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin + _size - 1, _xOrigin + _size - 1, _yOrigin);
-        result.addAll(line.points);
+        result.addAll(line.points());
 
         return result;
 
