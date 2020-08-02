@@ -4,7 +4,7 @@ public class Draw {
         // Draws points to screen as a simple Processing point (no fill, weight).
 
         for (GridPoint currPoint : _l) {
-            Core.processing.point(currPoint.xPos, currPoint.yPos);
+            Core.processing.point(currPoint.xPos(), currPoint.yPos());
         }
     }
 
@@ -20,9 +20,9 @@ public class Draw {
 
         for (GridPoint currPoint : _l) {
             switch (type) {
-                case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
-                case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, 3);
-                case 2 -> Core.processing.rect(currPoint.xPos, currPoint.yPos, 3, 3);
+                case 0 -> Core.processing.point(currPoint.xPos(), currPoint.yPos());
+                case 1 -> Core.processing.circle(currPoint.xPos(), currPoint.yPos(), 3);
+                case 2 -> Core.processing.rect(currPoint.xPos(), currPoint.yPos(), 3, 3);
             }
         }
     }
@@ -36,17 +36,17 @@ public class Draw {
 
         for (GridPoint currPoint : _l) {
             if (weight) {
-                Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
-                Core.processing.stroke(currPoint.col, Helpers.weightToRGB(currPoint.weight));
+                Core.processing.fill(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
+                Core.processing.stroke(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
             }
             else {
-                Core.processing.stroke(currPoint.col);
-                Core.processing.fill(currPoint.col);
+                Core.processing.stroke(currPoint.col());
+                Core.processing.fill(currPoint.col());
             }
             switch (type) {
-                case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
-                case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, 3);
-                case 2 -> Core.processing.rect(currPoint.xPos, currPoint.yPos, 3, 3);
+                case 0 -> Core.processing.point(currPoint.xPos(), currPoint.yPos());
+                case 1 -> Core.processing.circle(currPoint.xPos(), currPoint.yPos(), 3);
+                case 2 -> Core.processing.rect(currPoint.xPos(), currPoint.yPos(), 3, 3);
             }
         }
     }
@@ -61,17 +61,17 @@ public class Draw {
 
         for (GridPoint currPoint : _l) {
             if (weight) {
-                Core.processing.fill(currPoint.col, Helpers.weightToRGB(currPoint.weight));
-                Core.processing.stroke(currPoint.col, Helpers.weightToRGB(currPoint.weight));
+                Core.processing.fill(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
+                Core.processing.stroke(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
             }
             else {
-                Core.processing.stroke(currPoint.col);
-                Core.processing.fill(currPoint.col);
+                Core.processing.stroke(currPoint.col());
+                Core.processing.fill(currPoint.col());
             }
             switch (type) {
-                case 0 -> Core.processing.point(currPoint.xPos, currPoint.yPos);
-                case 1 -> Core.processing.circle(currPoint.xPos, currPoint.yPos, size);
-                case 2 -> Core.processing.rect(currPoint.xPos, currPoint.yPos, size, size);
+                case 0 -> Core.processing.point(currPoint.xPos(), currPoint.yPos());
+                case 1 -> Core.processing.circle(currPoint.xPos(), currPoint.yPos(), size);
+                case 2 -> Core.processing.rect(currPoint.xPos(), currPoint.yPos(), size, size);
             }
         }
     }
