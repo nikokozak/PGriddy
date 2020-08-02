@@ -7,7 +7,7 @@ public class Applicators {
         // _col -> Processing color()
 
         for (GridPoint currPoint : _l) {
-            currPoint.col = _col;
+            currPoint.col(_col);
         }
     }
 
@@ -23,7 +23,7 @@ public class Applicators {
         for (int x = _s.startCol(); x <= _s.endCol(); x++) {
             for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
-                currPoint.col = _col;
+                currPoint.col(_col);
             }
         }
     }
@@ -37,7 +37,7 @@ public class Applicators {
         _weight = Helpers.clamp(_weight, 0.0, 1.0);
 
         for (GridPoint currPoint : _l) {
-            currPoint.weight = _weight;
+            currPoint.weight(_weight);
         }
 
     }
@@ -54,7 +54,7 @@ public class Applicators {
         for (int x = _s.startCol(); x <= _s.endCol(); x++) {
             for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
-                currPoint.weight = _weight;
+                currPoint.weight(_weight);
             }
         }
     }
@@ -68,7 +68,7 @@ public class Applicators {
         _to_add = Helpers.clamp(_to_add, 0.0, 1.0);
 
             for (GridPoint currPoint : _l) {
-                currPoint.weight = Helpers.clamp(currPoint.weight + _to_add, 0, 1);
+                currPoint.weight(Helpers.clamp(currPoint.weight() + _to_add, 0, 1));
             }
     }
 
@@ -85,7 +85,7 @@ public class Applicators {
         for (int x = _s.startCol(); x <= _s.endCol(); x++) {
             for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
-                currPoint.weight += _to_add;
+                currPoint.weight(currPoint.weight() + _to_add);
             }
         }
     }
@@ -97,7 +97,7 @@ public class Applicators {
         // _factor -> factor by which to multiply
 
         for (GridPoint currPoint : _l) {
-            currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
+            currPoint.weight(Helpers.clamp(currPoint.weight() * _factor, 0, 1));
         }
     }
 
@@ -113,7 +113,7 @@ public class Applicators {
         for (int x = _s.startCol(); x <= _s.endCol(); x++) {
             for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
-                currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
+                currPoint.weight(Helpers.clamp(currPoint.weight() * _factor, 0, 1));
             }
         }
     }
@@ -123,7 +123,7 @@ public class Applicators {
         // Sets all Points to weight 1.0.
 
         for (GridPoint currPoint : _l) {
-            currPoint.weight = 1.0;
+            currPoint.weight(1.0);
         }
     }
 
@@ -139,7 +139,7 @@ public class Applicators {
         for (int x = _s.startCol(); x <= _s.endCol(); x++) {
             for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
-                currPoint.weight = 1.0;
+                currPoint.weight(1.0);
             }
         }
     }
@@ -152,8 +152,8 @@ public class Applicators {
         // _high -> ceiling of threshold
 
         for (GridPoint currPoint : _l) {
-            if (currPoint.weight < _low || currPoint.weight > _high) {
-                currPoint.weight = 0;
+            if (currPoint.weight() < _low || currPoint.weight() > _high) {
+                currPoint.weight(0);
             }
         }
     }
@@ -171,8 +171,8 @@ public class Applicators {
         for (int x = _s.startCol(); x <= _s.endCol(); x++) {
             for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
-                if (currPoint.weight < _low || currPoint.weight > _high) {
-                    currPoint.weight = 1.0;
+                if (currPoint.weight() < _low || currPoint.weight() > _high) {
+                    currPoint.weight(1.0);
                 }
             }
         }
