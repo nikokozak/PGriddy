@@ -19,7 +19,7 @@ public class Core extends PApplet {
         pg2 = new PointGrid(width/2, height/2, 200, 200, 10, 10);
         n1 = new Noise(Noise.Type.SIMPLEX_FRACTAL);
         n2 = new Noise(Noise.Type.VALUE_FRACTAL);
-        n2.frequency = 0.005;
+        n2.frequency(0.005);
         g1 = new Gradient(Gradient.Type.RADIAL);
         c1 = pg1.getCircle(50, 50, 20);
         c2 = pg2.getCircleFill(100, 100, 20);
@@ -58,8 +58,8 @@ public class Core extends PApplet {
         c1 = pg1.getCircle(50, 50, count);
 
 
-        n1.time = counter;
-        n2.time = counter2;
+        n1.time(counter);
+        n2.time(counter2);
         pg1.applyNoise(n1);
         pg2.applyNoise(n2);
         pg1.weightMultiply(8);

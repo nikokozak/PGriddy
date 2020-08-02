@@ -1,18 +1,106 @@
 
 public class Noise {
 
-    public double minimumWeight, maximumWeight; // -> Ceil and Floor mapping for noise.
-    public float time; // -> Z axis of noise, useful for animation.
-    public double opacity; // -> Opacity of weight when added to grid.
-    public int iterations; // -> How many iterations of noise are produced.
-    public double mix; // -> Linear mix between X and Y vectors for vector-producing noises.
-    public double frequency; // -> How coarse the noise generated is. Default is 0.01.
-    public double lacunarity; // -> Frequency multiplier between octaves. Default is 2.0.
-    public int octaves; // -> Amount of noise layers used to create fractal. Default is 3
-    public double gain; // -> Relative strength of each layer when compared to last.
-    public boolean blend; // -> Whether to blend weight with any previous weight present in Point_Grid
+    private double minimumWeight;
+    private double maximumWeight; // -> Ceil and Floor mapping for noise.
+    private float time; // -> Z axis of noise, useful for animation.
+    private double opacity; // -> Opacity of weight when added to grid.
+    private int iterations; // -> How many iterations of noise are produced.
+    private double mix; // -> Linear mix between X and Y vectors for vector-producing noises.
+    private double frequency; // -> How coarse the noise generated is. Default is 0.01.
+    private double lacunarity; // -> Frequency multiplier between octaves. Default is 2.0.
+    private int octaves; // -> Amount of noise layers used to create fractal. Default is 3
+    private double gain; // -> Relative strength of each layer when compared to last.
+    private boolean blend; // -> Whether to blend weight with any previous weight present in Point_Grid
     private Type type;
 
+    public double minimumWeight() {
+        return minimumWeight;
+    }
+
+    public void minimumWeight(double minimumWeight) {
+        this.minimumWeight = minimumWeight;
+    }
+
+    public double maximumWeight() {
+        return maximumWeight;
+    }
+
+    public void maximumWeight(double maximumWeight) {
+        this.maximumWeight = maximumWeight;
+    }
+
+    public float time() {
+        return time;
+    }
+
+    public void time(float time) {
+        this.time = time;
+    }
+
+    public double opacity() {
+        return opacity;
+    }
+
+    public void opacity(double opacity) {
+        this.opacity = opacity;
+    }
+
+    public int iterations() {
+        return iterations;
+    }
+
+    public void iterations(int iterations) {
+        this.iterations = iterations;
+    }
+
+    public double mix() {
+        return mix;
+    }
+
+    public void mix(double mix) {
+        this.mix = mix;
+    }
+
+    public double frequency() {
+        return frequency;
+    }
+
+    public void frequency(double frequency) {
+        this.frequency = frequency;
+    }
+
+    public double lacunarity() {
+        return lacunarity;
+    }
+
+    public void lacunarity(double lacunarity) {
+        this.lacunarity = lacunarity;
+    }
+
+    public int octaves() {
+        return octaves;
+    }
+
+    public void octaves(int octaves) {
+        this.octaves = octaves;
+    }
+
+    public double gain() {
+        return gain;
+    }
+
+    public void gain(double gain) {
+        this.gain = gain;
+    }
+
+    public boolean isBlend() {
+        return blend;
+    }
+
+    public void blend(boolean blend) {
+        this.blend = blend;
+    }
 
     public enum Type {
         RANDOM,
@@ -36,17 +124,17 @@ public class Noise {
     public Noise(Type type) {
 
         this.type = type;
-        this.minimumWeight = 0;
-        this.maximumWeight = 1;
-        this.time = 0;
-        this.opacity = 1;
-        this.iterations = 2;
-        this.mix = 0.5;
-        this.frequency = 0.01;
-        this.lacunarity = 2;
-        this.octaves = 3;
-        this.gain = 1.0;
-        this.blend = false;
+        this.minimumWeight(0);
+        this.maximumWeight(1);
+        this.time(0);
+        this.opacity(1);
+        this.iterations(2);
+        this.mix(0.5);
+        this.frequency(0.01);
+        this.lacunarity(2);
+        this.octaves(3);
+        this.gain(1.0);
+        this.blend(false);
 
     }
 
@@ -59,10 +147,10 @@ public class Noise {
         if (isFastType(this.type)) {
             FastNoise fastNoise = new FastNoise();
             setFastNoiseType(this.type, fastNoise);
-            fastNoise.SetFrequency((float)this.frequency);
-            fastNoise.SetFractalOctaves(this.octaves);
-            fastNoise.SetFractalLacunarity((float)this.lacunarity);
-            fastNoise.SetFractalGain((float)this.gain);
+            fastNoise.SetFrequency((float) this.frequency());
+            fastNoise.SetFractalOctaves(this.octaves());
+            fastNoise.SetFractalLacunarity((float) this.lacunarity());
+            fastNoise.SetFractalGain((float) this.gain());
             fastNoise.SetInterp(FastNoise.Interp.Hermite);
 
             applyFastNoiseToPoints(fastNoise, points);
@@ -87,10 +175,10 @@ public class Noise {
         CloverNoise.Noise2D noise = new CloverNoise.Noise2D();
 
         for (GridPoint point : pg) {
-            if (this.blend) point.weight(Helpers.clamp(
-                    point.weight() + Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0));
+            if (this.isBlend()) point.weight(Helpers.clamp(
+                    point.weight() + Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight(), this.maximumWeight()) * this.opacity(), 0.0, 1.0));
             else
-                point.weight(Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity);
+                point.weight(Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight(), this.maximumWeight()) * this.opacity());
         }
 
     }
@@ -99,16 +187,16 @@ public class Noise {
 
         switch(type) {
             case CLOVER_2D: return noise.noise(point.xPos(), point.yPos());
-            case CLOVER_FRACTAL: return noise.fractalNoise(point.xPos(), point.yPos(), this.iterations);
+            case CLOVER_FRACTAL: return noise.fractalNoise(point.xPos(), point.yPos(), this.iterations());
             case CLOVER_FROST: noise.frostNoise(point.xPos(), point.yPos());
             case CLOVER_MARBLE: noise.marbleNoise(point.xPos(), point.yPos());
             case CLOVER_CURL: {
                 CloverNoise.Vector2 curl = noise.curlNoise(point.xPos(), point.yPos());
-                return Helpers.mix(curl.getX(), curl.getY(), this.mix);
+                return Helpers.mix(curl.getX(), curl.getY(), this.mix());
             }
             case CLOVER_CURL_FRACTAL: {
-                CloverNoise.Vector2 curl = noise.fractalCurlNoise(point.xPos(), point.yPos(), this.iterations);
-                return Helpers.mix(curl.getX(), curl.getY(), this.mix);
+                CloverNoise.Vector2 curl = noise.fractalCurlNoise(point.xPos(), point.yPos(), this.iterations());
+                return Helpers.mix(curl.getX(), curl.getY(), this.mix());
             }
             default: return 0;
         }
@@ -118,10 +206,10 @@ public class Noise {
     private <T extends Iterable<GridPoint>> void applyFastNoiseToPoints(FastNoise noise, T points) {
 
         for (GridPoint point : points) {
-            double weight = noise.GetNoise(point.xPos(), point.yPos(), this.time);
-            if (this.blend) point.weight(Helpers.clamp(
-                    point.weight() + Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0));
-            else point.weight(Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity);
+            double weight = noise.GetNoise(point.xPos(), point.yPos(), this.time());
+            if (this.isBlend()) point.weight(Helpers.clamp(
+                    point.weight() + Helpers.map(weight, 0, 1, this.minimumWeight(), this.maximumWeight()) * this.opacity(), 0.0, 1.0));
+            else point.weight(Helpers.map(weight, 0, 1, this.minimumWeight(), this.maximumWeight()) * this.opacity());
         }
 
     }
@@ -151,11 +239,11 @@ public class Noise {
         // _blend -> Whether to blend weight with any previous weight present in Point_Grid
         // _opacity -> Opacity of applied weights
         for (GridPoint point : points) {
-            if (this.blend) point.weight(Helpers.clamp(point.weight() +
-                    Helpers.map(Core.processing.noise(point.xPos(), point.yPos(), this.time), 0, 1, this.minimumWeight, this.maximumWeight)
-                            * this.opacity, 0.0, 1.0));
+            if (this.isBlend()) point.weight(Helpers.clamp(point.weight() +
+                    Helpers.map(Core.processing.noise(point.xPos(), point.yPos(), this.time()), 0, 1, this.minimumWeight(), this.maximumWeight())
+                            * this.opacity(), 0.0, 1.0));
             else
-                point.weight(Helpers.map(Core.processing.noise(point.xPos(), point.yPos(), this.time), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity); // Call Perlin ~
+                point.weight(Helpers.map(Core.processing.noise(point.xPos(), point.yPos(), this.time()), 0, 1, this.minimumWeight(), this.maximumWeight()) * this.opacity()); // Call Perlin ~
         }
 
     }
@@ -170,11 +258,11 @@ public class Noise {
         // _opacity -> Opacity of applied weights
 
         for (GridPoint point : points) {
-            if (this.blend) point.weight(Helpers.clamp(point.weight() +
-                    Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, this.minimumWeight, this.maximumWeight)
-                            * this.opacity, 0, 1));
+            if (this.isBlend()) point.weight(Helpers.clamp(point.weight() +
+                    Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, this.minimumWeight(), this.maximumWeight())
+                            * this.opacity(), 0, 1));
             else
-                point.weight(Helpers.map(Core.processing.random(0, 1), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity);
+                point.weight(Helpers.map(Core.processing.random(0, 1), 0, 1, this.minimumWeight(), this.maximumWeight()) * this.opacity());
         }
 
     }
