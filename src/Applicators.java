@@ -20,8 +20,8 @@ public class Applicators {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
                 currPoint.col = _col;
             }
@@ -51,8 +51,8 @@ public class Applicators {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
                 currPoint.weight = _weight;
             }
@@ -82,8 +82,8 @@ public class Applicators {
         _to_add = Helpers.clamp(_to_add, 0.0, 1.0);
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
                 currPoint.weight += _to_add;
             }
@@ -110,8 +110,8 @@ public class Applicators {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
                 currPoint.weight = Helpers.clamp(currPoint.weight * _factor, 0, 1);
             }
@@ -136,8 +136,8 @@ public class Applicators {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
                 currPoint.weight = 1.0;
             }
@@ -168,8 +168,8 @@ public class Applicators {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.getPoint(x, y);
                 if (currPoint.weight < _low || currPoint.weight > _high) {
                     currPoint.weight = 1.0;

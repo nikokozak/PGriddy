@@ -19,8 +19,8 @@ public class Move {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.points().get(x).get(y);
                 currPoint.xPos += _x;
                 currPoint.yPos += _y;
@@ -50,8 +50,8 @@ public class Move {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x <= _s.endCol; x++) {
-            for (int y = _s.startRow; y <= _s.endRow; y++) {
+        for (int x = _s.startCol(); x <= _s.endCol(); x++) {
+            for (int y = _s.startRow(); y <= _s.endRow(); y++) {
                 currPoint = _pg.points().get(x).get(y);
                 currPoint.xPos *= _x;
                 currPoint.yPos *= _y;
@@ -93,8 +93,8 @@ public class Move {
         int x_translate = _x - _s.center_x();
         int y_translate = _y - _s.center_y();
 
-        for (int x = _s.startCol; x < _s.endCol; x++)  {
-            for (int y = _s.startRow; y < _s.endRow; y++) {
+        for (int x = _s.startCol(); x < _s.endCol(); x++)  {
+            for (int y = _s.startRow(); y < _s.endRow(); y++) {
                 _pg.points().get(x).get(y).xPos += x_translate;
                 _pg.points().get(x).get(y).yPos += y_translate;
             }
@@ -139,8 +139,8 @@ public class Move {
 
         GridPoint currPoint;
 
-        for (int x = _s.startCol; x < _s.endCol; x++) {
-            for (int y = _s.startRow; y < _s.endRow; y++) {
+        for (int x = _s.startCol(); x < _s.endCol(); x++) {
+            for (int y = _s.startRow(); y < _s.endRow(); y++) {
                 currPoint = _pg.points().get(x).get(y);
                 currPoint.xPos = currPoint.originalXPos;
                 currPoint.yPos = currPoint.originalYPos;
