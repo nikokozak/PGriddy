@@ -87,10 +87,10 @@ public class Noise {
         CloverNoise.Noise2D noise = new CloverNoise.Noise2D();
 
         for (GridPoint point : pg) {
-            if (this.blend) point.weight = Helpers.clamp(
-                    point.weight + Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0);
+            if (this.blend) point.weight(Helpers.clamp(
+                    point.weight() + Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0));
             else
-                point.weight = Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity;
+                point.weight(Helpers.map(getCloverNoiseValueForPoint(type, noise, point), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity);
         }
 
     }
@@ -98,16 +98,16 @@ public class Noise {
     private double getCloverNoiseValueForPoint(Type type, CloverNoise.Noise2D noise, GridPoint point) {
 
         switch(type) {
-            case CLOVER_2D: return noise.noise(point.xPos, point.yPos);
-            case CLOVER_FRACTAL: return noise.fractalNoise(point.xPos, point.yPos, this.iterations);
-            case CLOVER_FROST: noise.frostNoise(point.xPos, point.yPos);
-            case CLOVER_MARBLE: noise.marbleNoise(point.xPos, point.yPos);
+            case CLOVER_2D: return noise.noise(point.xPos(), point.yPos());
+            case CLOVER_FRACTAL: return noise.fractalNoise(point.xPos(), point.yPos(), this.iterations);
+            case CLOVER_FROST: noise.frostNoise(point.xPos(), point.yPos());
+            case CLOVER_MARBLE: noise.marbleNoise(point.xPos(), point.yPos());
             case CLOVER_CURL: {
-                CloverNoise.Vector2 curl = noise.curlNoise(point.xPos, point.yPos);
+                CloverNoise.Vector2 curl = noise.curlNoise(point.xPos(), point.yPos());
                 return Helpers.mix(curl.getX(), curl.getY(), this.mix);
             }
             case CLOVER_CURL_FRACTAL: {
-                CloverNoise.Vector2 curl = noise.fractalCurlNoise(point.xPos, point.yPos, this.iterations);
+                CloverNoise.Vector2 curl = noise.fractalCurlNoise(point.xPos(), point.yPos(), this.iterations);
                 return Helpers.mix(curl.getX(), curl.getY(), this.mix);
             }
             default: return 0;
@@ -118,10 +118,10 @@ public class Noise {
     private <T extends Iterable<GridPoint>> void applyFastNoiseToPoints(FastNoise noise, T points) {
 
         for (GridPoint point : points) {
-            double weight = noise.GetNoise(point.xPos, point.yPos, this.time);
-            if (this.blend) point.weight = Helpers.clamp(
-                    point.weight + Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0);
-            else point.weight = Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity;
+            double weight = noise.GetNoise(point.xPos(), point.yPos(), this.time);
+            if (this.blend) point.weight(Helpers.clamp(
+                    point.weight() + Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity, 0.0, 1.0));
+            else point.weight(Helpers.map(weight, 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity);
         }
 
     }
@@ -151,11 +151,11 @@ public class Noise {
         // _blend -> Whether to blend weight with any previous weight present in Point_Grid
         // _opacity -> Opacity of applied weights
         for (GridPoint point : points) {
-            if (this.blend) point.weight = Helpers.clamp(point.weight +
-                    Helpers.map(Core.processing.noise(point.xPos, point.yPos, this.time), 0, 1, this.minimumWeight, this.maximumWeight)
-                            * this.opacity, 0.0, 1.0);
+            if (this.blend) point.weight(Helpers.clamp(point.weight() +
+                    Helpers.map(Core.processing.noise(point.xPos(), point.yPos(), this.time), 0, 1, this.minimumWeight, this.maximumWeight)
+                            * this.opacity, 0.0, 1.0));
             else
-                point.weight = Helpers.map(Core.processing.noise(point.xPos, point.yPos, this.time), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity; // Call Perlin ~
+                point.weight(Helpers.map(Core.processing.noise(point.xPos(), point.yPos(), this.time), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity); // Call Perlin ~
         }
 
     }
@@ -170,11 +170,11 @@ public class Noise {
         // _opacity -> Opacity of applied weights
 
         for (GridPoint point : points) {
-            if (this.blend) point.weight = Helpers.clamp(point.weight +
+            if (this.blend) point.weight(Helpers.clamp(point.weight() +
                     Helpers.map(Core.processing.random(0, 1), 0.0, 1.0, this.minimumWeight, this.maximumWeight)
-                            * this.opacity, 0, 1);
+                            * this.opacity, 0, 1));
             else
-                point.weight = Helpers.map(Core.processing.random(0, 1), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity;
+                point.weight(Helpers.map(Core.processing.random(0, 1), 0, 1, this.minimumWeight, this.maximumWeight) * this.opacity);
         }
 
     }
