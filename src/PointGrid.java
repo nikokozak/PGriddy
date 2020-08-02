@@ -18,49 +18,36 @@ public class PointGrid implements Iterable<GridPoint>{
 
     // * =========== PROPERTIES ============== * //
 
-    public final int xPoints, yPoints; // Number of Grid_Points in x-dir and y-dir (cols, rows).
-    public final int spacingX, spacingY; // Spacing between points in x and y axes.
+    private final int xPoints;
+    private final int yPoints; // Number of Grid_Points in x-dir and y-dir (cols, rows).
+    private final int spacingX;
+    private final int spacingY; // Spacing between points in x and y axes.
 
-    public int xOrigin, yOrigin; // Define the top-left X and Y pixel-coordinate values for the grid system.
-    public Point centerPoint; // CenterPoint of Grid (x, y pixel-coordinate values)
-    public ArrayList<ArrayList<GridPoint>> points; // Points held by grid.
-
-    public int getxPoints() {
-        return xPoints;
-    }
-
-    public int getyPoints() {
-        return yPoints;
-    }
-
-    public int getSpacingX() {
-        return spacingX;
-    }
-
-    public int getSpacingY() {
-        return spacingY;
-    }
+    private int xOrigin;
+    private int yOrigin; // Define the top-left X and Y pixel-coordinate values for the grid system.
+    private Point centerPoint; // CenterPoint of Grid (x, y pixel-coordinate values)
+    private ArrayList<ArrayList<GridPoint>> points; // Points held by grid.
 
     // * =========== CONSTRUCTORS ============== * //
 
     public PointGrid(Point centerPoint, int xPoints, int yPoints, int spacingX, int spacingY) {
         this.xPoints = xPoints;
         this.yPoints = yPoints;
-        this.centerPoint = centerPoint;
+        this.centerPoint(centerPoint);
         this.spacingX = spacingX;
         this.spacingY = spacingY;
 
-        this.xOrigin = (int)(centerPoint.xPos - ((xPoints/2)*spacingX));
-        this.yOrigin = (int)centerPoint.yPos - ((yPoints/2)*spacingY);
+        this.xOrigin((int)(centerPoint.xPos() - ((xPoints/2)*spacingX)));
+        this.yOrigin((int)centerPoint.yPos() - ((yPoints/2)*spacingY));
 
-        this.points = new ArrayList<ArrayList<GridPoint>>();
+        this.points(new ArrayList<ArrayList<GridPoint>>());
 
         for (int i = 0; i < xPoints; i += 1) {
-            int xPos = this.xOrigin + (i * spacingX);
-            this.points.add(new ArrayList<GridPoint>());
+            int xPos = this.xOrigin() + (i * spacingX);
+            this.points().add(new ArrayList<GridPoint>());
             for (int j = 0; j < yPoints; j += 1) {
-                int yPos = this.yOrigin + (j * spacingY);
-                this.points.get(i).add(new GridPoint(xPos, yPos, i, j, this));
+                int yPos = this.yOrigin() + (j * spacingY);
+                this.points().get(i).add(new GridPoint(xPos, yPos, i, j, this));
             }
         }
     }
@@ -70,34 +57,34 @@ public class PointGrid implements Iterable<GridPoint>{
     }
 
     public PointGrid(PointGrid _pg) {
-        this.xPoints = _pg.xPoints; this.yPoints = _pg.yPoints;
-        this.centerPoint = new Point(_pg.centerPoint);
-        this.spacingX = _pg.spacingX; this.spacingY = _pg.spacingY;
+        this.xPoints = _pg.xPoints(); this.yPoints = _pg.yPoints();
+        this.centerPoint(new Point(_pg.centerPoint()));
+        this.spacingX = _pg.spacingX(); this.spacingY = _pg.spacingY();
 
-        this.xOrigin = _pg.xOrigin;
-        this.yOrigin = _pg.yOrigin;
+        this.xOrigin(_pg.xOrigin());
+        this.yOrigin(_pg.yOrigin());
 
-        this.points = Helpers.cloneGridPoints(_pg);
+        this.points(Helpers.cloneGridPoints(_pg));
     }
 
     public PointGrid(PointGrid _pg, ArrayList<ArrayList<GridPoint>> _al) {
 
-        this.centerPoint = new Point(_pg.centerPoint);
-        this.spacingX = _pg.spacingX; this.spacingY = _pg.spacingY;
+        this.centerPoint(new Point(_pg.centerPoint()));
+        this.spacingX = _pg.spacingX(); this.spacingY = _pg.spacingY();
 
-        this.xOrigin = _pg.xOrigin;
-        this.yOrigin = _pg.yOrigin;
+        this.xOrigin(_pg.xOrigin());
+        this.yOrigin(_pg.yOrigin());
 
-        this.points = new ArrayList<ArrayList<GridPoint>>(_al);
+        this.points(new ArrayList<ArrayList<GridPoint>>(_al));
 
-        this.xPoints = points.size(); this.yPoints = points.get(0).size();
+        this.xPoints = points().size(); this.yPoints = points().get(0).size();
     }
 
     // * =========== ITERATOR ============== * //
 
     @Override
     public Iterator<GridPoint> iterator() {
-        return new GridIterator(this.points);
+        return new GridIterator(this.points());
     }
 
     // * =========== DRAWING TOOLS ============== * //
@@ -424,12 +411,12 @@ public class PointGrid implements Iterable<GridPoint>{
         // Where:
         // _gp -> Grid_Point to test
 
-        int x_mid = this.xPoints / 2;
-        int y_mid = this.yPoints / 2;
+        int x_mid = this.xPoints() / 2;
+        int y_mid = this.yPoints() / 2;
 
-        if (grid_point.gridIndexX > x_mid && grid_point.gridIndexX < y_mid) return 1;
-        else if (grid_point.gridIndexX < x_mid && grid_point.gridIndexY < y_mid) return 2;
-        else if (grid_point.gridIndexX < x_mid && grid_point.gridIndexY > y_mid) return 3;
+        if (grid_point.gridIndexX() > x_mid && grid_point.gridIndexX() < y_mid) return 1;
+        else if (grid_point.gridIndexX() < x_mid && grid_point.gridIndexY() < y_mid) return 2;
+        else if (grid_point.gridIndexX() < x_mid && grid_point.gridIndexY() > y_mid) return 3;
         else return 4;
 
     }
@@ -443,7 +430,7 @@ public class PointGrid implements Iterable<GridPoint>{
         // _pg1 -> First point
         // _pg2 -> Second point
 
-        return Math.pow(grid_point_1.gridIndexX - grid_point_2.gridIndexX, 2) + Math.pow(grid_point_1.gridIndexY - grid_point_2.gridIndexY, 2);
+        return Math.pow(grid_point_1.gridIndexX() - grid_point_2.gridIndexX(), 2) + Math.pow(grid_point_1.gridIndexY() - grid_point_2.gridIndexY(), 2);
 
     }
 
@@ -456,7 +443,7 @@ public class PointGrid implements Iterable<GridPoint>{
         // _pg1 -> First point
         // _pg2 -> Second point
 
-        return Math.sqrt(Math.pow(grid_point_1.gridIndexX - grid_point_2.gridIndexX, 2) + Math.pow(grid_point_1.gridIndexY - grid_point_2.gridIndexY, 2));
+        return Math.sqrt(Math.pow(grid_point_1.gridIndexX() - grid_point_2.gridIndexX(), 2) + Math.pow(grid_point_1.gridIndexY() - grid_point_2.gridIndexY(), 2));
 
     }
 
@@ -468,4 +455,51 @@ public class PointGrid implements Iterable<GridPoint>{
 
     }
 
+    public int xPoints() {
+        return xPoints;
+    }
+
+    public int yPoints() {
+        return yPoints;
+    }
+
+    public int spacingX() {
+        return spacingX;
+    }
+
+    public int spacingY() {
+        return spacingY;
+    }
+
+    public int xOrigin() {
+        return xOrigin;
+    }
+
+    public void xOrigin(int xOrigin) {
+        this.xOrigin = xOrigin;
+    }
+
+    public int yOrigin() {
+        return yOrigin;
+    }
+
+    public void yOrigin(int yOrigin) {
+        this.yOrigin = yOrigin;
+    }
+
+    public Point centerPoint() {
+        return centerPoint;
+    }
+
+    public void centerPoint(Point centerPoint) {
+        this.centerPoint = centerPoint;
+    }
+
+    public ArrayList<ArrayList<GridPoint>> points() {
+        return points;
+    }
+
+    public void points(ArrayList<ArrayList<GridPoint>> points) {
+        this.points = points;
+    }
 }

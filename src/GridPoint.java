@@ -10,7 +10,8 @@ public class GridPoint extends Point {
     // gY -> if created as part of a POINT_GRID, ROW index of said POINT_GRID
     // weight -> associated weight of point.
 
-    public final int gridIndexX, gridIndexY;
+    private final int gridIndexX;
+    private final int gridIndexY;
     private PointGrid parentGrid;
 
     public GridPoint(int _x, int _y, int _gx, int _gy) {
@@ -21,43 +22,43 @@ public class GridPoint extends Point {
 
     public GridPoint(int _x, int _y, int _gx, int _gy, PointGrid parent) {
         this(_x, _y, _gx, _gy);
-        this.parentGrid = parent;
+        this.parentGrid(parent);
     }
 
     public GridPoint(int _x, int _y, int _gx, int _gy, double _weight) {
         this(_x, _y, _gx, _gy);
-        this.weight = _weight;
+        this.weight(_weight);
     }
 
     public GridPoint(int _x, int _y, int _gx, int _gy, double _weight, PointGrid parent) {
         this(_x, _y, _gx, _gy, _weight);
-        this.parentGrid = parent;
+        this.parentGrid(parent);
     }
 
     public GridPoint(int _x, int _y, int _gx, int _gy, int _color, double _weight) {
         this(_x, _y, _gx, _gy, _weight);
-        this.col = _color;
+        this.col(_color);
     }
 
     public GridPoint(int _x, int _y, int _gx, int _gy, int _color, double _weight, PointGrid parent) {
         this(_x, _y, _gx, _gy, _color, _weight);
-        this.parentGrid = parent;
+        this.parentGrid(parent);
     }
 
     public GridPoint(GridPoint _p) {
         super(_p);
-        this.gridIndexX = _p.gridIndexX;
-        this.gridIndexY = _p.gridIndexY;
-        this.weight = _p.weight;
-        this.parentGrid = _p.parentGrid;
+        this.gridIndexX = _p.gridIndexX();
+        this.gridIndexY = _p.gridIndexY();
+        this.weight(_p.weight());
+        this.parentGrid(_p.parentGrid());
     }
 
     public Optional<PointGrid> getParentGrid() {
-        return Optional.ofNullable(this.parentGrid);
+        return Optional.ofNullable(this.parentGrid());
     }
 
     public void setParentGrid(PointGrid parentGrid) {
-        this.parentGrid = parentGrid;
+        this.parentGrid(parentGrid);
     }
 
     @Override
@@ -65,12 +66,28 @@ public class GridPoint extends Point {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GridPoint that = (GridPoint) o;
-        return gridIndexX == that.gridIndexX &&
-                gridIndexY == that.gridIndexY;
+        return gridIndexX() == that.gridIndexX() &&
+                gridIndexY() == that.gridIndexY();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gridIndexX, gridIndexY);
+        return Objects.hash(gridIndexX(), gridIndexY());
+    }
+
+    public int gridIndexX() {
+        return gridIndexX;
+    }
+
+    public int gridIndexY() {
+        return gridIndexY;
+    }
+
+    public PointGrid parentGrid() {
+        return parentGrid;
+    }
+
+    public void parentGrid(PointGrid parentGrid) {
+        this.parentGrid = parentGrid;
     }
 }

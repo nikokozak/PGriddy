@@ -107,8 +107,8 @@ public class Image {
 
         PImage new_img;
 
-        int grid_pixel_width = pg.xPoints * pg.spacingX;
-        int grid_pixel_height = pg.yPoints * pg.spacingY;
+        int grid_pixel_width = pg.xPoints() * pg.spacingX();
+        int grid_pixel_height = pg.yPoints() * pg.spacingY();
 
         int sample_padding_X = Math.abs((grid_pixel_width - _img.width)/2);
         int sample_padding_Y = Math.abs((grid_pixel_height - _img.height)/2);
@@ -128,13 +128,13 @@ public class Image {
         int currPixel;
         double weight = 0;
 
-        for (int x_g = 0; x_g < pg.xPoints; x_g++) {
-            x = (sample_padding_X + _shift_x) + (x_g * pg.spacingX);
-            for (int y_g = 0; y_g < pg.yPoints; y_g++) {
-                y = (sample_padding_Y + _shift_y) + (y_g * pg.spacingY);
+        for (int x_g = 0; x_g < pg.xPoints(); x_g++) {
+            x = (sample_padding_X + _shift_x) + (x_g * pg.spacingX());
+            for (int y_g = 0; y_g < pg.yPoints(); y_g++) {
+                y = (sample_padding_Y + _shift_y) + (y_g * pg.spacingY());
                 if (y*new_img.width+x > new_img.pixels.length - 1 || y*new_img.width+x < 0) currPixel = Core.processing.color(0);
                 else currPixel = new_img.pixels[y*new_img.width+x];
-                currPoint = pg.points.get(x_g).get(y_g);
+                currPoint = pg.points().get(x_g).get(y_g);
                 r = (currPixel >> 16) & 0xFF;
                 g = (currPixel >> 8) & 0xFF;
                 b = currPixel & 0xFF;

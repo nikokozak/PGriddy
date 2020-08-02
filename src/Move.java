@@ -21,7 +21,7 @@ public class Move {
 
         for (int x = _s.startCol; x <= _s.endCol; x++) {
             for (int y = _s.startRow; y <= _s.endRow; y++) {
-                currPoint = _pg.points.get(x).get(y);
+                currPoint = _pg.points().get(x).get(y);
                 currPoint.xPos += _x;
                 currPoint.yPos += _y;
             }
@@ -52,7 +52,7 @@ public class Move {
 
         for (int x = _s.startCol; x <= _s.endCol; x++) {
             for (int y = _s.startRow; y <= _s.endRow; y++) {
-                currPoint = _pg.points.get(x).get(y);
+                currPoint = _pg.points().get(x).get(y);
                 currPoint.xPos *= _x;
                 currPoint.yPos *= _y;
             }
@@ -68,17 +68,17 @@ public class Move {
         // RESETS ALL PAREMETERS PERTAINING TO ORIGIN, ETC.
 
         Point newCenter = new Point(_x, _y);
-        _pg.centerPoint = newCenter;
+        _pg.centerPoint(newCenter);
 
-        _pg.xOrigin = (int)newCenter.xPos - ((_pg.xPoints /2)*_pg.spacingX);
-        _pg.yOrigin = (int)newCenter.yPos - ((_pg.yPoints /2)*_pg.spacingY);
+        _pg.xOrigin((int)newCenter.xPos - ((_pg.xPoints() /2)* _pg.spacingX()));
+        _pg.yOrigin((int)newCenter.yPos - ((_pg.yPoints() /2)* _pg.spacingY()));
 
-        for (int i = 0; i < _pg.xPoints; i += 1) {
-            int xPos = _pg.xOrigin + (i * _pg.spacingX);
-            for (int j = 0; j < _pg.yPoints; j += 1) {
-                int yPos = _pg.yOrigin + (j * _pg.spacingY);
-                _pg.points.get(i).get(j).xPos = xPos;
-                _pg.points.get(i).get(j).yPos = yPos;
+        for (int i = 0; i < _pg.xPoints(); i += 1) {
+            int xPos = _pg.xOrigin() + (i * _pg.spacingX());
+            for (int j = 0; j < _pg.yPoints(); j += 1) {
+                int yPos = _pg.yOrigin() + (j * _pg.spacingY());
+                _pg.points().get(i).get(j).xPos = xPos;
+                _pg.points().get(i).get(j).yPos = yPos;
             }
         }
 
@@ -95,8 +95,8 @@ public class Move {
 
         for (int x = _s.startCol; x < _s.endCol; x++)  {
             for (int y = _s.startRow; y < _s.endRow; y++) {
-                _pg.points.get(x).get(y).xPos += x_translate;
-                _pg.points.get(x).get(y).yPos += y_translate;
+                _pg.points().get(x).get(y).xPos += x_translate;
+                _pg.points().get(x).get(y).yPos += y_translate;
             }
         }
 
@@ -141,7 +141,7 @@ public class Move {
 
         for (int x = _s.startCol; x < _s.endCol; x++) {
             for (int y = _s.startRow; y < _s.endRow; y++) {
-                currPoint = _pg.points.get(x).get(y);
+                currPoint = _pg.points().get(x).get(y);
                 currPoint.xPos = currPoint.originalXPos;
                 currPoint.yPos = currPoint.originalYPos;
             }

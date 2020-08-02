@@ -66,8 +66,8 @@ public class Gradient {
         GridPoint centerPoint = makeDefaultCenterPoint(pg);
 
         double maximumDistance = slow?
-                getFarthestDistanceFromPointExact(centerPoint.gridIndexX, centerPoint.gridIndexY, pg) :
-                getFarthestDistanceFromPointApprox(centerPoint.gridIndexX, centerPoint.gridIndexY, pg);
+                getFarthestDistanceFromPointExact(centerPoint.gridIndexX(), centerPoint.gridIndexY(), pg) :
+                getFarthestDistanceFromPointApprox(centerPoint.gridIndexX(), centerPoint.gridIndexY(), pg);
 
         double currentDistance = slow? pg.gridExactDist(currPoint, centerPoint) : pg.gridApproxDist(currPoint, centerPoint);
         double radius = (slow? this.radius : Math.pow(this.radius, 2)) - maximumDistance;
@@ -124,7 +124,7 @@ public class Gradient {
     private GridPoint makeDefaultCenterPoint(PointGrid pg) {
 
         if (this.gradientCenterX == -1 || this.gradientCenterY == -1) {
-            return pg.getPoint(pg.xPoints / 2, pg.yPoints / 2);
+            return pg.getPoint(pg.xPoints() / 2, pg.yPoints() / 2);
         } else {
             return pg.getPoint(this.gradientCenterX, this.gradientCenterY);
         }
@@ -143,9 +143,9 @@ public class Gradient {
         GridPoint point = Getters.getGridPoint(_col, _row, _pg);
 
         switch(_pg.checkQuad(point)) {
-            case 1 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(0, _pg.yPoints - 1, _pg));
-            case 2 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(_pg.xPoints - 1, _pg.yPoints - 1, _pg));
-            case 3 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(_pg.xPoints - 1, 0, _pg));
+            case 1 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(0, _pg.yPoints() - 1, _pg));
+            case 2 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(_pg.xPoints() - 1, _pg.yPoints() - 1, _pg));
+            case 3 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(_pg.xPoints() - 1, 0, _pg));
             case 4 -> max_distance = _pg.gridExactDist(point, Getters.getGridPoint(0, 0, _pg));
         }
 
@@ -165,9 +165,9 @@ public class Gradient {
         GridPoint point = Getters.getGridPoint(_col, _row, _pg);
 
         switch(_pg.checkQuad(point)) {
-            case 1 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(0, _pg.yPoints - 1, _pg));
-            case 2 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(_pg.xPoints - 1, _pg.yPoints - 1, _pg));
-            case 3 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(_pg.xPoints - 1, 0, _pg));
+            case 1 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(0, _pg.yPoints() - 1, _pg));
+            case 2 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(_pg.xPoints() - 1, _pg.yPoints() - 1, _pg));
+            case 3 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(_pg.xPoints() - 1, 0, _pg));
             case 4 -> max_distance = _pg.gridApproxDist(point, Getters.getGridPoint(0, 0, _pg));
         }
 

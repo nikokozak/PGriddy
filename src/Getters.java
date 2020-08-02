@@ -9,10 +9,10 @@ public class Getters {
         // _col -> column index of desired point
         // _row -> row index of desired point
 
-        _col = Math.floorMod(_col, _pg.xPoints);
-        _row = Math.floorMod(_row, _pg.yPoints);
+        _col = Math.floorMod(_col, _pg.xPoints());
+        _row = Math.floorMod(_row, _pg.yPoints());
 
-        return _pg.points.get(_col).get(_row);
+        return _pg.points().get(_col).get(_row);
 
     }
 
@@ -23,10 +23,10 @@ public class Getters {
         // _col -> column index of desired point
         // _row -> row index of desired point
 
-        if (_col > _pg.xPoints - 1 || _row > _pg.yPoints - 1 || _col < 0 || _row < 0) {
+        if (_col > _pg.xPoints() - 1 || _row > _pg.yPoints() - 1 || _col < 0 || _row < 0) {
             throw new java.lang.RuntimeException("Unsafe Point");
         } else {
-            return _pg.points.get(_col).get(_row);
+            return _pg.points().get(_col).get(_row);
         }
 
     }
@@ -40,7 +40,7 @@ public class Getters {
 
         PointList result = new PointList();
         for (GridPoint currPoint : _points) {
-            if (currPoint.weight >= _floor && currPoint.weight < _ceil) {
+            if (currPoint.weight() >= _floor && currPoint.weight() < _ceil) {
                 result.add(currPoint);
             }
         }
@@ -83,7 +83,7 @@ public class Getters {
         // _pg -> POINT_GRID to fetch from (POINT_GRID)
         // _index -> column to grab
 
-        return new PointList(_pg.points.get(_index));
+        return new PointList(_pg.points().get(_index));
 
     }
 
@@ -94,10 +94,10 @@ public class Getters {
         // _pg -> POINT_GRID to fetch from (POINT_GRID)
         // _index -> row to grab
 
-        PointList result = new PointList(_pg.yPoints);
+        PointList result = new PointList(_pg.yPoints());
 
-        for (int i = 0; i < _pg.points.size(); i++) {
-            result.add(_pg.points.get(i).get(_index));
+        for (int i = 0; i < _pg.points().size(); i++) {
+            result.add(_pg.points().get(i).get(_index));
         }
 
         return result;
@@ -111,8 +111,8 @@ public class Getters {
         // _row -> row index of source point
         // _pg -> POINT_GRID to fetch from
 
-        int grid_width = _pg.xPoints - 1;
-        int grid_height = _pg.yPoints - 1;
+        int grid_width = _pg.xPoints() - 1;
+        int grid_height = _pg.yPoints() - 1;
         int opposite_x = grid_width - _col;
         int opposite_y = grid_height - _row;
 
@@ -128,7 +128,7 @@ public class Getters {
         // _row -> row index of source point
         // _pg -> POINT_GRID to fetch from
 
-        int grid_height = _pg.yPoints - 1;
+        int grid_height = _pg.yPoints() - 1;
         int opposite_y = grid_height - _row;
 
         return getGridPoint(_col, opposite_y, _pg);
@@ -143,7 +143,7 @@ public class Getters {
         // _row -> row index of source point
         // _pg -> POINT_GRID to fetch from
 
-        int grid_width = _pg.xPoints - 1;
+        int grid_width = _pg.xPoints() - 1;
         int opposite_x = grid_width - _col;
 
         return getGridPoint(opposite_x, _row, _pg);
@@ -207,7 +207,7 @@ public class Getters {
 
         while (start_x++ != end_x) {
             y = slope*start_x + offset;
-            result.add(_pg.points.get(start_x).get((int)y));
+            result.add(_pg.points().get(start_x).get((int)y));
         }
 
         return result;
@@ -230,16 +230,16 @@ public class Getters {
         int err = 2-2*_rad;
 
         while (x < 0) {
-            if (_col-x < _pg.xPoints && _col-x > -1 && _row+y < _pg.yPoints && _row+y > -1) { // Same as with line (out of bounds checks).
+            if (_col-x < _pg.xPoints() && _col-x > -1 && _row+y < _pg.yPoints() && _row+y > -1) { // Same as with line (out of bounds checks).
                 result.add(getGridPoint(_col-x, _row+y, _pg));
             }
-            if (_col-y > -1 && _col-y < _pg.xPoints && _row-x < _pg.yPoints && _row-x > -1) {
+            if (_col-y > -1 && _col-y < _pg.xPoints() && _row-x < _pg.yPoints() && _row-x > -1) {
                 result.add(getGridPoint(_col-y, _row-x, _pg));
             }
-            if (_col+x > -1 && _col+x < _pg.xPoints && _row-y > -1 && _row-y < _pg.yPoints) {
+            if (_col+x > -1 && _col+x < _pg.xPoints() && _row-y > -1 && _row-y < _pg.yPoints()) {
                 result.add(getGridPoint(_col+x, _row-y, _pg));
             }
-            if (_col+y < _pg.xPoints && _col+y > -1 && _row+x > -1 && _row+x < _pg.yPoints) {
+            if (_col+y < _pg.xPoints() && _col+y > -1 && _row+x > -1 && _row+x < _pg.yPoints()) {
                 result.add(getGridPoint(_col+y, _row+x, _pg));
             }
             _rad = err;
@@ -293,11 +293,11 @@ public class Getters {
 
         while(iter.hasNext()) {
             nextPoint = iter.next();
-            result.addAll(getGridLine(currPoint.gridIndexX, currPoint.gridIndexY, nextPoint.gridIndexX, nextPoint.gridIndexY, _pg));
+            result.addAll(getGridLine(currPoint.gridIndexX(), currPoint.gridIndexY(), nextPoint.gridIndexX(), nextPoint.gridIndexY(), _pg));
             currPoint = nextPoint;
         }
 
-        if (_closed) result.addAll(getGridLine(currPoint.gridIndexX, currPoint.gridIndexY, firstPoint.gridIndexX, firstPoint.gridIndexY, _pg));
+        if (_closed) result.addAll(getGridLine(currPoint.gridIndexX(), currPoint.gridIndexY(), firstPoint.gridIndexX(), firstPoint.gridIndexY(), _pg));
 
         return result;
 
@@ -345,14 +345,14 @@ public class Getters {
             //print(_dlist.get(pointer)); -> debug
 
             switch (_dlist.get(pointer)) {
-                case 0 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX, currentPoint.gridIndexY - 1, _pg);
-                case 1 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY - 1, _pg);
-                case 2 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg) : getGridPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY, _pg);
-                case 3 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX + 1, currentPoint.gridIndexY + 1, _pg);
-                case 4 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX, currentPoint.gridIndexY + 1, _pg);
-                case 5 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY + 1, _pg);
-                case 6 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg) : getGridPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY, _pg);
-                case 7 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX - 1, currentPoint.gridIndexY - 1, _pg);
+                case 0 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX(), currentPoint.gridIndexY() - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX(), currentPoint.gridIndexY() - 1, _pg);
+                case 1 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX() + 1, currentPoint.gridIndexY() - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX() + 1, currentPoint.gridIndexY() - 1, _pg);
+                case 2 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX() + 1, currentPoint.gridIndexY(), _pg) : getGridPointSafe(currentPoint.gridIndexX() + 1, currentPoint.gridIndexY(), _pg);
+                case 3 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX() + 1, currentPoint.gridIndexY() + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX() + 1, currentPoint.gridIndexY() + 1, _pg);
+                case 4 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX(), currentPoint.gridIndexY() + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX(), currentPoint.gridIndexY() + 1, _pg);
+                case 5 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX() - 1, currentPoint.gridIndexY() + 1, _pg) : getGridPointSafe(currentPoint.gridIndexX() - 1, currentPoint.gridIndexY() + 1, _pg);
+                case 6 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX() - 1, currentPoint.gridIndexY(), _pg) : getGridPointSafe(currentPoint.gridIndexX() - 1, currentPoint.gridIndexY(), _pg);
+                case 7 -> currentPoint = _overflow ? getGridPoint(currentPoint.gridIndexX() - 1, currentPoint.gridIndexY() - 1, _pg) : getGridPointSafe(currentPoint.gridIndexX() - 1, currentPoint.gridIndexY() - 1, _pg);
             }
 
             step += 1;
@@ -373,9 +373,9 @@ public class Getters {
 
         PointList result = new PointList();
 
-        for (int x = 0; x < _pg.xPoints; x += _x) {
-            for (int y = 0; y < _pg.yPoints; y += _y) {
-                result.add(_pg.points.get(x).get(y));
+        for (int x = 0; x < _pg.xPoints(); x += _x) {
+            for (int y = 0; y < _pg.yPoints(); y += _y) {
+                result.add(_pg.points().get(x).get(y));
             }
         }
 
@@ -433,10 +433,10 @@ public class Getters {
                        (new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0), new Tuple2<Integer, Integer>(Integer.MAX_VALUE, 0));
 
        for (GridPoint currPoint : _pl.points) {
-           if (currPoint.gridIndexX < result.a.a) result.a.a = currPoint.gridIndexX;
-           if (currPoint.gridIndexX > result.a.b) result.a.b = currPoint.gridIndexX;
-           if (currPoint.gridIndexY < result.b.a) result.b.a = currPoint.gridIndexY;
-           if (currPoint.gridIndexY > result.b.b) result.b.b = currPoint.gridIndexX;
+           if (currPoint.gridIndexX() < result.a.a) result.a.a = currPoint.gridIndexX();
+           if (currPoint.gridIndexX() > result.a.b) result.a.b = currPoint.gridIndexX();
+           if (currPoint.gridIndexY() < result.b.a) result.b.a = currPoint.gridIndexY();
+           if (currPoint.gridIndexY() > result.b.b) result.b.b = currPoint.gridIndexX();
        }
 
        return result;
@@ -454,7 +454,7 @@ public class Getters {
         boolean found = false;
 
         for (GridPoint currPoint : _pl.points) {
-            if (currPoint.gridIndexX == _col && currPoint.gridIndexY == _row) {
+            if (currPoint.gridIndexX() == _col && currPoint.gridIndexY() == _row) {
                 found = true;
                 break;
             }
@@ -516,8 +516,8 @@ public class Getters {
         // For all vertices
         for (int i = 0; i < n; i++)
         {
-            int x0 = _pl.get(i).gridIndexX, y0 = _pl.get(i).gridIndexY;
-            int x1 = _pl.get((i + 1) % n).gridIndexX, y1 = _pl.get((i + 1) % n).gridIndexY;
+            int x0 = _pl.get(i).gridIndexX(), y0 = _pl.get(i).gridIndexY();
+            int x1 = _pl.get((i + 1) % n).gridIndexX(), y1 = _pl.get((i + 1) % n).gridIndexY();
 
             // Calculate value of A
             // using shoelace formula

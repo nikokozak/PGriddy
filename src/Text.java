@@ -9,10 +9,10 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
         int spacing = sizeCalc(_size) + 1;
         GridPoint safe_origin = _pg.getPoint(_xOrigin, _yOrigin); // wraps points around grid if they happen to overflow.
-        int currX = safe_origin.gridIndexX;
+        int currX = safe_origin.gridIndexX();
 
         for (char c : characters) {
-            result.addAll(getLetter(c, currX, safe_origin.gridIndexY, _size, _pg));
+            result.addAll(getLetter(c, currX, safe_origin.gridIndexY(), _size, _pg));
             currX += spacing;
         }
 
@@ -80,12 +80,12 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
 
         return result;
@@ -107,18 +107,18 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         for (int i = _yOrigin + 1; i < _yOrigin + mid - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
         for (int i = _yOrigin + mid; i < _yOrigin + _size - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
         return result;
 
@@ -138,11 +138,11 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin + 1; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int j = _yOrigin + 1; j < _yOrigin + _size - 1; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, j));
         }
 
         return result;
@@ -163,14 +163,14 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int j = _yOrigin; j < _yOrigin + _size; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, j));
         }
         for (int j = _yOrigin + 1; j < _yOrigin + _size - 1; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
         }
         return result;
 
@@ -191,12 +191,12 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         return result;
 
@@ -217,11 +217,11 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         return result;
 
@@ -242,17 +242,17 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int i = _xOrigin + mid - 1; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
         }
         for (int i = _yOrigin + 1; i < _yOrigin + _size - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         for (int i = _yOrigin + mid - 1; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
         return result;
 
@@ -273,11 +273,11 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
 
         return result;
@@ -299,11 +299,11 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int j = _yOrigin; j < _yOrigin + _size; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + mid - 1, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + mid - 1, j));
         }
 
         return result;
@@ -325,16 +325,16 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
         }
         for (int i = _xOrigin; i < _xOrigin + mid; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int j = _yOrigin; j < _yOrigin + _size; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + mid, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + mid, j));
         }
         for (int j = _yOrigin + mid; j < _yOrigin + _size; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, j));
         }
 
         return result;
@@ -362,7 +362,7 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
 
         return result;
@@ -384,10 +384,10 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         return result;
 
@@ -413,8 +413,8 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
 
         return result;
@@ -439,8 +439,8 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
 
         return result;
@@ -461,12 +461,12 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin + 1; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int j = _yOrigin + 1; j < _yOrigin + _size - 1; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, j));
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
         }
         return result;
 
@@ -487,14 +487,14 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         for (int i = _yOrigin + 1; i < _yOrigin + mid - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
         return result;
 
@@ -518,19 +518,19 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _xOrigin + 1; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
         }
         for (int i = _xOrigin + 1; i < _xOrigin + mid - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int j = _yOrigin + 1; j < _yOrigin + _size - 1; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, j));
         }
         for (int j = _yOrigin + 1; j < _yOrigin + mid; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
         }
         for (int j = _yOrigin + mid; j < _yOrigin + _size ; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, j));
         }
 
         return result;
@@ -555,14 +555,14 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _xOrigin; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         for (int i = _yOrigin + 1; i < _yOrigin + mid - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
         return result;
 
@@ -583,15 +583,15 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin + 1; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + mid - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int i = _yOrigin + 1; i < _yOrigin + mid - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
         }
         for (int i = _yOrigin + mid; i < _yOrigin + _size - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
         return result;
 
@@ -612,10 +612,10 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
         }
         for (int j = _yOrigin; j < _yOrigin + _size; j++) {
-            if (j < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + mid - 1, j));
+            if (j < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + mid - 1, j));
         }
 
         return result;
@@ -636,11 +636,11 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin + 1; i < _xOrigin + _size - 1; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
         for (int i = _yOrigin; i < _yOrigin + _size - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
 
         return result;
@@ -691,8 +691,8 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _yOrigin; i < _yOrigin + _size - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin, i));
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + _size - 1, i));
         }
 
         return result;
@@ -742,7 +742,7 @@ public class Text {
         result.addAll(line.points);
 
         for (int i = _yOrigin + mid; i < _yOrigin + _size - 1; i++) {
-            if (i < _pg.yPoints) result.add(_pg.getPoint(_xOrigin + mid - 1, i));
+            if (i < _pg.yPoints()) result.add(_pg.getPoint(_xOrigin + mid - 1, i));
         }
 
         return result;
@@ -763,8 +763,8 @@ public class Text {
         LinkedHashSet<GridPoint> result = new LinkedHashSet<>();
 
         for (int i = _xOrigin; i < _xOrigin + _size; i++) {
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin));
-            if (i < _pg.xPoints) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin));
+            if (i < _pg.xPoints()) result.add(_pg.getPoint(i, _yOrigin + _size - 1));
         }
 
         PointList line = _pg.getLine(_xOrigin, _yOrigin + _size - 1, _xOrigin + _size - 1, _yOrigin);

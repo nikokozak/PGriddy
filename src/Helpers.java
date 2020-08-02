@@ -100,7 +100,7 @@ public class Helpers {
         // _row -> row value to check
         // _pg -> Point_Grid against which to check
 
-        return _row > -1 && _row < _pg.yPoints;
+        return _row > -1 && _row < _pg.yPoints();
 
     }
 
@@ -112,7 +112,7 @@ public class Helpers {
         // _col -> col value to check
         // _pg -> Point_Grid against which to check
 
-        return _col > -1 && _col < _pg.xPoints;
+        return _col > -1 && _col < _pg.xPoints();
     }
 
     public static double clamp(double val, double min, double max) {
@@ -176,13 +176,13 @@ public class Helpers {
         // Where:
         // _pg -> Point_Grid to copy from
 
-        ArrayList<ArrayList<GridPoint>> parent = new ArrayList<ArrayList<GridPoint>>(_pg.yPoints);
+        ArrayList<ArrayList<GridPoint>> parent = new ArrayList<ArrayList<GridPoint>>(_pg.yPoints());
         GridPoint currPoint;
 
-        for (int x = 0; x < _pg.xPoints; x++) {
-            parent.add(new ArrayList<GridPoint>(_pg.yPoints));
-            for (int y = 0; y < _pg.yPoints; y++) {
-                currPoint = _pg.points.get(x).get(y);
+        for (int x = 0; x < _pg.xPoints(); x++) {
+            parent.add(new ArrayList<GridPoint>(_pg.yPoints()));
+            for (int y = 0; y < _pg.yPoints(); y++) {
+                currPoint = _pg.points().get(x).get(y);
                 parent.get(x).add(new GridPoint(currPoint));
             }
         }
@@ -227,26 +227,26 @@ public class Helpers {
         // _pg1 -> First Point_Grid to add
         // _pg2 -> Second Point_Grid to add
 
-        int maxCol = Math.max(_pg1.xPoints, _pg2.xPoints);
-        int maxRow = Math.max(_pg1.yPoints, _pg2.yPoints);
-        int maxSpacingX = Math.max(_pg1.spacingX, _pg2.spacingY);
-        int maxSpacingY = Math.max(_pg1.spacingY, _pg2.spacingY);
-        float maxXCenter = Math.max(_pg1.centerPoint.xPos, _pg2.centerPoint.xPos);
-        float maxYCenter = Math.max(_pg1.centerPoint.yPos, _pg2.centerPoint.yPos);
+        int maxCol = Math.max(_pg1.xPoints(), _pg2.xPoints());
+        int maxRow = Math.max(_pg1.yPoints(), _pg2.yPoints());
+        int maxSpacingX = Math.max(_pg1.spacingX(), _pg2.spacingY());
+        int maxSpacingY = Math.max(_pg1.spacingY(), _pg2.spacingY());
+        float maxXCenter = Math.max(_pg1.centerPoint().xPos, _pg2.centerPoint().xPos);
+        float maxYCenter = Math.max(_pg1.centerPoint().yPos, _pg2.centerPoint().yPos);
 
         PointGrid result = new PointGrid(new Point(maxXCenter, maxYCenter), maxCol, maxRow, maxSpacingX, maxSpacingY);
         result = new PointGrid(result);
         result.weight(0);
 
-        for (ArrayList<GridPoint> columns : _pg1.points) {
+        for (ArrayList<GridPoint> columns : _pg1.points()) {
             for (GridPoint currPoint : columns) {
-                result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight + currPoint.weight, 0, 1);
+                result.points().get(currPoint.gridIndexX()).get(currPoint.gridIndexY()).weight = clamp(result.points().get(currPoint.gridIndexX()).get(currPoint.gridIndexY()).weight + currPoint.weight, 0, 1);
             }
         }
 
-        for (ArrayList<GridPoint> columns : _pg2.points) {
+        for (ArrayList<GridPoint> columns : _pg2.points()) {
             for (GridPoint currPoint : columns) {
-                result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight + currPoint.weight, 0, 1);
+                result.points().get(currPoint.gridIndexX()).get(currPoint.gridIndexY()).weight = clamp(result.points().get(currPoint.gridIndexX()).get(currPoint.gridIndexY()).weight + currPoint.weight, 0, 1);
             }
         }
 
@@ -265,11 +265,11 @@ public class Helpers {
 
         PointGrid result = new PointGrid(_pg1);
 
-        for (ArrayList<GridPoint> grid_points : _pg2.points) {
+        for (ArrayList<GridPoint> grid_points : _pg2.points()) {
             for (GridPoint grid_point : grid_points) {
                 currPoint = grid_point;
-                if (checkColBounds(currPoint.gridIndexX, _pg1) && checkRowBounds(currPoint.gridIndexY, _pg1)) {
-                    result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight = clamp(result.points.get(currPoint.gridIndexX).get(currPoint.gridIndexY).weight - currPoint.weight, 0, 1);
+                if (checkColBounds(currPoint.gridIndexX(), _pg1) && checkRowBounds(currPoint.gridIndexY(), _pg1)) {
+                    result.points().get(currPoint.gridIndexX()).get(currPoint.gridIndexY()).weight = clamp(result.points().get(currPoint.gridIndexX()).get(currPoint.gridIndexY()).weight - currPoint.weight, 0, 1);
                 }
             }
         }
