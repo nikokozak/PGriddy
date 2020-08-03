@@ -1,24 +1,33 @@
 public class Draw {
 
-    public static <T extends Iterable<GridPoint>> void draw(T _l) {
-        // Draws points to screen as a simple Processing point (no fill, weight).
+    public static <T extends Iterable<GridPoint>> void draw(T l) {
 
-        for (GridPoint currPoint : _l) {
+        /**
+         * Draws points to screen as simple Processing point()s (no fill or weight).
+         * @param l a PointGrid or PointList.
+         * @return void
+         */
+
+        for (GridPoint currPoint : l) {
             Core.processing.point(currPoint.xPos(), currPoint.yPos());
         }
     }
 
-    public static <T extends Iterable<GridPoint>> void draw(int type, T _l) {
-        // Draws points to screen as either a Processing point, circle, or rect (size 3 for circle and rect).
-        // No fill or weight set.
-        // Where:
-        // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
+    public static <T extends Iterable<GridPoint>> void draw(int type, T l) {
+
+        /**
+         * Draws points to screen as either a Processing point(), circle(), or rect().
+         * Size 3 is applied to circle() and rect() modes. No fill or weight set.
+         * @param type [0 - Point, 1 - Circle, or 2 - Rect]
+         * @param l a PointGrid or PointList.
+         * @return void
+         */
 
         if (type > 2 || type < 0) type = 0;
 
         Core.processing.rectMode(3); // Set rectMode to CENTER;
 
-        for (GridPoint currPoint : _l) {
+        for (GridPoint currPoint : l) {
             switch (type) {
                 case 0 -> Core.processing.point(currPoint.xPos(), currPoint.yPos());
                 case 1 -> Core.processing.circle(currPoint.xPos(), currPoint.yPos(), 3);
@@ -27,14 +36,20 @@ public class Draw {
         }
     }
 
-    public static <T extends Iterable<GridPoint>> void draw(int type, boolean weight, T _l) {
-        // Draws points to screen as either a Processing point, circle, or rect (size 3 for circle and rect).
-        // Where:
-        // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
-        // weight -> whether to set alpha as weight.
+    public static <T extends Iterable<GridPoint>> void draw(int type, boolean weight, T l) {
+
+        /**
+         * Draws a GridPoint to screen as either a Processing point(), circle(), or rect().
+         * Size 3 is applied to circle() and rect() modes.
+         * @param type [0 - Point, 1 - Circle, or 2 - Rect]
+         * @param weight whether to set weight as alpha for draw color.
+         * @param l a PointGrid or PointList.
+         * @return void
+         */
+
         Core.processing.rectMode(3); // Set rectMode to CENTER;
 
-        for (GridPoint currPoint : _l) {
+        for (GridPoint currPoint : l) {
             if (weight) {
                 Core.processing.fill(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
                 Core.processing.stroke(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
@@ -51,15 +66,20 @@ public class Draw {
         }
     }
 
-    public static <T extends Iterable<GridPoint>> void draw(int type, float size, boolean weight, T _l) {
-        // Draws points to screen as either a Processing point, circle, or rect.
-        // Where:
-        // type -> [0, 1, or 2] 0: Point, 1: Circle, 2: Rect
-        // size -> size of rect or circle.
-        // weight -> whether to set alpha as weight.
+    public static <T extends Iterable<GridPoint>> void draw(int type, float size, boolean weight, T l) {
+
+        /**
+         * Draws points to screen as either a Processing point, circle, or rect.
+         * @param type [0 - Point, 1 - Circle, 2 - Rect]
+         * @param size size of rect or circle.
+         * @param weight whether to set weight as alpha for draw color.
+         * @param l a PointGrid or PointList
+         * @return void
+         */
+
         Core.processing.rectMode(3);
 
-        for (GridPoint currPoint : _l) {
+        for (GridPoint currPoint : l) {
             if (weight) {
                 Core.processing.fill(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
                 Core.processing.stroke(currPoint.col(), Helpers.weightToRGB(currPoint.weight()));
