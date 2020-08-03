@@ -177,4 +177,18 @@ public class Applicators {
             }
         }
     }
+
+    public static <T extends Iterable<GridPoint>> T binaryWeight(double threshold, T l) {
+
+        // Sets all weights in collection l to either 1.0 or 0.0.
+        // If above threshold -> 1.0
+
+        for (GridPoint point : l) {
+            if (point.weight() > threshold) point.weight(1.0);
+            else point.weight(0.0);
+        }
+
+        return l;
+
+    }
 }

@@ -267,6 +267,18 @@ public class PointGrid implements Iterable<GridPoint>{
 
     }
 
+    public ArrayList<String> getRowsAsBinary(double threshold)  {
+
+        return Getters.getRowsAsBinary(threshold, this);
+
+    }
+
+    public ArrayList<String> getColsAsBinary(double threshold) {
+
+        return Getters.getColsAsBinary(threshold, this);
+
+    }
+
     public PointList getText(String _sentence, int _xOrigin, int _yOrigin, int _size) {
 
         return Text.getSentence(_sentence, _xOrigin, _yOrigin, _size, this);
@@ -358,6 +370,12 @@ public class PointGrid implements Iterable<GridPoint>{
     public void weightReset(Selection _s) {
 
         Applicators.gridSelectWeightReset(_s, this);
+
+    }
+
+    public void binaryWeight(double threshold) {
+
+        Applicators.binaryWeight(threshold, this);
 
     }
 

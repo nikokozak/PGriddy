@@ -248,6 +248,12 @@ public class PointList implements Iterable<GridPoint>{
 
     }
 
+    public PointList binaryWeight(double threshold) {
+
+        return Applicators.binaryWeight(threshold, this);
+
+    }
+
     public PointList filter(double _low, double _high) {
 
         Applicators.weightFilter(_low, _high, this);

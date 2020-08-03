@@ -419,6 +419,54 @@ public class Getters {
 
     }
 
+    public static ArrayList<String> getColsAsBinary(double threshold, PointGrid _pg) {
+
+        // Returns the columns of a PointGrid represented as binary strings, where points with
+        // weight above the threshold are represented as 1's.
+        // Where:
+        // threshold -> above this weight, a GridPoint is represented as 1.
+
+        ArrayList<String> result = new ArrayList<String>(_pg.xPoints());
+        ArrayList<GridPoint> currCol;
+
+        for (int i = 0; i < _pg.xPoints(); i++) {
+            currCol = _pg.getColumn(i).points();
+            StringBuilder binary = new StringBuilder(_pg.yPoints());
+            for (GridPoint point : currCol) {
+                if (point.weight() < threshold) binary.append("0");
+                else binary.append("1");
+            }
+            result.add(binary.toString());
+        }
+
+        return result;
+
+    }
+
+    public static ArrayList<String> getRowsAsBinary(double threshold, PointGrid _pg) {
+
+        // Returns the rows of a PointGrid represented as binary strings, where points with
+        // weight above the threshold are represented as 1's.
+        // Where:
+        // threshold -> above this weight, a GridPoint is represented as 1.
+
+        ArrayList<String> result = new ArrayList<String>(_pg.yPoints());
+        ArrayList<GridPoint> currRow;
+
+        for (int i = 0; i < _pg.yPoints(); i++) {
+            currRow = _pg.getRow(i).points();
+            StringBuilder binary = new StringBuilder(_pg.xPoints());
+            for (GridPoint point : currRow) {
+                if (point.weight() < threshold) binary.append("0");
+                else binary.append("1");
+            }
+            result.add(binary.toString());
+        }
+
+        return result;
+
+    }
+
     //** ==================== PRIVATE HELPERS ====================== **//
 
     private static Tuple2<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> getListMinMaxCoords(PointList _pl) {
